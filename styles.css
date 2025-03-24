@@ -138,14 +138,14 @@ a {
 
 .photo-container {
   flex: 1;
-  min-width: 280px;
+  min-width: 320px;
   text-align: center;
   margin-bottom: 20px;
 }
 
 .profile-pic {
-  width: 250px;
-  height: 250px;
+  width: 300px;       /* 기존 250px -> 300px */
+  height: 300px;      /* 기존 250px -> 300px */
   object-fit: cover;
   border-radius: 50%;
   border: 5px solid #fff;
@@ -154,16 +154,26 @@ a {
 .intro-text {
   flex: 1;
   min-width: 280px;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 20px;
 }
 
+/* Hero 섹션의 제목 한 줄 유지 */
 .intro-text h1 {
   font-family: 'Montserrat', sans-serif;
-  font-size: 2.2rem;
+  font-size: 2.2rem;    /* 필요 시 더 키우거나 줄일 수 있음 */
   margin-bottom: 20px;
+  color: #fff;
+  white-space: nowrap;  /* 한 줄로 유지 (줄바꿈 방지) */
 }
 
+/* 화면이 좁은 모바일 기기에서 너무 옆으로 넘어갈 경우 대비 */
+@media (max-width: 768px) {
+  .intro-text h1 {
+    font-size: 1.8rem;  /* 폰트 살짝 줄이기 */
+    white-space: normal; /* 작은 화면에서는 자동 줄바꿈 허용 */
+  }
+}
 .intro-text p {
   font-size: 1.1rem;
   line-height: 1.6;
