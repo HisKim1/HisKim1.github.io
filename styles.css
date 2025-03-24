@@ -92,12 +92,14 @@
      HERO SECTION
   ------------------------------ */
   .hero {
-    margin-top: 70px; /* Offset for fixed navbar */
-    padding: 100px 20px;
-    text-align: center;
-    /* New gradient from teal to blue */
     background: linear-gradient(135deg, #06B6D4, #3B82F6);
+    min-height: calc(100vh - 70px); /* 고정 네비게이션 높이만큼 뺀다 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px; /* 네비게이션 영역 뒤에 안 가려지도록 */
     color: #fff;
+    text-align: center;
   }
   
   .hero-content h1 {
@@ -143,7 +145,7 @@
      PAGE CONTENT
   ------------------------------ */
   .page-content {
-    padding: 120px 20px 60px 20px; /* top padding to offset navbar */
+    padding: 120px 20px 70px 20px; /* top padding to offset navbar */
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
