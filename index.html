@@ -1,36 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-barba="wrapper">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Hisu Kim - Portfolio</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <!-- Barba.js, GSAP CDN -->
+  <script src="https://unpkg.com/@barba/core"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
 </head>
-<body>
-  <!-- 공통 헤더 로드 -->
+<body data-barba="container" data-barba-namespace="home">
+  <!-- 공통 header.html 로드 -->
   <div id="header-include"></div>
 
   <!-- HOME Section -->
   <main class="home-section section" id="home">
     <div class="home-content">
       <div class="photo-container">
-        <!-- 본인 증명사진: profile.jpg로 교체 -->
-        <img src="img/profile.jpg" alt="Hisu Kim Profile" class="profile-pic">
+        <!-- 원본 사진이 세로로 길 경우에도 얼굴이 중앙에 오도록 object-position 조정 -->
+        <img src="profile.jpg" alt="Hisu Kim Profile" class="profile-pic">
       </div>
       <div class="intro-text">
+        <!-- 한 줄에 나오도록 nowrap, 너무 좁은 화면에서는 미디어쿼리로 줄바꿈 허용 -->
         <h1>Forecasting the Future of Forecasting</h1>
         <p>
-          I'm a multidisciplinary Environmental Engineering and CS student passionate about AI-driven weather forecasting.
+          I'm a multidisciplinary Environmental Engineering and CS student
+          passionate about AI-driven weather forecasting, creative design,
+          and innovative solutions.
         </p>
-        <a href="about.html" class="btn-primary nav-link">Learn More About Me</a>
+        <a href="about.html" class="btn-primary">Learn More About Me</a>
       </div>
     </div>
   </main>
 
-  <!-- 공통 푸터 로드 -->
+  <!-- 공통 footer.html 로드 -->
   <div id="footer-include"></div>
 </body>
 </html>

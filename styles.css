@@ -142,13 +142,15 @@ a {
   text-align: center;
   margin-bottom: 20px;
 }
-
+/* 프로필 사진 크게 + 얼굴 중앙 조정 */
 .profile-pic {
-  width: 300px;       /* 기존 250px -> 300px */
-  height: 300px;      /* 기존 250px -> 300px */
-  object-fit: cover;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   border: 5px solid #fff;
+  object-fit: cover; 
+  /* 이미지 내부에서 50% (가로) / 20% (세로) 지점을 중앙으로 */
+  object-position: 50% 20%;
 }
 
 .intro-text {
@@ -158,22 +160,25 @@ a {
   margin: 0 20px;
 }
 
-/* Hero 섹션의 제목 한 줄 유지 */
+/* .intro-text h1 한 줄 유지 (넓은 화면), 작은 화면에서는 줄바꿈 */
 .intro-text h1 {
   font-family: 'Montserrat', sans-serif;
-  font-size: 2.2rem;    /* 필요 시 더 키우거나 줄일 수 있음 */
+  font-size: 2.2rem;
   margin-bottom: 20px;
   color: #fff;
-  white-space: nowrap;  /* 한 줄로 유지 (줄바꿈 방지) */
+  white-space: nowrap; /* 한 줄로 유지 */
+  overflow: hidden;    /* 혹시 넘칠 경우 숨김 */
+  text-overflow: ellipsis; /* 너무 좁으면 말줄임표(...) */
 }
 
-/* 화면이 좁은 모바일 기기에서 너무 옆으로 넘어갈 경우 대비 */
+/* 작은 화면에서는 줄바꿈 허용 */
 @media (max-width: 768px) {
   .intro-text h1 {
-    font-size: 1.8rem;  /* 폰트 살짝 줄이기 */
-    white-space: normal; /* 작은 화면에서는 자동 줄바꿈 허용 */
+    font-size: 1.8rem;
+    white-space: normal; /* 자동 줄바꿈 */
   }
 }
+
 .intro-text p {
   font-size: 1.1rem;
   line-height: 1.6;

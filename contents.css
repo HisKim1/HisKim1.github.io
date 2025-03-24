@@ -1,0 +1,66 @@
+/* contents.css */
+
+/* 기본 리셋 (필요 시 조정) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #ffffff, #dbeafe); /* 예시 그라디언트 */
+    color: #333;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  
+  .contents-title {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .contents-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+  
+  /* 그리드 배치 */
+  .contents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .contents-item {
+    background: #fff;
+    border-left: 5px solid #3b82f6; /* 파란색 포인트 라인 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 4px;
+  }
+  
+  .contents-item h2 {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+  }
+  
+  .contents-item p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  .contents-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  }
+  
