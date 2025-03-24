@@ -12,6 +12,13 @@ html, body {
   background: #F5F5F5;
   color: #333;
   scroll-behavior: smooth;
+  /* 페이지 전환을 위한 페이드 효과 */
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+body.fade-out {
+  opacity: 0;
 }
 
 a {
@@ -24,7 +31,7 @@ a {
 ------------------------------ */
 .navbar {
   width: 100%;
-  background: #059FAF;
+  background: linear-gradient(135deg, #667eea, #764ba2); /* 그라데이션 */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,7 +74,7 @@ a {
   right: -100%;
   width: 250px;
   height: 100%;
-  background: #059FAF;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   transition: right 0.5s ease;
   display: flex;
   align-items: center;
@@ -114,7 +121,8 @@ a {
 
 /* HOME Section */
 .home-section {
-  background: #FFFFFF;
+  background: linear-gradient(135deg, #667eea, #764ba2); /* 그라데이션 배경 */
+  color: #fff;
   flex-direction: row;
   min-height: calc(100vh - 60px);
 }
@@ -140,7 +148,7 @@ a {
   height: 250px;
   object-fit: cover;
   border-radius: 50%;
-  border: 5px solid #059FAF;
+  border: 5px solid #fff;
 }
 
 .intro-text {
@@ -164,7 +172,7 @@ a {
 
 .btn-primary {
   display: inline-block;
-  background: #059FAF;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
   padding: 12px 25px;
   border-radius: 25px;
@@ -174,7 +182,7 @@ a {
 }
 
 .btn-primary:hover {
-  background: #037987;
+  background: linear-gradient(135deg, #5a67d8, #6b46c1);
 }
 
 /* ABOUT, EXPERIENCE, TEACHING, PROJECTS, CONTACT Sections */
@@ -185,7 +193,7 @@ a {
 .section-title h2 {
   font-family: 'Montserrat', sans-serif;
   font-size: 2rem;
-  color: #059FAF;
+  color: #764ba2;
 }
 
 .section-content {
@@ -199,15 +207,18 @@ a {
   font-size: 1.05rem;
 }
 
-/* Cards for Experience, Teaching, Projects */
+/* ------------------------------
+   4. CARDS (Collapsible)
+------------------------------ */
 .card {
   background: #fff;
-  border-left: 5px solid #059FAF;
+  border-left: 5px solid #764ba2;
   box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   padding: 20px;
   margin: 20px 0;
   text-align: left;
   transition: transform 0.3s;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -220,11 +231,22 @@ a {
   font-family: 'Montserrat', sans-serif;
 }
 
+/* Collapsible card details */
+.card-details {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease;
+}
+
+.card.active .card-details {
+  /* max-height will be set dynamically in JS */
+}
+
 /* ------------------------------
-   4. FOOTER
+   5. FOOTER
 ------------------------------ */
 footer {
-  background: #059FAF;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
   text-align: center;
   padding: 15px;
@@ -232,7 +254,7 @@ footer {
 }
 
 /* ------------------------------
-   5. RESPONSIVE
+   6. RESPONSIVE
 ------------------------------ */
 @media (max-width: 768px) {
   .home-content {
