@@ -9,9 +9,9 @@
 
 html, body {
   font-family: 'Roboto', sans-serif;
-  background: #F5F5F5; /* Light gray background */
+  background: #F5F5F5;
   color: #333;
-  scroll-behavior: smooth; /* smooth scrolling for anchor links */
+  scroll-behavior: smooth;
 }
 
 a {
@@ -19,20 +19,12 @@ a {
   color: inherit;
 }
 
-/* Container-like styling if needed
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-*/
-
 /* ------------------------------
    2. NAVIGATION (Hamburger + Side Overlay)
 ------------------------------ */
 .navbar {
   width: 100%;
-  background: #059FAF; /* Teal */
+  background: #059FAF;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,11 +64,11 @@ a {
 .side-nav {
   position: fixed;
   top: 0;
-  right: -100%; /* hidden offscreen by default */
+  right: -100%;
   width: 250px;
   height: 100%;
   background: #059FAF;
-  transition: right 0.5s ease; /* Slide-in effect */
+  transition: right 0.5s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,10 +92,9 @@ a {
 }
 
 .side-nav ul li a:hover {
-  color: #FFCD00; /* a bright yellow accent on hover */
+  color: #FFCD00;
 }
 
-/* When active, side-nav slides in */
 .side-nav.active {
   right: 0;
 }
@@ -114,18 +105,18 @@ a {
 .section {
   padding: 100px 20px;
   min-height: 100vh;
-  /* offset fixed navbar (which is ~50px) */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 60px; /* fixed navbar 높이 보정 */
 }
 
 /* HOME Section */
 .home-section {
   background: #FFFFFF;
   flex-direction: row;
-  min-height: 100vh; /* fill screen for first view */
+  min-height: calc(100vh - 60px);
 }
 
 .home-content {
@@ -134,6 +125,7 @@ a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .photo-container {
@@ -185,7 +177,7 @@ a {
   background: #037987;
 }
 
-/* ABOUT, RESEARCH, TEACHING, PROJECTS, CONTACT */
+/* ABOUT, EXPERIENCE, TEACHING, PROJECTS, CONTACT Sections */
 .section-title {
   margin-bottom: 20px;
 }
@@ -207,7 +199,7 @@ a {
   font-size: 1.05rem;
 }
 
-/* Cards for Work, Teaching, Projects */
+/* Cards for Experience, Teaching, Projects */
 .card {
   background: #fff;
   border-left: 5px solid #059FAF;
@@ -237,7 +229,6 @@ footer {
   text-align: center;
   padding: 15px;
   font-size: 0.9rem;
-  position: relative;
 }
 
 /* ------------------------------

@@ -1,30 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const hamburgerMenu = document.getElementById('hamburger-menu');
-  const sideNav = document.getElementById('side-nav');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  // 햄버거 클릭 시 사이드 메뉴 열고 닫기
-  hamburgerMenu.addEventListener('click', () => {
-    sideNav.classList.toggle('active');
-  });
-
-  // 사이드 메뉴 링크 클릭 시, 메뉴 닫고 해당 섹션으로 부드럽게 스크롤
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = link.getAttribute('href');
-      const targetEl = document.querySelector(targetId);
-
-      // 사이드 메뉴 닫기
-      sideNav.classList.remove('active');
-
-      // 부드러운 스크롤
-      if (targetEl) {
-        window.scrollTo({
-          top: targetEl.offsetTop - 50, // navbar 높이 감안
-          behavior: 'smooth'
-        });
+  // 공통 HTML 로드 함수
+  async function loadHTML(id, url) {
+    const container = document.getElementById(id);
+    if (container) {
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          container.innerHTML = await response.text();
+        } else {
+          console.error('Error loading ' + url + ': ' + response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching ' + url + ': ', error);
       }
-    });
-  });
+    }
+  }
+
+  // 헤더, 푸터 로드
+  loadHTML('header-include', 'header.html');
+  loadHTML('footer-include', 'footer.html');
+
+  // 헤더 로드 후 햄버거 메뉴 기능 연결 (약간의 딜레이 후 실행)
+  setTimeout(() => {
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const sideNav = document.getElementById('side-nav');
+    if (hamburgerMenu && sideNav) {
+      hamburgerMenu.addEventListener('click', () => {
+        sideNav.classList.toggle('active');
+      });
+    }
+  }, 100);
 });
