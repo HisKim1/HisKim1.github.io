@@ -2,27 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hisu Kim - Portfolio</title>
+  <title>Hisu Kim - Home</title>
   <!-- Google Fonts, GSAP -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
 </head>
 <body>
   <!-- 상단 네비게이션 -->
-  <nav class="top-nav">
-    <ul>
-      <!-- data-page로 로드할 HTML 파일 경로 지정 -->
-      <li><a href="index.html"      data-page="index.html"      class="nav-link active">Home</a></li>
-      <li><a href="about.html"      data-page="about.html"      class="nav-link">About</a></li>
-      <li><a href="experience.html" data-page="experience.html" class="nav-link">Experience</a></li>
-      <li><a href="projects.html"   data-page="projects.html"   class="nav-link">Projects</a></li>
-      <li><a href="teaching.html"   data-page="teaching.html"   class="nav-link">Teaching</a></li>
-      <li><a href="contact.html"    data-page="contact.html"    class="nav-link">Contact</a></li>
-    </ul>
-  </nav>
+  <header class="top-nav">
+    <div class="nav-left">
+      <!-- 왼쪽: 이름/로고 -->
+      <span class="site-title">Hisu Kim</span>
+    </div>
+    <div class="nav-right">
+      <ul>
+        <!-- data-page로 로드할 HTML 파일 경로 지정 -->
+        <li><a href="index.html"      data-page="index.html"      class="nav-link active">Home</a></li>
+        <li><a href="about.html"      data-page="about.html"      class="nav-link">About</a></li>
+        <li><a href="experience.html" data-page="experience.html" class="nav-link">Experience</a></li>
+        <li><a href="projects.html"   data-page="projects.html"   class="nav-link">Projects</a></li>
+        <li><a href="teaching.html"   data-page="teaching.html"   class="nav-link">Teaching</a></li>
+        <li><a href="contact.html"    data-page="contact.html"    class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </header>
 
   <!-- 메인 컨텐츠 영역 (동적으로 내용 교체) -->
   <div id="main-content">
@@ -45,7 +51,7 @@
     </section>
   </div>
 
-  <!-- Footer -->
+  <!-- 하단 푸터 -->
   <footer>
     <p>&copy; 2025 Hisu Kim. All rights reserved.</p>
   </footer>
