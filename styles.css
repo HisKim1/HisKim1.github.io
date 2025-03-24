@@ -1,238 +1,108 @@
-/* ------------------------------
-   1. RESET & GLOBAL
------------------------------- */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-html, body {
+body {
   font-family: 'Roboto', sans-serif;
-  background: #F5F5F5;
-  color: #333;
-  scroll-behavior: smooth;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* ------------------------------
-   2. NAVIGATION (Top Nav)
------------------------------- */
-.navbar {
+/* NAVIGATION */
+.top-nav {
   width: 100%;
+  height: 60px;
   background: linear-gradient(45deg, #6DD5FA, #2980B9);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
-  height: 60px;
+  padding: 0 20px;
   position: fixed;
   top: 0;
-  z-index: 9999;
+  left: 0;
+  z-index: 999;
 }
-
-/* 왼쪽 로고/이름 */
-.nav-left, .site-title {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: #fff;
-  line-height: 60px;
-}
-
-/* 오른쪽 메뉴 */
-.nav-right {
-  position: relative; /* nav-indicator 절대배치용 */
-}
-
-.nav-links {
+.top-nav ul {
   display: flex;
   list-style: none;
-  height: 60px;
+  margin-left: auto;
 }
-
-.nav-links li {
-  position: relative;
-}
-
-.nav-links li a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60px;
-  padding: 0 20px;
+.top-nav li a {
+  display: block;
+  padding: 0 15px;
+  line-height: 60px;
   color: #fff;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  transition: color 0.3s;
-  position: relative;
-  z-index: 2; /* nav-indicator 뒤로 가게 하기 위해 */
-}
-
-.nav-links li a:hover {
-  color: #333;
-}
-
-/* 활성 메뉴 강조용 흰색 직사각형 */
-.nav-indicator {
-  position: absolute;
-  top: 10px;
-  left: 0;
-  width: 0;
-  height: 40px;
-  background: #fff;
-  border-radius: 5px;
-  z-index: 1;
-  transition: all 0.4s ease;
-}
-
-/* ------------------------------
-   3. SECTIONS
------------------------------- */
-.section {
-  padding: 100px 20px; /* 60px navbar + 40px 여유 */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* HOME Section */
-.home-section {
-  background: linear-gradient(45deg, #6DD5FA, #2980B9);
-  flex-direction: row;
-  min-height: calc(100vh - 60px);
-}
-
-.home-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.photo-container {
-  flex: 1;
-  min-width: 280px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.profile-pic {
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  object-position: 50% 20%; /* 얼굴이 중앙에 오도록 조정 */
-  border-radius: 50%;
-  border: 5px solid #fff;
-}
-
-.intro-text {
-  flex: 1;
-  min-width: 280px;
-  max-width: 500px;
-  margin: 0 20px;
-}
-
-.intro-text h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.2rem;
-  margin-bottom: 20px;
-  color: #fff;
-  white-space: nowrap; /* 한 줄로 유지 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.intro-text p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 30px;
-  color: #fff;
-}
-
-.btn-primary {
-  display: inline-block;
-  background: #fff;
-  color: #333;
-  padding: 12px 25px;
-  border-radius: 25px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  transition: background 0.3s;
+  transition: background 0.3s, color 0.3s;
+}
+.top-nav li a:hover {
+  background: rgba(255,255,255,0.3);
+}
+.nav-link.active {
+  background: rgba(255,255,255,0.4);
+  color: #333;
 }
 
-.btn-primary:hover {
-  background: #eaeaea;
+/* MAIN CONTENT */
+#main-content {
+  margin-top: 60px; /* nav height */
+  min-height: calc(100vh - 60px - 40px);
+  padding: 20px;
+  position: relative;
+  overflow: hidden; /* 애니메이션 시 스크롤 막기 */
 }
 
-/* Section Titles */
-.section-title h2 {
+/* HOME SECTION */
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px - 40px);
+}
+.home-content {
+  width: 80%;
+  display: grid;
+  grid-template-columns: 2fr 3fr; /* 이미지:텍스트 = 2:3 */
+  gap: 20px;
+}
+.profile-pic {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: 50% 20%; /* 세로로 긴 경우 얼굴 중앙 */
+  border-radius: 50%;
+  border: 5px solid #fff;
+  margin: 0 auto;
+}
+.big-name {
   font-family: 'Montserrat', sans-serif;
   font-size: 2rem;
-  color: #2980B9;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-.section-content {
-  max-width: 800px;
-  text-align: center;
-  line-height: 1.6;
-}
-
-.section-content p {
-  margin-bottom: 20px;
-  font-size: 1.05rem;
-}
-
-/* Cards */
+/* CARD STYLE */
 .card {
   background: #fff;
   border-left: 5px solid #2980B9;
   box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   padding: 20px;
-  margin: 20px 0;
+  margin: 20px auto;
+  max-width: 700px;
   text-align: left;
   transition: transform 0.3s;
 }
-
 .card:hover {
   transform: translateY(-5px);
 }
 
-.card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  font-family: 'Montserrat', sans-serif;
-}
-
-/* ------------------------------
-   4. FOOTER
------------------------------- */
+/* FOOTER */
 footer {
-  background: #2980B9;
-  color: #fff;
   text-align: center;
   padding: 15px;
-  font-size: 0.9rem;
-}
-
-/* ------------------------------
-   5. RESPONSIVE
------------------------------- */
-@media (max-width: 768px) {
-  .nav-links li a {
-    padding: 0 10px;
-  }
-  .intro-text h1 {
-    font-size: 1.8rem;
-    white-space: normal; /* 작은 화면에서 자동 줄바꿈 */
-  }
+  background: #2980B9;
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

@@ -1,40 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" data-barba="wrapper">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Hisu Kim - Home</title>
-  <!-- Google Fonts -->
+  <title>Hisu Kim - Portfolio</title>
+  <!-- Google Fonts, GSAP -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <!-- Barba.js + GSAP CDN -->
-  <script src="https://unpkg.com/@barba/core"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
   <script defer src="script.js"></script>
 </head>
-<body data-barba="container" data-barba-namespace="home">
-  <!-- 공통 헤더/푸터 로드 -->
-  <div id="header-include"></div>
+<body>
+  <!-- 상단 네비게이션 -->
+  <nav class="top-nav">
+    <ul>
+      <!-- data-page로 로드할 HTML 파일 경로 지정 -->
+      <li><a href="index.html"      data-page="index.html"      class="nav-link active">Home</a></li>
+      <li><a href="about.html"      data-page="about.html"      class="nav-link">About</a></li>
+      <li><a href="experience.html" data-page="experience.html" class="nav-link">Experience</a></li>
+      <li><a href="projects.html"   data-page="projects.html"   class="nav-link">Projects</a></li>
+      <li><a href="teaching.html"   data-page="teaching.html"   class="nav-link">Teaching</a></li>
+      <li><a href="contact.html"    data-page="contact.html"    class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
 
-  <main class="home-section section" id="home">
-    <div class="home-content">
-      <div class="photo-container">
-        <!-- 세로가 긴 profile.jpg를 중앙에 맞추기 위해 object-position 조정 -->
-        <img src="img/profile.jpg" alt="Hisu Kim" class="profile-pic">
+  <!-- 메인 컨텐츠 영역 (동적으로 내용 교체) -->
+  <div id="main-content">
+    <!-- 초기 Home 섹션 -->
+    <section class="home-wrapper">
+      <div class="home-content">
+        <div class="home-left">
+          <img src="profile.jpg" alt="Hisu Kim" class="profile-pic">
+        </div>
+        <div class="home-right">
+          <h1 class="big-name">Hisu Kim</h1>
+          <h2>Forecasting the Future of Forecasting</h2>
+          <p>
+            I'm a multidisciplinary Environmental Engineering and CS student
+            passionate about AI-driven weather forecasting, creative design,
+            and innovative solutions.
+          </p>
+        </div>
       </div>
-      <div class="intro-text">
-        <!-- 한 줄에 유지, 작은 화면에서 줄바꿈 허용 -->
-        <h1>Forecasting the Future of Forecasting</h1>
-        <p>
-          I'm a multidisciplinary Environmental Engineering and CS student
-          passionate about AI-driven weather forecasting, creative design,
-          and innovative solutions.
-        </p>
-        <a href="about.html" class="btn-primary">Learn More About Me</a>
-      </div>
-    </div>
-  </main>
+    </section>
+  </div>
 
-  <div id="footer-include"></div>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Hisu Kim. All rights reserved.</p>
+  </footer>
 </body>
 </html>

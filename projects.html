@@ -1,47 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" data-barba="wrapper">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Projects - Hisu Kim</title>
-  <script src="https://unpkg.com/@barba/core"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
 </head>
-<body data-barba="container" data-barba-namespace="projects">
-  <div id="header-include"></div>
-
-  <main class="section" id="projects">
-    <div class="section-title">
-      <h2>Projects</h2>
+<body>
+  <section class="projects-section">
+    <h2>Projects</h2>
+    <div class="card">
+      <h3>The Pac-Man Project</h3>
+      <p>
+        Programmed Pac-Man AI using search algorithms (DFS, BFS, A*) and
+        reinforcement learning for UC Berkeley CS188.
+      </p>
     </div>
-    <div class="section-content">
-      <div class="card">
-        <h3>The Pac-Man Project</h3>
-        <p>
-          Programmed Pac-Man AI using search algorithms (DFS, BFS, A*) and
-          reinforcement learning for UC Berkeley CS188.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Python Autograder</h3>
-        <p>
-          Built a web-based autograder using Flask and socket programming to
-          streamline assignment evaluation.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Environmental Impact Assessment</h3>
-        <p>
-          Analyzed climate patterns with ECMWF reanalysis data and applied
-          Leopold matrices to design wastewater treatment systems.
-        </p>
-      </div>
+    <div class="card">
+      <h3>Python Autograder</h3>
+      <p>
+        Built a web-based autograder using Flask and socket programming to
+        streamline assignment evaluation.
+      </p>
     </div>
-  </main>
-
-  <div id="footer-include"></div>
+    <div class="card">
+      <h3>Environmental Impact Assessment</h3>
+      <p>
+        Analyzed climate patterns with ECMWF reanalysis data and applied
+        Leopold matrices to design wastewater treatment systems.
+      </p>
+    </div>
+  </section>
 </body>
 </html>

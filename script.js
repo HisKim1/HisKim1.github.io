@@ -1,100 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1) 공통 HTML 로드
-  async function loadHTML(id, url) {
-    const container = document.getElementById(id);
-    if (container) {
-      try {
-        const response = await fetch(url);
-        if (response.ok) {
-          container.innerHTML = await response.text();
-        } else {
-          console.error('Error loading ' + url + ': ' + response.status);
+  const navLinks = document.querySelectorAll('.nav-link');
+  const mainContent = document.getElementById('main-content');
+  let isAnimating = false; // 애니메이션 중복 방지
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (isAnimating) return; // 애니메이션 도중 클릭 무시
+
+      // 모든 링크의 active 제거
+      navLinks.forEach(a => a.classList.remove('active'));
+      // 현재 링크 active 추가
+      link.classList.add('active');
+
+      const pageUrl = link.getAttribute('data-page');
+      // Home 처리
+      if (pageUrl === 'index.html') {
+        // 애니메이션 아웃
+        await animateOut(mainContent);
+        // Home 섹션 다시 삽입
+        mainContent.innerHTML = `
+          <section class="home-wrapper">
+            <div class="home-content">
+              <div class="home-left">
+                <img src="profile.jpg" alt="Hisu Kim" class="profile-pic">
+              </div>
+              <div class="home-right">
+                <h1 class="big-name">Hisu Kim</h1>
+                <h2>Forecasting the Future of Forecasting</h2>
+                <p>
+                  I'm a multidisciplinary Environmental Engineering and CS student
+                  passionate about AI-driven weather forecasting, creative design,
+                  and innovative solutions.
+                </p>
+              </div>
+            </div>
+          </section>
+        `;
+        await animateIn(mainContent);
+      } else {
+        try {
+          isAnimating = true;
+          // 1) 기존 내용 슬라이드 아웃
+          await animateOut(mainContent);
+
+          // 2) fetch로 새 HTML 가져옴
+          const htmlText = await fetch(pageUrl).then(res => res.text());
+
+          // 3) HTML 파싱 → body 안의 내용만 추출
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, 'text/html');
+          const bodyContent = doc.querySelector('body').innerHTML;
+
+          // 4) mainContent에 삽입
+          mainContent.innerHTML = bodyContent;
+
+          // 5) 새 내용 슬라이드 인
+          await animateIn(mainContent);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          isAnimating = false;
         }
-      } catch (error) {
-        console.error('Error fetching ' + url + ': ', error);
-      }
-    }
-  }
-  loadHTML('header-include', 'header.html');
-  loadHTML('footer-include', 'footer.html');
-
-  // 2) Barba.js + GSAP: 페이지 전환 (slide-left)
-  if (window.barba) {
-    barba.init({
-      transitions: [{
-        name: 'slide-left',
-        leave({ current }) {
-          // 현재 페이지 왼쪽으로 밀어내기
-          return gsap.to(current.container, {
-            x: '-100%',
-            opacity: 0,
-            duration: 0.4
-          });
-        },
-        enter({ next }) {
-          // 새 페이지 오른쪽에서 들어오기
-          gsap.set(next.container, { x: '100%', opacity: 0 });
-          return gsap.to(next.container, {
-            x: '0%',
-            opacity: 1,
-            duration: 0.4
-          });
-        }
-      }]
-    });
-  }
-
-  // 3) 네비게이션 활성 메뉴 표시 + 흰색 박스 슬라이드
-  // header.html이 로드된 후에 실행해야 하므로 약간 지연
-  setTimeout(() => {
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const indicator = document.getElementById('nav-indicator');
-
-    if (!navLinks || !indicator) return;
-
-    // 현재 body data-barba-namespace를 찾아서 해당 메뉴를 active
-    const currentNamespace = document.body.getAttribute('data-barba-namespace');
-
-    // active link 찾기
-    let activeLink = null;
-    navLinks.forEach(link => {
-      const navAttr = link.getAttribute('data-nav');
-      if (navAttr === currentNamespace) {
-        activeLink = link;
       }
     });
+  });
 
-    function moveIndicator(link) {
-      if (!link) return;
-      const linkRect = link.getBoundingClientRect();
-      const navRect = link.parentElement.parentElement.getBoundingClientRect();
-
-      // linkRect.x - navRect.x로 위치 계산
-      const offsetLeft = linkRect.left - navRect.left;
-      const width = linkRect.width;
-
-      gsap.to(indicator, {
-        left: offsetLeft,
-        width: width,
-        duration: 0.4
-      });
-
-      // 모든 링크 색상 초기화
-      navLinks.forEach(a => {
-        a.style.color = '#fff';
-      });
-      // 현재 링크 텍스트는 어둡게
-      link.style.color = '#333';
-    }
-
-    // 초기 indicator 위치
-    moveIndicator(activeLink);
-
-    // 다른 메뉴 클릭 시 indicator 이동 (Barba.js가 intercept하므로)
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        moveIndicator(link);
-      });
+  // GSAP 애니메이션 함수
+  function animateOut(element) {
+    isAnimating = true;
+    return gsap.to(element, {
+      x: -50,
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.inOut"
     });
-  }, 300);
+  }
+  function animateIn(element) {
+    gsap.set(element, { x: 50, opacity: 0 });
+    return gsap.to(element, {
+      x: 0,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.inOut"
+    });
+  }
 });
