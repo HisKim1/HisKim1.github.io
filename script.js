@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // header와 footer 로드
-  loadHTMLInto('header-include', 'html/header.html');
-  loadHTMLInto('footer-include', 'html/footer.html');
+  loadHTMLInto('header-include', 'header.html');
+  loadHTMLInto('footer-include', 'footer.html');
 
   // 헤더가 로드된 후에 햄버거 메뉴 토글 기능 연결
   setTimeout(() => {
