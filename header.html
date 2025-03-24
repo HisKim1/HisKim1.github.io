@@ -1,21 +1,20 @@
 <!-- header.html -->
 <header class="navbar">
-  <div class="nav-logo">
-    <span class="nav-title"><a href="contents.html">Hisu Kim</a></span>
+  <div class="nav-left">
+    <!-- 왼쪽: 로고/이름 -->
+    <a href="index.html" class="site-title">Hisu Kim</a>
   </div>
-  <div class="hamburger" id="hamburger-menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-  <nav class="side-nav" id="side-nav">
-    <ul>
-      <li><a href="index.html" class="nav-link">Home</a></li>
-      <li><a href="about.html" class="nav-link">About</a></li>
-      <li><a href="experience.html" class="nav-link">Experience</a></li>
-      <li><a href="projects.html" class="nav-link">Projects</a></li>
-      <li><a href="teaching.html" class="nav-link">Teaching</a></li>
-      <li><a href="contact.html" class="nav-link">Contact</a></li>
+  <nav class="nav-right">
+    <!-- 메뉴 항목 -->
+    <ul class="nav-links">
+      <li><a href="index.html" data-nav="home">Home</a></li>
+      <li><a href="about.html" data-nav="about">About</a></li>
+      <li><a href="experience.html" data-nav="experience">Experience</a></li>
+      <li><a href="projects.html" data-nav="projects">Projects</a></li>
+      <li><a href="teaching.html" data-nav="teaching">Teaching</a></li>
+      <li><a href="contact.html" data-nav="contact">Contact</a></li>
     </ul>
+    <!-- 활성 메뉴 강조용 흰색 박스 -->
+    <div class="nav-indicator" id="nav-indicator"></div>
   </nav>
 </header>

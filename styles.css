@@ -12,13 +12,6 @@ html, body {
   background: #F5F5F5;
   color: #333;
   scroll-behavior: smooth;
-  /* 페이지 전환을 위한 페이드 효과 */
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-
-body.fade-out {
-  opacity: 0;
 }
 
 a {
@@ -27,102 +20,91 @@ a {
 }
 
 /* ------------------------------
-   2. NAVIGATION (Hamburger + Side Overlay)
+   2. NAVIGATION (Top Nav)
 ------------------------------ */
 .navbar {
   width: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2); /* 그라데이션 */
+  background: linear-gradient(45deg, #6DD5FA, #2980B9);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0 30px;
+  height: 60px;
   position: fixed;
   top: 0;
   z-index: 9999;
 }
 
-.nav-logo {
-  display: flex;
-  align-items: center;
-}
-
-.nav-title {
+/* 왼쪽 로고/이름 */
+.nav-left, .site-title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #fff;
+  line-height: 60px;
 }
 
-.hamburger {
+/* 오른쪽 메뉴 */
+.nav-right {
+  position: relative; /* nav-indicator 절대배치용 */
+}
+
+.nav-links {
   display: flex;
-  flex-direction: column;
-  cursor: pointer;
+  list-style: none;
+  height: 60px;
 }
 
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background: #fff;
-  margin: 4px 0;
-  border-radius: 2px;
+.nav-links li {
+  position: relative;
 }
 
-/* Side navigation overlay */
-.side-nav {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 250px;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  transition: right 0.5s ease;
+.nav-links li a {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.side-nav ul {
-  list-style: none;
-  text-align: center;
-}
-
-.side-nav ul li {
-  margin: 15px 0;
-}
-
-.side-nav ul li a {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
+  height: 60px;
+  padding: 0 20px;
   color: #fff;
-  font-size: 1.1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
   transition: color 0.3s;
+  position: relative;
+  z-index: 2; /* nav-indicator 뒤로 가게 하기 위해 */
 }
 
-.side-nav ul li a:hover {
-  color: #FFCD00;
+.nav-links li a:hover {
+  color: #333;
 }
 
-.side-nav.active {
-  right: 0;
+/* 활성 메뉴 강조용 흰색 직사각형 */
+.nav-indicator {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 0;
+  height: 40px;
+  background: #fff;
+  border-radius: 5px;
+  z-index: 1;
+  transition: all 0.4s ease;
 }
 
 /* ------------------------------
    3. SECTIONS
 ------------------------------ */
 .section {
-  padding: 100px 20px;
+  padding: 100px 20px; /* 60px navbar + 40px 여유 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 60px; /* fixed navbar 높이 보정 */
 }
 
 /* HOME Section */
 .home-section {
-  background: linear-gradient(135deg, #667eea, #764ba2); /* 그라데이션 배경 */
-  color: #fff;
+  background: linear-gradient(45deg, #6DD5FA, #2980B9);
   flex-direction: row;
   min-height: calc(100vh - 60px);
 }
@@ -138,57 +120,48 @@ a {
 
 .photo-container {
   flex: 1;
-  min-width: 320px;
+  min-width: 280px;
   text-align: center;
   margin-bottom: 20px;
 }
-/* 프로필 사진 크게 + 얼굴 중앙 조정 */
+
 .profile-pic {
   width: 300px;
   height: 300px;
+  object-fit: cover;
+  object-position: 50% 20%; /* 얼굴이 중앙에 오도록 조정 */
   border-radius: 50%;
   border: 5px solid #fff;
-  object-fit: cover; 
-  /* 이미지 내부에서 50% (가로) / 20% (세로) 지점을 중앙으로 */
-  object-position: 50% 20%;
 }
 
 .intro-text {
   flex: 1;
   min-width: 280px;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 20px;
 }
 
-/* .intro-text h1 한 줄 유지 (넓은 화면), 작은 화면에서는 줄바꿈 */
 .intro-text h1 {
   font-family: 'Montserrat', sans-serif;
   font-size: 2.2rem;
   margin-bottom: 20px;
   color: #fff;
   white-space: nowrap; /* 한 줄로 유지 */
-  overflow: hidden;    /* 혹시 넘칠 경우 숨김 */
-  text-overflow: ellipsis; /* 너무 좁으면 말줄임표(...) */
-}
-
-/* 작은 화면에서는 줄바꿈 허용 */
-@media (max-width: 768px) {
-  .intro-text h1 {
-    font-size: 1.8rem;
-    white-space: normal; /* 자동 줄바꿈 */
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .intro-text p {
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 30px;
+  color: #fff;
 }
 
 .btn-primary {
   display: inline-block;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
+  background: #fff;
+  color: #333;
   padding: 12px 25px;
   border-radius: 25px;
   font-family: 'Montserrat', sans-serif;
@@ -197,18 +170,15 @@ a {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #5a67d8, #6b46c1);
+  background: #eaeaea;
 }
 
-/* ABOUT, EXPERIENCE, TEACHING, PROJECTS, CONTACT Sections */
-.section-title {
-  margin-bottom: 20px;
-}
-
+/* Section Titles */
 .section-title h2 {
   font-family: 'Montserrat', sans-serif;
   font-size: 2rem;
-  color: #764ba2;
+  color: #2980B9;
+  margin-bottom: 20px;
 }
 
 .section-content {
@@ -222,18 +192,15 @@ a {
   font-size: 1.05rem;
 }
 
-/* ------------------------------
-   4. CARDS (Collapsible)
------------------------------- */
+/* Cards */
 .card {
   background: #fff;
-  border-left: 5px solid #764ba2;
+  border-left: 5px solid #2980B9;
   box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   padding: 20px;
   margin: 20px 0;
   text-align: left;
   transition: transform 0.3s;
-  cursor: pointer;
 }
 
 .card:hover {
@@ -246,22 +213,11 @@ a {
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Collapsible card details */
-.card-details {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.5s ease;
-}
-
-.card.active .card-details {
-  /* max-height will be set dynamically in JS */
-}
-
 /* ------------------------------
-   5. FOOTER
+   4. FOOTER
 ------------------------------ */
 footer {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #2980B9;
   color: #fff;
   text-align: center;
   padding: 15px;
@@ -269,16 +225,14 @@ footer {
 }
 
 /* ------------------------------
-   6. RESPONSIVE
+   5. RESPONSIVE
 ------------------------------ */
 @media (max-width: 768px) {
-  .home-content {
-    flex-direction: column;
+  .nav-links li a {
+    padding: 0 10px;
   }
-  .intro-text {
-    margin: 20px 0;
-  }
-  .hamburger {
-    display: flex;
+  .intro-text h1 {
+    font-size: 1.8rem;
+    white-space: normal; /* 작은 화면에서 자동 줄바꿈 */
   }
 }
