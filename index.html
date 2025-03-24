@@ -1,25 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Hisu Kim</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Hisu Kim - Portfolio</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
   <script defer src="script.js"></script>
 </head>
 <body>
-  <!-- header.html을 불러올 영역 -->
-  <div id="header-include"></div>
+  <!-- Navigation (Hamburger + Logo) -->
+  <header class="navbar">
+    <div class="nav-logo">
+      <span class="nav-title">Hisu Kim</span>
+    </div>
+    <div class="hamburger" id="hamburger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <!-- Side navigation overlay -->
+    <nav class="side-nav" id="side-nav">
+      <ul>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#research-work" class="nav-link">Research & Work</a></li>
+        <li><a href="#teaching" class="nav-link">Teaching</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Forecasting the Future of Forecasting</h1>
-      <p>Studying the hidden dynamics and uncertainty in AI weather models to make tomorrow’s predictions more reliable—and more explainable.</p>
-      <a href="about.html" class="btn-hero">About Me</a>
+  <!-- HOME Section -->
+  <section id="home" class="section home-section">
+    <div class="home-content">
+      <div class="photo-container">
+        <!-- 본인 증명사진 -->
+        <img src="profile.jpg" alt="Hisu Kim Profile" class="profile-pic" />
+      </div>
+      <div class="intro-text">
+        <h1>Creative Design & Tech Experience</h1>
+        <p>
+          I'm a multidisciplinary Environmental Engineering and CS student
+          passionate about AI-driven weather forecasting, creative design,
+          and innovative solutions.
+        </p>
+        <a href="#about" class="btn-primary">Learn More About Me</a>
+      </div>
     </div>
   </section>
 
-  <!-- footer.html을 불러올 영역 -->
-  <div id="footer-include"></div>
+  <!-- ABOUT Section -->
+  <section id="about" class="section about-section">
+    <div class="section-title">
+      <h2>About Me</h2>
+    </div>
+    <div class="section-content">
+      <p>
+        Hello! I’m Hisu Kim. I combine scientific research, creative design,
+        and cutting-edge technology to tackle real-world environmental and
+        computational challenges. My academic journey spans <strong>GIST</strong>,
+        <strong>Warsaw University of Technology</strong>, and <strong>UC Berkeley</strong>,
+        enriching my global perspective.
+      </p>
+      <p>
+        Driven by curiosity and innovation, I focus on <em>AI-driven weather forecasting</em>
+        and advanced data analysis, aiming to make a tangible impact on both science
+        and society.
+      </p>
+    </div>
+  </section>
+
+  <!-- RESEARCH & WORK Section -->
+  <section id="research-work" class="section research-section">
+    <div class="section-title">
+      <h2>Research & Work</h2>
+    </div>
+    <div class="section-content">
+      <div class="card">
+        <h3>Undergraduate Research Intern</h3>
+        <p>
+          <strong>Climate Analysis and Modeling Lab</strong><br/>
+          Investigated deep learning-based weather forecasting models (Graphcast),
+          exploring perturbations to enhance accuracy and apply butterfly-effect principles.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Undergraduate Research Intern</h3>
+        <p>
+          <strong>INFO Lab</strong><br/>
+          Developed a mining program for “Bitcoin-ECC” and designed smart contracts for
+          a decentralized identification system on Ethereum.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Information Security Controller</h3>
+        <p>
+          <strong>ROK Naval Fleet Command</strong><br/>
+          Monitored and mitigated cybersecurity vulnerabilities, analyzed network packets
+          and logs for potential threats.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHING Section -->
+  <section id="teaching" class="section teaching-section">
+    <div class="section-title">
+      <h2>Teaching</h2>
+    </div>
+    <div class="section-content">
+      <div class="card">
+        <h3>Multivariable Calculus | TA (Spring 2025)</h3>
+        <p>Guided students through theorem proofs, conducted weekly office hours.</p>
+      </div>
+      <div class="card">
+        <h3>Graph Theory | TA (Fall 2024)</h3>
+        <p>Provided detailed feedback on homework, advanced LATEX usage, and extra problems.</p>
+      </div>
+      <div class="card">
+        <h3>Literature Courses | TA (Spring 2023 - Present)</h3>
+        <p>
+          Assisted in course design and grading for multiple classes. Developed a
+          syllabus generator using HTML, CSS, and JavaScript.
+        </p>
+      </div>
+      <div class="card">
+        <h3>GIST 101 | Mentor (2023, 2024 Spring)</h3>
+        <p>Lectured on CV preparation, resume writing, and formal email composition.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS Section -->
+  <section id="projects" class="section projects-section">
+    <div class="section-title">
+      <h2>Projects</h2>
+    </div>
+    <div class="section-content">
+      <div class="card">
+        <h3>The Pac-Man Project</h3>
+        <p>
+          Programmed Pac-Man AI using search algorithms (DFS, BFS, A*) and
+          reinforcement learning for UC Berkeley CS188.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Python Autograder</h3>
+        <p>
+          Built a web-based autograder using Flask and socket programming to
+          streamline assignment evaluation.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Environmental Impact Assessment</h3>
+        <p>
+          Analyzed climate patterns with ECMWF reanalysis data and applied
+          Leopold matrices to design wastewater treatment systems.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT Section -->
+  <section id="contact" class="section contact-section">
+    <div class="section-title">
+      <h2>Contact</h2>
+    </div>
+    <div class="section-content">
+      <p>Email: <a href="mailto:tomm1203@gist.ac.kr">tomm1203@gist.ac.kr</a></p>
+      <p>LinkedIn: <a href="https://linkedin.com/in/hisu-kim" target="_blank">linkedin.com/in/hisu-kim</a></p>
+      <p>GitHub: <a href="https://github.com/HisKim1" target="_blank">github.com/HisKim1</a></p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Hisu Kim. All rights reserved.</p>
+  </footer>
 </body>
 </html>

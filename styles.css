@@ -1,241 +1,256 @@
 /* ------------------------------
-   RESET & GLOBAL SETTINGS
+   1. RESET & GLOBAL
 ------------------------------ */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Poppins', 'Open Sans', sans-serif;
-    background-color: #f8f9fb;
-    color: #333;
-    scroll-behavior: smooth;
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  /* ------------------------------
-     NAVIGATION
-  ------------------------------ */
-  .navbar {
-    width: 100%;
-    background: linear-gradient(45deg, #06B6D4, #3B82F6); /* Teal to Blue */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    z-index: 999;
-  }
-  
-  .nav-logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    margin-right: 10px;
-  }
-  
-  .nav-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #fff;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-  }
-  
-  .nav-links li {
-    margin-left: 20px;
-  }
-  
-  .nav-links li a {
-    color: #fff;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-  
-  .nav-links li a:hover,
-  .nav-links li a.active {
-    color: #fde047;
-  }
-  
-  /* Hamburger (Mobile) */
-  .hamburger {
-    display: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  background: #F5F5F5; /* Light gray background */
+  color: #333;
+  scroll-behavior: smooth; /* smooth scrolling for anchor links */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Container-like styling if needed
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+*/
+
+/* ------------------------------
+   2. NAVIGATION (Hamburger + Side Overlay)
+------------------------------ */
+.navbar {
+  width: 100%;
+  background: #059FAF; /* Teal */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.nav-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+/* Side navigation overlay */
+.side-nav {
+  position: fixed;
+  top: 0;
+  right: -100%; /* hidden offscreen by default */
+  width: 250px;
+  height: 100%;
+  background: #059FAF;
+  transition: right 0.5s ease; /* Slide-in effect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.side-nav ul {
+  list-style: none;
+  text-align: center;
+}
+
+.side-nav ul li {
+  margin: 15px 0;
+}
+
+.side-nav ul li a {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #fff;
+  font-size: 1.1rem;
+  transition: color 0.3s;
+}
+
+.side-nav ul li a:hover {
+  color: #FFCD00; /* a bright yellow accent on hover */
+}
+
+/* When active, side-nav slides in */
+.side-nav.active {
+  right: 0;
+}
+
+/* ------------------------------
+   3. SECTIONS
+------------------------------ */
+.section {
+  padding: 100px 20px;
+  min-height: 100vh;
+  /* offset fixed navbar (which is ~50px) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* HOME Section */
+.home-section {
+  background: #FFFFFF;
+  flex-direction: row;
+  min-height: 100vh; /* fill screen for first view */
+}
+
+.home-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.photo-container {
+  flex: 1;
+  min-width: 280px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-pic {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #059FAF;
+}
+
+.intro-text {
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+.intro-text h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+}
+
+.intro-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #059FAF;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: #037987;
+}
+
+/* ABOUT, RESEARCH, TEACHING, PROJECTS, CONTACT */
+.section-title {
+  margin-bottom: 20px;
+}
+
+.section-title h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  color: #059FAF;
+}
+
+.section-content {
+  max-width: 800px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.section-content p {
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+}
+
+/* Cards for Work, Teaching, Projects */
+.card {
+  background: #fff;
+  border-left: 5px solid #059FAF;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin: 20px 0;
+  text-align: left;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* ------------------------------
+   4. FOOTER
+------------------------------ */
+footer {
+  background: #059FAF;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+/* ------------------------------
+   5. RESPONSIVE
+------------------------------ */
+@media (max-width: 768px) {
+  .home-content {
     flex-direction: column;
-    cursor: pointer;
   }
-  
-  .hamburger span {
-    width: 25px;
-    height: 3px;
-    background: #fff;
-    margin: 5px 0;
-    border-radius: 3px;
-  }
-  
-  /* ------------------------------
-     HERO SECTION
-  ------------------------------ */
-  .hero {
-    background: linear-gradient(135deg, #06B6D4, #3B82F6);
-    min-height: calc(100vh - 70px); /* 고정 네비게이션 높이만큼 뺀다 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 70px; /* 네비게이션 영역 뒤에 안 가려지도록 */
-    color: #fff;
-    text-align: center;
-  }
-  
-  .hero-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-  }
-  
-  .btn-hero {
-    padding: 10px 20px;
-    background: #fde047;
-    color: #333;
-    font-weight: 600;
-    border-radius: 5px;
-    transition: background 0.3s;
-  }
-  
-  .btn-hero:hover {
-    background: #fbbf24;
-  }
-  
-  /* Optional wave shape if you have it
-  .wave {
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-  }
-  .wave svg {
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 150px;
-  }
-  .wave svg path {
-    fill: #fff;
-  }
-  */
-  
-  /* ------------------------------
-     PAGE CONTENT
-  ------------------------------ */
-  .page-content {
-    padding: 120px 20px 70px 20px; /* top padding to offset navbar */
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .page-content h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #3B82F6;
-  }
-  
-  .page-content p {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    line-height: 1.6;
-  }
-  
-  /* ------------------------------
-     EXPERIENCE / PROJECTS / TEACHING CARDS
-  ------------------------------ */
-  /* You can use .teaching-item, .experience-item, etc.
-     with the same or similar styling. */
-  .teaching-item,
-  .experience-item,
-  .project-card {
-    background: #fff;
-    border-left: 5px solid #06B6D4; /* Teal accent line */
+  .intro-text {
     margin: 20px 0;
-    padding: 20px;
-    text-align: left;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
   }
-  
-  .teaching-item:hover,
-  .experience-item:hover,
-  .project-card:hover {
-    transform: translateY(-5px);
+  .hamburger {
+    display: flex;
   }
-  
-  /* If you have multiple teaching items in a grid layout,
-     you can wrap them in a .teaching-section and do: */
-  /*
-  .teaching-section {
-    display: grid;
-    gap: 20px;
-    margin-top: 40px;
-  }
-  */
-  
-  /* ------------------------------
-     FOOTER
-  ------------------------------ */
-  footer {
-    background: #06B6D4;
-    color: #fff;
-    text-align: center;
-    padding: 15px;
-    font-size: 0.9rem;
-  }
-  
-  /* ------------------------------
-     RESPONSIVE
-  ------------------------------ */
-  @media (max-width: 768px) {
-    .hamburger {
-      display: flex;
-    }
-    .nav-links {
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #06B6D4;
-      flex-direction: column;
-      width: 200px;
-      display: none;
-      border-radius: 8px;
-      padding: 10px;
-    }
-    .nav-links.active {
-      display: flex;
-    }
-    .nav-links li {
-      margin: 10px 0;
-    }
-    .hero-content h1 {
-      font-size: 2rem;
-    }
-    .hero-content p {
-      font-size: 1rem;
-    }
-  }
-  
+}
