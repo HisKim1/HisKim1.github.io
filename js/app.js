@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return gsap.to(element, {
       y: -50,
       opacity: 0,
-      duration: 0.2,
+      duration: 0.4,
       ease: "power2.inOut"
     });
   }
@@ -80,21 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return gsap.to(element, {
       y: 0,
       opacity: 1,
-      duration: 0.2,
+      duration: 0.4,
       ease: "power2.inOut"
     });
   }
   
-  // 초기 인디케이터 설정
-  window.addEventListener('load', () => {
-    const activeLink = document.querySelector('.nav-link.active');
-    if (activeLink) moveIndicator(activeLink);
-  });
-
-  window.addEventListener('resize', () => {
-    const activeLink = document.querySelector('.nav-link.active');
-    if (activeLink) moveIndicator(activeLink);
-  });
-});
 });
 
