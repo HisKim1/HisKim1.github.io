@@ -114,3 +114,46 @@ section h2 {
 .card.active .card-content {
   max-height: 300px; /* 필요에 따라 조정 */
 }
+
+.publication-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.publication-list li {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.publication-list .status {
+  display: inline-block;
+  margin-left: 8px;
+  font-style: italic;
+  color: #667eea;
+}
+
+.education-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.education-list li {
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.education-list li strong {
+  font-size: 1.1rem;
+  color: #667eea;
+}
+
+.education-list .period {
+  font-style: italic;
+  color: #555;
+}
+
+.education-list .tgpa {
+  color: #764ba2;
+}
