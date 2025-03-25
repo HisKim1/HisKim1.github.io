@@ -83,11 +83,17 @@ section h2 {
 .card {
   border-left: 4px solid #667eea;
   margin-bottom: 15px;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.3s;
   cursor: pointer; /* 마우스 포인터 표시 */
+  background: #fff; /* 흰색 배경을 추가하여 기본 상태에서도 구분 */
+  border-radius: 8px; /* 둥근 모서리 */
+  padding: 10px; /* 안쪽 여백 추가 */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 기본적인 그림자 효과 추가 */
 }
 .card:hover {
-  background: #f6f6f6; /* 호버 시 살짝 배경색 변경 */
+  background: #f6f6f6; /* 살짝 밝은 배경색으로 변경 */
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2); /* 그림자 효과 추가 */
+  transform: translateY(-3px); /* 살짝 위로 이동하는 효과 */
 }
 
 .card-header {
