@@ -9,14 +9,15 @@
     height: 100%;
   }
   
+  /* 전체 폰트 및 배경 */
   body {
     font-family: 'Roboto', sans-serif;
     background: #f9f9f9;
     color: #333;
-    overflow: hidden; /* 전체 스크롤 대신 메인 영역에서 스크롤 */
+    overflow: hidden; /* 메인 영역만 스크롤하도록 */
   }
   
-  /* 네비게이션 바 */
+  /* 상단 네비게이션 바 */
   .top-nav {
     position: fixed;
     top: 0;
@@ -25,11 +26,13 @@
     height: 60px;
     background: linear-gradient(135deg, #667eea, #764ba2);
     display: flex;
+    justify-content: space-between;  /* 왼쪽 로고, 오른쪽 메뉴 */
     align-items: center;
     padding: 0 20px;
     z-index: 1000;
   }
   
+  /* 로고/이름 (왼쪽) */
   .nav-left .site-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
@@ -38,12 +41,24 @@
     text-decoration: none;
   }
   
+  /* 햄버거 아이콘 (기본은 숨김, 모바일에서만 보이도록) */
+  .hamburger {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+  }
+  
+  /* 오른쪽 메뉴 */
   .nav-right ul {
     list-style: none;
     display: flex;
-    margin-left: auto;
   }
-  
   .nav-right li a {
     padding: 0 15px;
     line-height: 60px;
@@ -52,13 +67,12 @@
     font-family: 'Montserrat', sans-serif;
     transition: background 0.3s;
   }
-  
   .nav-right li a:hover,
   .nav-right li a.active {
     background: rgba(255,255,255,0.3);
   }
   
-  /* footer */
+  /* 푸터 (고정) */
   .footer {
     position: fixed;
     bottom: 0;
@@ -71,5 +85,31 @@
     justify-content: center;
     color: #fff;
     font-family: 'Montserrat', sans-serif;
+  }
+  
+  /* 미디어 쿼리: 화면이 작아지면 햄버거 메뉴 활성화 */
+  @media (max-width: 768px) {
+    /* 햄버거 아이콘은 보이도록 */
+    .hamburger {
+      display: flex;
+    }
+    /* nav-right ul은 기본 숨김 */
+    .nav-right ul {
+      display: none;
+      flex-direction: column;
+      background: #667eea;
+      position: absolute;
+      top: 60px;   /* 네비게이션 바로 아래 */
+      right: 0;
+      width: 180px;
+    }
+    .nav-right ul li a {
+      line-height: 40px; /* 간격 줄이기 */
+      padding: 0 10px;
+    }
+    /* 햄버거 클릭 시 .show가 붙으면 보임 */
+    .nav-right ul.show {
+      display: flex;
+    }
   }
   
