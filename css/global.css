@@ -54,7 +54,7 @@ html, body {
   flex-direction: column;
   gap: 5px;
   z-index: 1001;
-  padding-right: 15px;
+  padding-right: 40px;
 }
 
 .hamburger span {
