@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       if (isAnimating) return;
 
+      navUl.classList.remove('show');
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
-      navUl.classList.remove('show');
 
       moveIndicator(link);
       loadPage(link.getAttribute('data-page'));
