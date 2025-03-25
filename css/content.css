@@ -3,8 +3,8 @@
   position: absolute;
   top: 60px;    /* 네비게이션 높이 */
   bottom: 40px; /* 푸터 높이 */
-  left: 30px;
-  right: 30px;
+  left: 0;
+  right: 0;
   overflow-y: auto; /* 스크롤 */
   padding: 20px;
   background: #f9f9f9;
