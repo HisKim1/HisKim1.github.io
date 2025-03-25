@@ -114,7 +114,16 @@ html, body {
   .nav-indicator {
     display: none; /* 인디케이터 숨김 */
   }
-  
+  .profile-circle {
+    width: 150px;
+    height: 150px;
+  }
+  .big-name {
+    font-size: 1.5rem;
+  }
+  .sub-title {
+    font-size: 1.1rem;
+  }
   .nav-right ul {
     display: none;
     position: absolute;
