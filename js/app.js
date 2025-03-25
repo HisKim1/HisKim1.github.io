@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   updateMenu();
   setIndicator();
 
+  const firstLink = document.querySelector('.nav-link[data-page="home"]');
+  firstLink.classList.add('active');
+  moveIndicator(firstLink, false);
+
   hamburger.addEventListener('click', () => {
     navUl.classList.toggle('show');
   });
