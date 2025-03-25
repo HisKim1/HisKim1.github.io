@@ -76,11 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initCardAccordion() {
     document.querySelectorAll('.card').forEach(card => {
-      card.querySelector('.carㅁd-header')?.addEventListener('click', () => {
+      card.querySelector('.card-header')?.addEventListener('click', () => {
         card.classList.toggle('active');
       });
     });
   }
+  
 
   function animateOut(el) {
     return gsap.to(el, { y: -50, opacity: 0, duration: 0.3 });

@@ -37,6 +37,15 @@ html, body {
   line-height: 60px;
 }
 
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  background: #fff;
+  border-radius: 2px;
+  transition: width 0.4s, transform 0.4s;
+}
+
 .hamburger {
   cursor: pointer;
   display: none;
@@ -84,8 +93,8 @@ html, body {
     display: none;
     position: absolute;
     top: 60px;
+    left: 0;      /* 오른쪽 대신 왼쪽에 고정 */
     right: 0;
-    width: 100%;
     flex-direction: column;
     background: #667eea;
     overflow: hidden;
@@ -101,6 +110,7 @@ html, body {
     padding: 0 15px;
   }
 }
+
 
 @keyframes slideDown {
   from { max-height: 0; opacity: 0; }
