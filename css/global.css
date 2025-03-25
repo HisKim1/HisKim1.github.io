@@ -110,6 +110,10 @@ html, body {
     display: flex;
   }
 
+  .nav-indicator {
+    display: none; /* 인디케이터 숨김 */
+  }
+  
   .nav-right ul {
     display: none;
     position: absolute;
