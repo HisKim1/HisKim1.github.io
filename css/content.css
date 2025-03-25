@@ -1,111 +1,97 @@
 /* 메인 컨텐츠 영역 */
 #main-content {
-    position: absolute;
-    top: 60px;    /* 네비게이션 높이 */
-    bottom: 40px; /* 푸터 높이 */
-    left: 0;
-    right: 0;
-    overflow-y: auto; /* 메인 영역만 스크롤 */
-    padding: 20px;
-    background: #f9f9f9;
-  }
-  
-  /* 흰색 카드(섹션) 스타일 */
-  section {
-    width: 90%;          /* 화면폭의 90% 차지 */
-    max-width: 1000px;   /* 최대 1000px까지 */
-    margin: 20px auto;   /* 가운데 정렬 */
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  
-  /* 홈 섹션 */
-  .home-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100%; /* 스크린 높이 채우기 */
-  }
-  
-  .home-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    width: 100%;
-    /* 내부에서 정렬을 잡되, section 자체는 90%/max-width */
-  }
-  
-  .home-left,
-  .home-right {
-    flex: 1;
-  }
-  
-  .profile-pic {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    border: 5px solid #fff;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto;
-  }
-  
-  .big-name {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  /* 섹션 공통 스타일 */
-  section h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #667eea;
-  }
-  
-  section p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 15px;
-  }
-  
-  /* 카드 스타일 (Experience, Projects 등) */
-  .card {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-left: 4px solid #667eea;
-  }
-  
-  .card h3 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-  }
-  
-  .card p {
-    margin: 0;
-  }
-  
-  /* 반응형: 모바일에서 카드 크기 조절, 폰트 크기 조정 등 */
-  @media (max-width: 768px) {
-    .home-content {
-      flex-direction: column;
-      align-items: center;
-    }
-    .home-left, .home-right {
-      flex: none;
-      width: 100%;
-      text-align: center;
-    }
-    .big-name {
-      font-size: 1.8rem;
-    }
-  }
-  
+  position: absolute;
+  top: 60px;    /* 네비게이션 높이 */
+  bottom: 40px; /* 푸터 높이 */
+  left: 0;
+  right: 0;
+  overflow-y: auto; /* 스크롤 */
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+/* 공통 흰색 카드 레이아웃 */
+section {
+  width: 90%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Home(메인) 스타일 */
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  justify-content: center; /* 수직 중앙 정렬 */
+}
+.big-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.sub-title {
+  font-size: 1.4rem;
+  color: #667eea;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.description {
+  text-align: center;
+  font-size: 1rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* 각 페이지의 제목 스타일 */
+section h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #667eea;
+}
+
+/* 아코디언 카드 */
+.card {
+  border-left: 4px solid #667eea;
+  margin-bottom: 15px;
+  transition: background 0.2s;
+  cursor: pointer; /* 마우스 포인터 표시 */
+}
+.card:hover {
+  background: #f6f6f6; /* 호버 시 살짝 배경색 변경 */
+}
+
+.card-header {
+  padding: 15px;
+}
+.card-header h3 {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3rem;
+}
+
+/* 기본적으로 내용은 접힘 */
+.card-content {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 15px;
+  transition: max-height 0.3s ease;
+}
+.card-content p {
+  margin: 15px 0;
+}
+
+/* 카드에 .active가 붙으면 내용 펼쳐짐 */
+.card.active .card-content {
+  max-height: 300px; /* 필요에 따라 조정 */
+}

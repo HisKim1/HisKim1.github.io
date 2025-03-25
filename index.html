@@ -14,11 +14,10 @@
   <script defer src="js/app.js"></script>
 </head>
 <body>
-
   <!-- 상단 네비게이션 바 -->
   <header class="top-nav">
+    <!-- 왼쪽: 로고/이름 -->
     <div class="nav-left">
-      <!-- 로고/이름 (왼쪽 정렬) -->
       <a href="#" class="site-title" data-page="home">Hisu Kim</a>
     </div>
 
@@ -29,10 +28,10 @@
       <span></span>
     </div>
 
-    <!-- 실제 네비게이션 메뉴 (오른쪽 정렬) -->
+    <!-- 실제 네비게이션 메뉴 (오른쪽) -->
     <nav class="nav-right" id="navbar">
       <ul>
-        <li><a href="#" data-page="home" class="nav-link active">Home</a></li>
+        <li><a href="#" data-page="home" class="nav-link">Home</a></li>
         <li><a href="#" data-page="about" class="nav-link">About</a></li>
         <li><a href="#" data-page="experience" class="nav-link">Experience</a></li>
         <li><a href="#" data-page="projects" class="nav-link">Projects</a></li>
@@ -44,29 +43,14 @@
     </nav>
   </header>
 
-  <!-- 메인 컨텐츠 영역 -->
+  <!-- 메인 컨텐츠 영역(동적 로딩) -->
   <main id="main-content">
-    <!-- 초기 Home 섹션 (흰색 카드) -->
-    <section class="home-wrapper">
-      <div class="home-content">
-        <div class="home-left">
-          <img src="images/profile.jpg" alt="Hisu Kim" class="profile-pic">
-        </div>
-        <div class="home-right">
-          <h1 class="big-name">Hisu Kim</h1>
-          <h2>Forecasting the Future</h2>
-          <p>
-            I'm a multidisciplinary Environmental Engineering and CS student, passionate about AI-driven weather forecasting and innovative solutions.
-          </p>
-        </div>
-      </div>
-    </section>
+    <!-- 처음에는 비워두고, JS에서 home.html을 fetch하여 로딩 -->
   </main>
 
-  <!-- 하단 푸터 (고정) -->
+  <!-- 하단 푸터 -->
   <footer class="footer">
     <p>&copy; 2025 Hisu Kim. All rights reserved.</p>
   </footer>
-
 </body>
 </html>
