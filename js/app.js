@@ -96,4 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeLink = document.querySelector('.nav-link.active');
     if (activeLink) moveIndicator(activeLink);
   });
+
+  document.querySelector('.site-title').addEventListener('click', e => {
+    e.preventDefault();
+    // 모든 nav-link에서 active 클래스 제거 후 Home 링크 활성화
+    navLinks.forEach(l => l.classList.remove('active'));
+    const homeLink = document.querySelector('.nav-link[data-page="home"]');
+    homeLink.classList.add('active');
+    moveIndicator(homeLink);
+    loadPage('home');
+  });
 });
+
+

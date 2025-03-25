@@ -41,11 +41,28 @@ html, body {
 
 .nav-indicator {
   position: absolute;
-  bottom: 0;
-  height: 4px;
+  top: 0;              /* 상단에 고정 */
+  left: 0;
+  width: 0;            /* JS로 너비를 조정 */
+  height: 100%;        /* 부모(li 혹은 a) 전체 높이 */
   background: #fff;
-  border-radius: 2px;
+  border-radius: 12px; /* 둥근 효과 (원하는 만큼 조절) */
   transition: width 0.4s, transform 0.4s;
+  z-index: -1;         /* 텍스트보다 뒤에 배치 */
+}
+
+/* 네비게이션 링크는 기본 흰색, 클릭 시 그라데이션 텍스트 효과 */
+.nav-link {
+  position: relative;
+  color: #fff;
+  z-index: 1; /* 인디케이터보다 위에 보이도록 */
+  transition: color 0.4s;
+}
+
+.nav-link.active {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hamburger {
