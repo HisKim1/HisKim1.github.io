@@ -1,0 +1,100 @@
+/* 메인 컨텐츠 영역: 네비게이션과 footer 사이 */
+#main-content {
+    position: absolute;
+    top: 60px;   /* 네비게이션 높이 */
+    bottom: 40px; /* footer 높이 */
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f9f9f9;
+  }
+  
+  /* Home 섹션 스타일 */
+  .home-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+  }
+  
+  .home-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  .home-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .profile-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    object-fit: cover;
+  }
+  
+  .home-right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .big-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* 공통 섹션 스타일 */
+  section {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #667eea;
+  }
+  
+  section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-left: 4px solid #667eea;
+  }
+  
+  .card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    margin: 0;
+  }
+  
