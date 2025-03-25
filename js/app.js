@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.getElementById('navbar');
   const navUl = navbar.querySelector('ul');
   const navIndicator = document.querySelector('.nav-indicator');
+
   let isAnimating = false;
 
   loadPage('home');
@@ -36,12 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateMenu() {
     if (window.innerWidth > 900) {
-      navUl.classList.remove('show');
-      navUl.style.maxHeight = null;
-      navUl.style.opacity = null;
+    navUl.classList.remove('show');
+    navUl.style.maxHeight = null;
+    navUl.style.opacity = null;
     }
-  }
-
+    }
+    
   function setIndicator() {
     const activeLink = document.querySelector('.nav-link.active') || navLinks[0];
     moveIndicator(activeLink, false);
@@ -49,17 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function moveIndicator(link, animate = true) {
     if(window.innerWidth <= 900) return;
-
+    
     const { offsetWidth, offsetLeft } = link;
     if (animate) {
-      gsap.to(navIndicator, {
-        width: offsetWidth,
-        x: offsetLeft,
-        duration: 0.4,
-        ease: 'power2.inOut'
-      });
+    gsap.to(navIndicator, {
+    width: offsetWidth,
+    x: offsetLeft,
+    duration: 0.4,
+    ease: 'power2.inOut'
+    });
     } else {
-      gsap.set(navIndicator, { width: offsetWidth, x: offsetLeft });
+    gsap.set(navIndicator, { width: offsetWidth, x: offsetLeft });
     }
   }
 
@@ -69,7 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const res = await fetch(`pages/${page}.html`);
     mainContent.innerHTML = await res.text();
     await animateIn(mainContent);
+    initCardAccordion();
     isAnimating = false;
+  }
+
+  function initCardAccordion() {
+    document.querySelectorAll('.card').forEach(card => {
+      card.querySelector('.carㅁd-header')?.addEventListener('click', () => {
+        card.classList.toggle('active');
+      });
+    });
   }
 
   function animateOut(el) {
@@ -80,4 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.set(el, { y: 50, opacity: 0 });
     return gsap.to(el, { y: 0, opacity: 1, duration: 0.3 });
   }
+
+  window.addEventListener('load', () => {
+    const activeLink = document.querySelector('.nav-link.active');
+    if (activeLink) moveIndicator(activeLink);
+  });
 });
