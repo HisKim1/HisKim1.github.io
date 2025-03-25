@@ -31,11 +31,11 @@ section {
 }
 .profile-circle {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   background: #fff;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 .profile-circle .profile-pic {
