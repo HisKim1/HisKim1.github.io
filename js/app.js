@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.getElementById('navbar');
   const navUl = navbar.querySelector('ul');
   const navIndicator = document.querySelector('.nav-indicator');
-
   let isAnimating = false;
 
   loadPage('home');
   updateMenu();
+  setIndicator();
 
   hamburger.addEventListener('click', () => {
     navUl.classList.toggle('show');
@@ -20,36 +20,46 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       if (isAnimating) return;
 
-      navUl.classList.remove('show');
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
+      navUl.classList.remove('show');
 
       moveIndicator(link);
       loadPage(link.getAttribute('data-page'));
     });
   });
 
-  window.addEventListener('resize', updateMenu);
+  window.addEventListener('resize', () => {
+    updateMenu();
+    setIndicator();
+  });
 
   function updateMenu() {
-    const width = window.innerWidth;
-    if (width > 900) {
-      navUl.style.display = 'flex';
-      hamburger.style.display = 'none';
-    } else {
-      navUl.style.display = 'none';
-      hamburger.style.display = 'flex';
+    if (window.innerWidth > 900) {
+      navUl.classList.remove('show');
+      navUl.style.maxHeight = null;
+      navUl.style.opacity = null;
     }
   }
 
-  function moveIndicator(link) {
-    if(window.innerWidth > 900){
+  function setIndicator() {
+    const activeLink = document.querySelector('.nav-link.active') || navLinks[0];
+    moveIndicator(activeLink, false);
+  }
+
+  function moveIndicator(link, animate = true) {
+    if(window.innerWidth <= 900) return;
+
+    const { offsetWidth, offsetLeft } = link;
+    if (animate) {
       gsap.to(navIndicator, {
-        width: link.offsetWidth,
-        x: link.offsetLeft,
+        width: offsetWidth,
+        x: offsetLeft,
         duration: 0.4,
         ease: 'power2.inOut'
       });
+    } else {
+      gsap.set(navIndicator, { width: offsetWidth, x: offsetLeft });
     }
   }
 
@@ -59,16 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const res = await fetch(`pages/${page}.html`);
     mainContent.innerHTML = await res.text();
     await animateIn(mainContent);
-    initCardAccordion();
     isAnimating = false;
-  }
-
-  function initCardAccordion() {
-    document.querySelectorAll('.card').forEach(card => {
-      card.querySelector('.card-header')?.addEventListener('click', () => {
-        card.classList.toggle('active');
-      });
-    });
   }
 
   function animateOut(el) {
@@ -79,9 +80,4 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.set(el, { y: 50, opacity: 0 });
     return gsap.to(el, { y: 0, opacity: 1, duration: 0.3 });
   }
-
-  window.addEventListener('load', () => {
-    const activeLink = document.querySelector('.nav-link.active');
-    if (activeLink) moveIndicator(activeLink);
-  });
 });
