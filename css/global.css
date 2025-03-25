@@ -43,13 +43,13 @@ body {
   text-decoration: none;
 }
 
-/* 햄버거 아이콘 (기본은 숨김, 모바일에서 보임) */
+/* 햄버거 아이콘 (모바일에서만) */
 .hamburger {
   display: none;
   cursor: pointer;
   flex-direction: column;
   gap: 5px;
-  margin-left: auto; /* 우측 정렬 */
+  margin-left: auto; /* 우측으로 밀기 */
 }
 .hamburger span {
   width: 25px;
@@ -57,7 +57,7 @@ body {
   background-color: #fff;
 }
 
-/* nav-right (오른쪽) */
+/* nav-right (오른쪽 메뉴) */
 .nav-right {
   margin-left: auto;
 }
@@ -95,22 +95,20 @@ body {
 
 /* 미디어 쿼리: 모바일에서 햄버거 활성화 */
 @media (max-width: 768px) {
-  /* 햄버거는 보임 */
   .hamburger {
     display: flex;
   }
-  /* nav-right는 숨김 */
   .nav-right ul {
-    display: none;
+    display: none; /* 기본 숨김 */
     flex-direction: column;
     background: #667eea;
     position: absolute;
-    top: 60px;  /* 네비게이션 바로 아래 */
+    top: 60px;   /* 네비게이션 아래 */
     right: 0;
     width: 180px;
   }
   .nav-right ul.show {
-    display: flex;
+    display: flex; /* 햄버거 클릭 시 표시 */
   }
   .nav-right li a {
     line-height: 40px;

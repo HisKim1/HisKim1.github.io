@@ -21,13 +21,31 @@ section {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Home(메인) 스타일 */
+/* Home (동그라미 + 사진) */
 .home-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100%;
-  justify-content: center; /* 수직 중앙 정렬 */
+  justify-content: center; /* 수직 중앙 */
+}
+.profile-circle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #fff;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.profile-circle .profile-pic {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  /* 살짝 아래로 offset (중앙보다 조금 아래) */
+  object-position: 50% 30%;
 }
 .big-name {
   font-family: 'Montserrat', sans-serif;
@@ -49,6 +67,7 @@ section {
   font-size: 1rem;
   max-width: 600px;
   line-height: 1.6;
+  margin: 0 auto;
 }
 
 /* 각 페이지의 제목 스타일 */
