@@ -3,8 +3,8 @@
   position: absolute;
   top: 60px;    /* 네비게이션 높이 */
   bottom: 40px; /* 푸터 높이 */
-  left: 0;
-  right: 0;
+  left: 30px;
+  right: 30px;
   overflow-y: auto; /* 스크롤 */
   padding: 20px;
   background: #f9f9f9;
@@ -138,22 +138,39 @@ section h2 {
   padding-left: 0;
 }
 
-.education-list li {
-  margin-bottom: 25px;
-  font-size: 1rem;
-  line-height: 1.6;
+.education-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
 }
 
-.education-list li strong {
-  font-size: 1.1rem;
+.edu-top, .edu-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edu-school {
+  font-weight: bold;
+  font-size: 1.05rem;
   color: #667eea;
 }
 
-.education-list .period {
+.edu-period {
   font-style: italic;
   color: #555;
+  font-size: 0.95rem;
 }
 
-.education-list .tgpa {
+.edu-detail {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+.edu-tgpa {
+  margin-top: 6px;
+  font-size: 0.95rem;
   color: #764ba2;
+  font-weight: bold;
 }
