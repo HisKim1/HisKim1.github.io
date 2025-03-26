@@ -56,7 +56,7 @@ section {
   border-radius: 50%;
   object-fit: cover;
   object-position: 50% 30%;
-  position: absolute;
+  position: relative;
 }
 .big-name {
   font-family: 'Montserrat', sans-serif;
