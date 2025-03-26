@@ -121,8 +121,28 @@ body {
 
 /* Mobile Responsive */
 @media (max-width: 900px) {
+  html {
+    font-size: 80%; 
+  }
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    transition: 0.3s ease;
+    border-radius: 2px;
+  }
   .hamburger {
-    display: flex;
+    display: flex;    
+    gap: 5px;
+  }
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
   }
 
   .nav-indicator {
@@ -139,24 +159,33 @@ body {
     font-size: 1.1rem;
   }
   .nav-right ul {
-    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
     position: absolute;
-    top: 43px;
-    left: 0;      /* 오른쪽 대신 왼쪽에 고정 */
+    top: 46px;
+    left: 0;
     right: 0;
     flex-direction: column;
-    background: #667eea;
-    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 5px solid rgba(255,255,255,0.1);
+    z-index: 999;
   }
-
-  .nav-right ul.show {
-    display: flex;
-    animation: slideDown 0.3s ease-out;
+  
+  .nav-right ul.open {
+    max-height: 400px;
+    opacity: 1;
   }
 
   .nav-right li a {
+    color: rgb(68, 68, 68);
     line-height: 40px;
-    padding: 0 15px;
+    padding: 10px 20px;
   }
 }
 

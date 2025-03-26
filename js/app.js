@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   moveIndicator(firstLink, false);
 
   hamburger.addEventListener('click', () => {
-    navUl.classList.toggle('show');
+    navUl.classList.toggle('open');
+    hamburger.classList.toggle('active');
   });
 
   navLinks.forEach(link => {
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isAnimating) return;
 
       navUl.classList.remove('show');
+      navUl.classList.remove('open');
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
 
