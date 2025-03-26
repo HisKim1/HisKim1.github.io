@@ -127,8 +127,6 @@ section h2 {
 }
 
 /* !!!!!!!!! 카드 스타일 !!!!!!!!! */
-/* !!!!!!!!! 카드 스타일 !!!!!!!!! */
-/* !!!!!!!!! 카드 스타일 !!!!!!!!! */
 /* 아코디언 카드 */
 .card {
   border-left: 4px solid #667eea;
@@ -157,8 +155,8 @@ section h2 {
 
 @media (max-width: 768px) {
   .card-img img {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
   }
   .card {
     flex-direction: column;
@@ -170,7 +168,7 @@ section h2 {
 }
 
 .card-header {
-  padding: 15px;
+  padding: 15px 15px 0px 15px;
 }
 .card-header h3 {
   margin: 0;
@@ -225,13 +223,6 @@ section h2 {
   transform: translateY(-3px); /* 살짝 위로 이동하는 효과 */
 }
 
-.tcard-img img {
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
 .tcard-header {
   padding: 15px;
 }
@@ -266,10 +257,6 @@ section h2 {
 }
 
 @media (max-width: 768px) {
-  .tcard-img img {
-    width: 100px;
-    height: 100px;
-  }
   .tcard {
     flex-direction: column;
   }
@@ -304,7 +291,6 @@ section h2 {
 
 .publication-list .status {
   display: inline-block;
-  margin-left: 8px;
   font-style: italic;
   color: #667eea;
 }
@@ -351,9 +337,95 @@ section h2 {
   font-weight: bold;
 }
 
-.teaching-intro {
+.intro {
   text-align: center;
   font-size: 1.05rem;
   margin-top: -10px;
   margin-bottom: 25px;
+}
+
+
+.intro i {
+  font-style: italic;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.contact-section {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  margin-top: 40px;
+}
+
+.contact-links p {
+  margin: 10px 0;
+  font-size: 1.05rem;
+}
+
+.contact-links a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-links a:hover {
+  text-decoration: underline;
+}
+
+.fun-fact {
+  margin-top: 50px;
+  padding: 25px;
+  border-left: 6px solid #667eea;
+  background-color: #fef9ff;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.card.fun-fact-card {
+  flex-direction: column;       /* 기존 가로 정렬 해제 */
+  align-items: flex-start;      /* 왼쪽 정렬 */
+  gap: 0;
+  cursor: pointer;
+  padding: 0px 0px;
+  max-width: 600px;
+  margin: 40px auto 20px;
+  border-radius: 6px;
+  gap: 0;
+}
+
+.card.fun-fact-card .card-header {
+  font-size: 1rem;
+  padding: 0px 0px 0px 0px;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.card.fun-fact-card .card-header h5 {
+  margin: 10px 0px 10px 0px;
+  text-align: center;
+  color: #959595;
+  width: 100%;
+}
+
+.card.fun-fact-card .card-content {
+  margin-top: 0px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.card.fun-fact-card .card-content p {
+  font-size: 0.8rem;
+  margin-top: 0px;
+}
+
+.card.fun-fact-card.active .card-content {
+  display: block;
 }

@@ -101,20 +101,49 @@ document.addEventListener('DOMContentLoaded', () => {
   // 알아서 수정해라 희수야
   const projectData = [
     {
-      images: "images/bubble.jpg",
+      images: "images/pacman.jpeg",
       title: "The Pac-Man Project",
-      description: "Programmed Pac-Man AI using search algorithms (DFS, BFS, A*) and reinforcement learning for UC Berkeley CS188."
+      description: `from UC Berkeley CS188: <i>Intro. to AI</i>
+        <ul>
+          <li>Programmed the Pac-Man artificial intelligence using simple search algorithms (DFS, BFS, A* search, search tree),
+ based on Bayes Net and using reinforcement learning</li>
+          <li>Built neural networks and examined parameter values to classify MNIST dataset and words from different
+ languages</li>
+        </ul>
+      `
     },
     {
 
-      images: "images/Bratislava.jpg",
-      title: "Python Autograder",
-      description: "Built a web-based autograder using Flask and socket programming to streamline assignment evaluation."
+      images: "images/PACA.jpg",
+      title: "PACA: Python Autograder for Coding Assignment",
+      description: `from GIST EC4206: <i>Computer Networking</i>
+        <ul>
+          <li>Developed a web server with Flask framework to communicate with the back-end server using socket programming</li>
+          <li>Modified a web design sample to apply our project and connected it to the web server</li>
+          <li>Designed presentation slides and introduced the product with a code review</li>
+        </ul>
+      
+      `
     },
     {
-      images: "images/profile.jpg",
-      title: "Environmental Impact Assessment",
-      description: "Analyzed climate patterns with ECMWF reanalysis data and applied Leopold matrices to design wastewater treatment systems."
+      images: "images/treatment system cut.png",
+      title: "Environmental Impact Assessment of Potential Wastewater Treatment System in Putignano, Italy",
+      description: `
+      from WUT: <i>Environmental Impact Assessments</i>
+          <li>
+            Analyzed regional climate patterns near the target area using ERA5 reanalysis data and applied Leopold matrices to evaluate impacts during construction, operation, and liquidation phases
+          </li>
+          <li>
+            Designed a biological wastewater treatment system, compared its environmental performance against chemical and electrochemical alternatives, and proposed mitigation strategies
+          </li>
+      `
+    },
+    {
+      images: "images/Bratislava.jpg",
+      title: "🚧Under Construction🚧",
+      description: `
+      Several more projects have been completed but haven’t made it to this page yet. This page is still catching up!
+      `
     }
   ];
 
@@ -154,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: "Literature",
       description: `
-        <h4>Courses with Prof. Soo-Jeong Lee (Professor specializing in Poetry) (Spring 2023 – Present)</h4>
+        <h4>Prof. Soo-Jeong Lee's Literature Courses (Spring 2023 – Present)</h4>
         <p><i>Reading Contemporary Poetry</i>, <i>Korean Poets</i>, <i>Understanding Poetry</i>, <br>
            <i>Ri Sangs Literature and Science</i>, and <i>Writing I: Creative Writing</i></p>
       `
