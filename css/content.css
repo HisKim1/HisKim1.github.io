@@ -1,15 +1,17 @@
 /* 메인 컨텐츠 영역 */
 #main-content {
-  position: absolute;
-  top: 60px;    /* 네비게이션 높이 */
-  bottom: 40px; /* 푸터 높이 */
+  
+  flex: 1;
+  /* top: 60px;   
+  bottom: 40px; 푸터 높이 */
   left: 0;
   right: 0;
   overflow-y: auto; /* 스크롤 */
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
+  overflow-x: hidden;
+  padding: 60px 0px 0px 0px;
   background: #f9f9f9;
+  min-height: 80vh;
+  scroll-behavior: smooth;
 }
 
 /* 공통 흰색 카드 레이아웃 */
@@ -124,6 +126,9 @@ section h2 {
   color: #667eea;
 }
 
+/* !!!!!!!!! 카드 스타일 !!!!!!!!! */
+/* !!!!!!!!! 카드 스타일 !!!!!!!!! */
+/* !!!!!!!!! 카드 스타일 !!!!!!!!! */
 /* 아코디언 카드 */
 .card {
   border-left: 4px solid #667eea;
@@ -131,14 +136,37 @@ section h2 {
   transition: background 0.2s, box-shadow 0.3s;
   cursor: pointer; /* 마우스 포인터 표시 */
   background: #fff; /* 흰색 배경을 추가하여 기본 상태에서도 구분 */
-  border-radius: 8px; /* 둥근 모서리 */
+  border-radius: 1px; /* 둥근 모서리 */
   padding: 10px; /* 안쪽 여백 추가 */
   box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 기본적인 그림자 효과 추가 */
+  display: flex; /* 내부 요소를 가로로 정렬 */
+  gap: 15px;
+  align-items: center;
 }
 .card:hover {
   background: #f6f6f6; /* 살짝 밝은 배경색으로 변경 */
   box-shadow: 0 8px 15px rgba(0,0,0,0.2); /* 그림자 효과 추가 */
   transform: translateY(-3px); /* 살짝 위로 이동하는 효과 */
+}
+.card-img img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .card-img img {
+    width: 100px;
+    height: 100px;
+  }
+  .card {
+    flex-direction: column;
+  }
+}
+
+.card-body {
+  flex: 1;
 }
 
 .card-header {
@@ -171,6 +199,94 @@ section h2 {
 .card.active .card-content {
   max-height: 300px; /* 필요에 따라 조정 */
 }
+
+
+
+/* !!!!!!!!! 시작: 티칭 카드 스타일 !!!!!!!!! */
+/* !!!!!!!!! 시작: 티칭 카드 스타일 !!!!!!!!! */
+/* 아코디언 카드 */
+.tcard {
+  border-left: 4px solid #667eea;
+  margin-bottom: 15px;
+  transition: background 0.2s, box-shadow 0.3s;
+  cursor: pointer; /* 마우스 포인터 표시 */
+  background: #fff; /* 흰색 배경을 추가하여 기본 상태에서도 구분 */
+  border-radius: 1px; /* 둥근 모서리 */
+  padding: 10px; /* 안쪽 여백 추가 */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 기본적인 그림자 효과 추가 */
+  display: flex; /* 내부 요소를 가로로 정렬 */
+  gap: 15px;
+  align-items: center;
+  flex-direction: row;
+}
+.tcard:hover {
+  background: #f6f6f6; /* 살짝 밝은 배경색으로 변경 */
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2); /* 그림자 효과 추가 */
+  transform: translateY(-3px); /* 살짝 위로 이동하는 효과 */
+}
+
+.tcard-img img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.tcard-header {
+  padding: 15px;
+}
+
+.tcard-header h3 {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3rem;
+}
+
+/* 기본적으로 내용은 접힘 */
+.tcard-content {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 15px;
+  transition: max-height 0.3s ease;
+  border-left: 2px solid #ddd;
+}
+.tcard-content p {
+  margin: 15px 0;
+}
+.tcard-content h4 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+/* 카드에 .active가 붙으면 내용 펼쳐짐 */
+.tcard.active .tcard-content {
+  max-height: 300px; /* 필요에 따라 조정 */
+}
+
+@media (max-width: 768px) {
+  .tcard-img img {
+    width: 100px;
+    height: 100px;
+  }
+  .tcard {
+    flex-direction: column;
+  }
+  .tcard-content {
+    border-left: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .tcard-header {
+    padding: 15px;
+    min-width: 240px;
+  }
+}
+/* !!!!!!!!! 끝: 티칭 카드 스타일 !!!!!!!!! */
+
+
 
 .publication-list {
   list-style: none;

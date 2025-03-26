@@ -74,9 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const res = await fetch(`pages/${page}.html`);
     mainContent.innerHTML = await res.text();
     await animateIn(mainContent);
-    initCardAccordion();
+  
+    if (page === 'projects') {
+      await generateProjectCardsFromTemplate();
+    } else if (page === 'teaching') {
+      await generateTeachingCardsFromTemplate();
+    } 
+    else {
+      initCardAccordion();
+    }
+  
     isAnimating = false;
   }
+  
 
   function initCardAccordion() {
     document.querySelectorAll('.card').forEach(card => {
@@ -85,7 +95,96 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+
+  // projects.html : kwak
+  // 알아서 수정해라 희수야
+  const projectData = [
+    {
+      images: "images/bubble.jpg",
+      title: "The Pac-Man Project",
+      description: "Programmed Pac-Man AI using search algorithms (DFS, BFS, A*) and reinforcement learning for UC Berkeley CS188."
+    },
+    {
+
+      images: "images/Bratislava.jpg",
+      title: "Python Autograder",
+      description: "Built a web-based autograder using Flask and socket programming to streamline assignment evaluation."
+    },
+    {
+      images: "images/profile.jpg",
+      title: "Environmental Impact Assessment",
+      description: "Analyzed climate patterns with ECMWF reanalysis data and applied Leopold matrices to design wastewater treatment systems."
+    }
+  ];
+
+  // 템플릿을 불러와 카드로 변환
+  async function generateProjectCardsFromTemplate() {
+    const container = document.getElementById('project-cards');
+    if (!container) return;
+
+    const templateRes = await fetch('snippets/cards.html');
+    const templateText = await templateRes.text();
+
+    const cardsHTML = projectData.map(project =>
+      templateText
+        .replace('{{title}}', project.title)
+        .replace('{{description}}', project.description)
+        .replace('{{images}}', project.images)
+    ).join('');
+
+    container.innerHTML = cardsHTML;
+    initCardAccordion(); // 카드 접힘 기능 적용
+  }
+
+  const teachingData = [
+    {
+      title: "Mathematics",
+      description: `
+        <h4>Multivariable Calculus (Spring 2025)</h4>
+        <h4>Graph Theory (Fall 2024)</h4>
+      `
+    },
+    {
+      title: "Computer Science",
+      description: `
+        <h4>Digital Design (Spring 2023)</h4>
+      `
+    },
+    {
+      title: "Literature",
+      description: `
+        <h4>Courses with Prof. Soo-Jeong Lee (Professor specializing in Poetry) (Spring 2023 – Present)</h4>
+        <p><i>Reading Contemporary Poetry</i>, <i>Korean Poets</i>, <i>Understanding Poetry</i>, <br>
+           <i>Ri Sangs Literature and Science</i>, and <i>Writing I: Creative Writing</i></p>
+      `
+    },
+    {
+      title: "Mentoring",
+      description: `
+        <h4>GIST 101 (2023, 2024 Spring)</h4>
+      `
+    }
+  ];
   
+
+  async function generateTeachingCardsFromTemplate() {
+    const container = document.getElementById('teaching-cards');
+    if (!container) return;
+
+    const templateRes = await fetch('snippets/teachingCards.html');
+    const templateText = await templateRes.text();
+
+    const cardsHTML = teachingData.map(project =>
+      templateText
+        .replace('{{title}}', project.title)
+        .replace('{{description}}', project.description)
+    ).join('');
+
+    container.innerHTML = cardsHTML;
+    initCardAccordion(); // 카드 접힘 기능 적용
+  }
+ 
 
   function animateOut(el) {
     return gsap.to(el, { y: -50, opacity: 0, duration: 0.3 });
