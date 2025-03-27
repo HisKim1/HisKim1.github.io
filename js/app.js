@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       navUl.classList.remove('show');
       navUl.classList.remove('open');
+      hamburger.classList.remove('active');
+      
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
 
