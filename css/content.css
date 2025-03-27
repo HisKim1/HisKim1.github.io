@@ -1,18 +1,15 @@
 /* 메인 컨텐츠 영역 */
-#main-content {
+/* #main-content {
   
   flex: 1;
-  /* top: 60px;   
-  bottom: 40px; 푸터 높이 */
   left: 0;
   right: 0;
-  overflow-y: auto; /* 스크롤 */
   overflow-x: hidden;
   padding: 60px 0px 0px 0px;
   background: #f9f9f9;
   min-height: 80vh;
   scroll-behavior: smooth;
-}
+} */
 
 /* 공통 흰색 카드 레이아웃 */
 section {
@@ -29,7 +26,7 @@ section {
   width: 90%;
   max-width: 1000px;
   margin: 20px auto;
-  padding: 40px 20px;
+  padding: 20px 20px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);

@@ -172,20 +172,20 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: "Mathematics",
       description: `
-        <h4>Multivariable Calculus (Spring 2025)</h4>
-        <h4>Graph Theory (Fall 2024)</h4>
+        <h4>Multivariable Calculus (2025 Spring)</h4>
+        <h4>Graph Theory (2024 Fall)</h4>
       `
     },
     {
       title: "Computer Science",
       description: `
-        <h4>Digital Design (Spring 2023)</h4>
+        <h4>Digital Design (2023 Spring)</h4>
       `
     },
     {
       title: "Literature",
       description: `
-        <h4>Prof. Soo-Jeong Lee's Literature Courses (Spring 2023 – Present)</h4>
+        <h4>Prof. Soo-Jeong Lee's Literature Courses (2023 Spring – Present)</h4>
         <p><i>Reading Contemporary Poetry</i>, <i>Korean Poets</i>, <i>Understanding Poetry</i>, <br>
            <i>Ri Sangs Literature and Science</i>, and <i>Writing I: Creative Writing</i></p>
       `
