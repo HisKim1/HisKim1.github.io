@@ -102,8 +102,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // projects.html : kwak
-  // 알아서 수정해라 희수야
   const projectData = [
+    {
+      images: "images/AIweatherquest.png",
+      title: "AI Weather Quest 2025",
+      description: `
+        Hosted by European Centre ofr Medium-Range Weather Forecasts (ECMWF)
+        <ul>
+          <li>
+            Currently preparing for the AI Weather Quest 2025 competition with my lab members
+          </li>
+          <li>
+            Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts
+          </li>
+        </ul>
+      `
+    },
     {
       images: "images/pacman.jpeg",
       title: "The Pac-Man Project",
