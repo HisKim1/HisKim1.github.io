@@ -64,13 +64,13 @@ section {
   font-size: 2rem;
   margin-bottom: 10px;
   text-align: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .sub-title {
   font-size: 1.4rem;
-  color: #667eea;
+  color: #4facfe;
   text-align: center;
   margin-bottom: 10px;
 }
@@ -96,14 +96,14 @@ section {
   padding: 20px 25px;
   margin-top: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 4px 8px rgba(79, 172, 254, 0.15);
   text-align: left;
 }
 
 .info-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #667eea;
+  color: #4facfe;
   margin-bottom: 10px;
 }
 
@@ -120,13 +120,13 @@ section h2 {
   font-size: 2rem;
   margin-bottom: 20px;
   text-align: center;
-  color: #667eea;
+  color: #4facfe;
 }
 
 /* !!!!!!!!! 카드 스타일 !!!!!!!!! */
 /* 아코디언 카드 */
 .card {
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #4facfe;
   margin-bottom: 15px;
   transition: background 0.2s, box-shadow 0.3s;
   cursor: pointer; /* 마우스 포인터 표시 */
@@ -201,7 +201,7 @@ section h2 {
 /* !!!!!!!!! 시작: 티칭 카드 스타일 !!!!!!!!! */
 /* 아코디언 카드 */
 .tcard {
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #4facfe;
   margin-bottom: 15px;
   transition: background 0.2s, box-shadow 0.3s;
   cursor: pointer; /* 마우스 포인터 표시 */
@@ -289,7 +289,7 @@ section h2 {
 .publication-list .status {
   display: inline-block;
   font-style: italic;
-  color: #667eea;
+  color: #4facfe;
 }
 
 .education-list {
@@ -311,7 +311,7 @@ section h2 {
 .edu-school {
   font-weight: bold;
   font-size: 1.05rem;
-  color: #667eea;
+  color: #4facfe;
 }
 
 .edu-period {
@@ -330,7 +330,7 @@ section h2 {
 .edu-tgpa {
   margin-top: 6px;
   font-size: 0.95rem;
-  color: #764ba2;
+  color: #00f2fe;
   font-weight: bold;
 }
 
@@ -344,7 +344,7 @@ section h2 {
 
 .intro i {
   font-style: italic;
-  color: #667eea;
+  color: #4facfe;
   font-weight: 500;
 }
 
@@ -362,7 +362,7 @@ section h2 {
 }
 
 .contact-links a {
-  color: #667eea;
+  color: #4facfe;
   text-decoration: none;
   font-weight: 500;
 }
@@ -374,7 +374,7 @@ section h2 {
 .fun-fact {
   margin-top: 50px;
   padding: 25px;
-  border-left: 6px solid #667eea;
+  border-left: 6px solid #4facfe;
   background-color: #fef9ff;
   font-size: 1.05rem;
   line-height: 1.6;
