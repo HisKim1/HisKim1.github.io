@@ -144,15 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
  
 
 
-function animateOut(el) {
-  return gsap.to(el, { y: -50, opacity: 0, duration: 0.3 });
-}
-
-function animateIn(el) {
-  gsap.set(el, { y: 50, opacity: 0 });
-  return gsap.to(el, { y: 0, opacity: 1, duration: 0.3 });
-}
-
 window.addEventListener('load', () => {
   const activeLink = document.querySelector('.nav-link.active');
   if (activeLink) moveIndicator(activeLink);
@@ -168,3 +159,11 @@ document.querySelector('.site-title').addEventListener('click', e => {
   loadPage('home');
 });
 });
+  function animateOut(el) {
+    return gsap.to(el, { y: -50, opacity: 0, duration: 0.3 });
+  }
+
+  function animateIn(el) {
+    gsap.set(el, { y: 50, opacity: 0 });
+    return gsap.to(el, { y: 0, opacity: 1, duration: 0.3 });
+  }
