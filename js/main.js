@@ -66,10 +66,12 @@ function generateProjects(data) {
   const grid = document.getElementById('project-grid');
   if (!grid) return;
   grid.innerHTML = data.map(p => `
-    <div class="card">
-      <img src="${p.images}" alt="${p.title}" style="width:100%;border-radius:4px;">
-      <h3>${p.title}</h3>
-      <p>${p.description}</p>
+    <div class="project-item card">
+      <img class="project-img" src="${p.images}" alt="${p.title}">
+      <div class="project-text">
+        <h3>${p.title}</h3>
+        <p>${p.description}</p>
+      </div>
     </div>
   `).join('');
 }
