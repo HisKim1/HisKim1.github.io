@@ -11,6 +11,13 @@ function initNavigation() {
   }
 }
 
+function initSpotlight() {
+  document.addEventListener('mousemove', e => {
+    document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
+  });
+}
+
 function createTagHTML(tag) {
   return `<span class="tag">${tag}</span>`;
 }
@@ -20,6 +27,7 @@ function generateHome(data) {
   if (!container) return;
   container.innerHTML = `
     <div class="hero">
+      <img src="${data.profile.img}" alt="${data.profile.name}" class="profile-img">
       <h1>Hello, my name is</h1>
       <h2>${data.profile.name}</h2>
       <p>${data.academic.paragraphs[0]}</p>
@@ -33,8 +41,25 @@ function generateEducation(data) {
   if (!list) return;
   let html = '';
   data.main.forEach(item => {
-    html += `<div class="card"><h3>${item.school}</h3><p>${item.degree || ''} ${item.minor || ''}</p><p>${item.period}</p></div>`;
+    html += `<div class="card">
+      <h3>${item.school}</h3>
+      <p>${item.degree || ''}${item.minor ? ' • ' + item.minor : ''}</p>
+      <p>${item.period}</p>
+      ${item.tgpa ? `<p>GPA: ${item.tgpa}</p>` : ''}
+      ${item.thesis ? `<p>Thesis: ${item.thesis}</p>` : ''}
+    </div>`;
   });
+
+  if (data.extracurricular) {
+    html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
+      <div class="card">
+        <h4>${e.school}</h4>
+        <p>${e.period}</p>
+        <p>${e.org}</p>
+      </div>
+    `).join('');
+  }
+
   list.innerHTML = html;
 }
 
@@ -66,13 +91,19 @@ function generateResearch(data) {
   }
   if (exp) {
     exp.innerHTML = data.experience.map(e => `
-      <div class="card"><h3>${e.lab}</h3><p>${e.position}</p><p>${e.period}</p></div>
+      <div class="card">
+        <h3>${e.lab}</h3>
+        <p>${e.position}</p>
+        <p>${e.period}</p>
+        ${e.details ? '<ul>' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
+      </div>
     `).join('');
   }
 }
 
 async function init() {
   initNavigation();
+  initSpotlight();
   generateHome(await fetchJSON('data/home.json'));
   generateEducation(await fetchJSON('data/education.json'));
   generateProjects(await fetchJSON('data/projects.json'));
