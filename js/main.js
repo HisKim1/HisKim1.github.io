@@ -58,26 +58,39 @@ function generateHome(data) {
 function generateEducation(data) {
   const list = document.getElementById('education-list');
   if (!list) return;
-  let html = '';
+  let html = '<ul class="education-list">';
   data.main.forEach(item => {
-    html += `<div class="card">
-      <h3>${item.school}</h3>
-      <p>${item.degree || ''}</p>
-      <p>${item.minor ? item.minor : ''}</p>
-      <p class="date">${item.period}</p>
-      ${item.tgpa ? `<p>GPA: ${item.tgpa}</p>` : ''}
-      ${item.thesis ? `<p>Thesis: ${item.thesis}</p>` : ''}
-    </div>`;
+    html += `<li class="education-card">
+      <div class="education-header">${item.school}</div>
+      <div class="education-row">
+        <span>${item.degree || ''}</span>
+        <span class="edu-period">${item.period || ''}</span>
+      </div>`;
+    if (item.minor || item.extra || item.tgpa) {
+      html += `<div class="education-row">
+        <span>${item.minor || item.extra || ''}</span>
+        <span>${item.tgpa || ''}</span>
+      </div>`;
+    }
+    if (item.thesis) {
+      html += `<div class="education-desc">Thesis: <i>${item.thesis}</i></div>`;
+    }
+    html += `</li>`;
   });
+  html += '</ul>';
 
   if (data.extracurricular) {
-    html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
-      <div class="card">
-        <h3>${e.school}</h3>
-        <p class="date">${e.period}</p>
-        <p>${e.org}</p>
-      </div>
-    `).join('');
+    html += '<h3>Extracurricular Education</h3><ul class="education-list">' + data.extracurricular.map(e => `
+      <li class="education-card">
+        <div class="education-row">
+          <span class="education-header">${e.school}</span>
+          <span class="edu-period">${e.period}</span>
+        </div>
+        <div class="education-row">
+          <span>${e.org}</span>
+        </div>
+      </li>
+    `).join('') + '</ul>';
   }
   list.innerHTML = html;
   applyCardHoverEffects();
