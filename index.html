@@ -1,67 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>His Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/education.css">
-    <link rel="stylesheet" href="css/research.css">
-    <link rel="stylesheet" href="css/teaching.css">
-    <link rel="stylesheet" href="css/projects.css">
-    <link rel="stylesheet" href="css/contact.css">
-    <!-- Google Fonts & GSAP -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <script defer src="js/app.js"></script>
-  </head>
-  <body>
-    <header class="top-nav">
-      <div class="nav-left">
-        <a href="#" class="site-title" data-page="home">Hisu Kim</a>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hisu Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#home" class="logo">Hisu Kim</a>
+      <div class="toggle" aria-label="Toggle navigation" tabindex="0">
+        <span></span><span></span><span></span>
       </div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#teaching">Teaching</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      <nav class="nav-right" id="navbar">
-        <ul>
-          <li>
-            <a href="#" data-page="home" class="nav-link">Home</a>
-          </li>
-          <li>
-            <a href="#" data-page="education" class="nav-link">Education</a>
-          </li>
-          <li>
-            <a href="#" data-page="research" class="nav-link">Research</a>
-          </li>
-          <li>
-            <a href="#" data-page="teaching" class="nav-link">Teaching</a>
-          </li>
-          <li>
-            <a href="#" data-page="projects" class="nav-link">Projects</a>
-          </li>
-          <li>
-            <a href="#" data-page="contact" class="nav-link">Contact</a>
-          </li>
-        </ul>
-        <span class="nav-indicator"></span>
-      </nav>
+  <main>
+    <section id="home" class="hero" aria-label="Hero" >
+      <div id="home-section"></div>
+    </section>
 
-      <!-- 햄버거 아이콘은 nav 바깥으로 명시적으로 추가 -->
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+    <section id="education" aria-label="Education">
+      <h2>Education</h2>
+      <div id="education-list" class="vertical"></div>
+    </section>
+
+    <section id="research" aria-label="Research">
+      <h2>Publications</h2>
+      <div id="pub-list"></div>
+      <h2>Experience</h2>
+      <div id="exp-list" class="vertical"></div>
+    </section>
+
+    <section id="teaching" aria-label="Teaching">
+      <h2>Teaching</h2>
+      <div id="teaching-list" class="vertical"></div>
+    </section>
+
+    <section id="projects" aria-label="Projects">
+      <h2>Projects</h2>
+      <div id="project-grid" class="vertical"></div>
+    </section>
+
+    <section id="contact" aria-label="Contact">
+      <h2>Contact</h2>
+      <div class="social">
+        <a href="mailto:tomm1203@gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
       </div>
-    </header>
+    </section>
+  </main>
 
-    <main id="main-content"></main>
+  <footer>
+    Built by Hisu Kim on GitHub Pages
+  </footer>
 
-    <footer class="footer">
-      <p>&copy; 2025 Hisu Kim. All rights reserved.</p>
-    </footer>
-    
-  </body>
+  <script src="js/main.js"></script>
+</body>
 </html>

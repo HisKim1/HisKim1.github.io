@@ -1,0 +1,120 @@
+async function fetchJSON(path) {
+  const res = await fetch(path);
+  return res.json();
+}
+
+function initNavigation() {
+  const toggle = document.querySelector('.toggle');
+  const nav = document.querySelector('nav');
+  if (toggle) {
+    toggle.addEventListener('click', () => nav.classList.toggle('open'));
+  }
+}
+
+function initSpotlight() {
+  document.addEventListener('mousemove', e => {
+    document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    document.documentElement.style.setProperty('--hex-x', x + '%');
+    document.documentElement.style.setProperty('--hex-y', y + '%');
+  });
+}
+
+function createTagHTML(tag) {
+  return `<span class="tag">${tag}</span>`;
+}
+
+function generateHome(data) {
+  const container = document.getElementById('home-section');
+  if (!container) return;
+  container.innerHTML = `
+    <div class="hero">
+      <img src="${data.profile.img}" alt="${data.profile.name}" class="profile-img">
+      <h1>Hello, my name is</h1>
+      <h2>${data.profile.name}</h2>
+      <p>${data.academic.paragraphs[0]}</p>
+      <a class="btn" href="#contact">Get In Touch</a>
+    </div>
+  `;
+}
+
+function generateEducation(data) {
+  const list = document.getElementById('education-list');
+  if (!list) return;
+  let html = '';
+  data.main.forEach(item => {
+    html += `<div class="card">
+      <h3>${item.school}</h3>
+      <p>${item.degree || ''}${item.minor ? ' • ' + item.minor : ''}</p>
+      <p class="date">${item.period}</p>
+      ${item.tgpa ? `<p>GPA: ${item.tgpa}</p>` : ''}
+      ${item.thesis ? `<p>Thesis: ${item.thesis}</p>` : ''}
+    </div>`;
+  });
+
+  if (data.extracurricular) {
+    html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
+      <div class="card">
+        <h4>${e.school}</h4>
+        <p class="date">${e.period}</p>
+        <p>${e.org}</p>
+      </div>
+    `).join('');
+  }
+
+  list.innerHTML = html;
+}
+
+function generateProjects(data) {
+  const grid = document.getElementById('project-grid');
+  if (!grid) return;
+  grid.innerHTML = data.map(p => `
+    <div class="project-item card">
+      <img class="project-img" src="${p.images}" alt="${p.title}">
+      <div class="project-text">
+        <h3>${p.title}</h3>
+        <p>${p.description}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function generateTeaching(data) {
+  const grid = document.getElementById('teaching-list');
+  if (!grid) return;
+  grid.innerHTML = data.map(t => `
+    <div class="card"><h3>${t.title}</h3>${t.description}</div>
+  `).join('');
+}
+
+function generateResearch(data) {
+  const pub = document.getElementById('pub-list');
+  const exp = document.getElementById('exp-list');
+  if (pub) {
+    pub.innerHTML = '<ul>' + data.publications.map(p => `<li>${p.authors || ''} ${p.title || ''}</li>`).join('') + '</ul>';
+  }
+  if (exp) {
+    exp.innerHTML = data.experience.map(e => `
+      <div class="card">
+        <h3>${e.lab}</h3>
+        <p>${e.position}</p>
+        <p class="date">${e.period}</p>
+        ${e.details ? '<ul>' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
+      </div>
+    `).join('');
+  }
+}
+
+async function init() {
+  initNavigation();
+  initSpotlight();
+  generateHome(await fetchJSON('data/home.json'));
+  generateEducation(await fetchJSON('data/education.json'));
+  generateProjects(await fetchJSON('data/projects.json'));
+  generateTeaching(await fetchJSON('data/teaching.json'));
+  generateResearch(await fetchJSON('data/research.json'));
+}
+
+document.addEventListener('DOMContentLoaded', init);
