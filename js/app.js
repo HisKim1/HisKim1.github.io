@@ -167,34 +167,35 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
     let html = '<ul class="education-list">';
     data.main.forEach(item => {
-      html += `<li><div class="education-item">
-        <div class="edu-top">
-          <span class="edu-school">${item.school}</span>
-          <span class="edu-period">${item.period}</span>
-        </div>
-        <div class="edu-bottom">
-          <span class="edu-detail">
-            ${item.degree ? item.degree + '<br>' : ''}
-            ${item.minor ? item.minor + '<br>' : ''}
-            ${item.extra ? item.extra + '<br>' : ''}
-            ${item.thesis ? '<span style="display: inline-block; margin-top: 4px;">Thesis: <i>' + item.thesis + '</i></span>' : ''}
-          </span>
-          <span class="edu-tgpa">${item.tgpa || ''}</span>
-        </div>
-      </div></li>`;
+      html += `<li class="education-card">
+        <div class="education-header">${item.school}</div>
+        <div class="education-row">
+          <span>${item.degree || ''}</span>
+          <span class="edu-period">${item.period || ''}</span>
+        </div>`;
+      if (item.minor || item.extra || item.tgpa) {
+        html += `<div class="education-row">
+          <span>${item.minor || item.extra || ''}</span>
+          <span>${item.tgpa || ''}</span>
+        </div>`;
+      }
+      if (item.thesis) {
+        html += `<div class="education-desc">Thesis: <i>${item.thesis}</i></div>`;
+      }
+      html += '</li>';
     });
     html += '</ul>';
     html += '<h3>Extracurricular Education</h3><ul class="education-list">';
     data.extracurricular.forEach(item => {
-      html += `<li><div class="education-item">
-        <div class="edu-top">
-          <span class="edu-school">${item.school}</span>
+      html += `<li class="education-card">
+        <div class="education-row">
+          <span class="education-header">${item.school}</span>
           <span class="edu-period">${item.period}</span>
         </div>
-        <div class="edu-bottom">
-          <span class="edu-detail">${item.org}</span>
+        <div class="education-row">
+          <span>${item.org}</span>
         </div>
-      </div></li>`;
+      </li>`;
     });
     html += '</ul>';
     container.innerHTML = html;

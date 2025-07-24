@@ -148,7 +148,10 @@ section h2 {
 /* Mobile Responsive */
 @media (max-width: 900px) {
   html {
-    font-size: 80%; 
+    font-size: 80%;
+  }
+  section h2 {
+    font-size: 1.6rem;
   }
   .hamburger span {
     width: 25px;
