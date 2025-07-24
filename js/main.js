@@ -15,6 +15,10 @@ function initSpotlight() {
   document.addEventListener('mousemove', e => {
     document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
     document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    document.documentElement.style.setProperty('--hex-x', x + '%');
+    document.documentElement.style.setProperty('--hex-y', y + '%');
   });
 }
 
@@ -44,7 +48,7 @@ function generateEducation(data) {
     html += `<div class="card">
       <h3>${item.school}</h3>
       <p>${item.degree || ''}${item.minor ? ' • ' + item.minor : ''}</p>
-      <p>${item.period}</p>
+      <p class="date">${item.period}</p>
       ${item.tgpa ? `<p>GPA: ${item.tgpa}</p>` : ''}
       ${item.thesis ? `<p>Thesis: ${item.thesis}</p>` : ''}
     </div>`;
@@ -54,7 +58,7 @@ function generateEducation(data) {
     html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
       <div class="card">
         <h4>${e.school}</h4>
-        <p>${e.period}</p>
+        <p class="date">${e.period}</p>
         <p>${e.org}</p>
       </div>
     `).join('');
@@ -95,7 +99,7 @@ function generateResearch(data) {
       <div class="card">
         <h3>${e.lab}</h3>
         <p>${e.position}</p>
-        <p>${e.period}</p>
+        <p class="date">${e.period}</p>
         ${e.details ? '<ul>' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
       </div>
     `).join('');
