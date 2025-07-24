@@ -59,7 +59,6 @@ function generateEducation(data) {
       </div>
     `).join('');
   }
-
   list.innerHTML = html;
 }
 
