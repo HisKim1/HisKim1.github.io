@@ -62,7 +62,8 @@ function generateEducation(data) {
   data.main.forEach(item => {
     html += `<div class="card">
       <h3>${item.school}</h3>
-      <p>${item.degree || ''}${item.minor ? ' • ' + item.minor : ''}</p>
+      <p>${item.degree || ''}</p>
+      <p>${item.minor ? item.minor : ''}</p>
       <p class="date">${item.period}</p>
       ${item.tgpa ? `<p>GPA: ${item.tgpa}</p>` : ''}
       ${item.thesis ? `<p>Thesis: ${item.thesis}</p>` : ''}
@@ -72,7 +73,7 @@ function generateEducation(data) {
   if (data.extracurricular) {
     html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
       <div class="card">
-        <h4>${e.school}</h4>
+        <h3>${e.school}</h3>
         <p class="date">${e.period}</p>
         <p>${e.org}</p>
       </div>
@@ -101,7 +102,7 @@ function generateTeaching(data) {
   const grid = document.getElementById('teaching-list');
   if (!grid) return;
   grid.innerHTML = data.map(t => `
-    <div class="card"><h3>${t.title}</h3>${t.description}</div>
+    <div class="card"><h3>${t.title}</h3><p>${t.description}</p></div>
   `).join('');
   applyCardHoverEffects();
 }

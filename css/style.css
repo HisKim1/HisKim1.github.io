@@ -29,7 +29,7 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), rgba(125,181,255,0.2), transparent 60%);
+  background: radial-gradient(circle 500px at var(--cursor-x) var(--cursor-y), rgba(125, 181, 255, 0.106), transparent 60%);
   mix-blend-mode: screen;
   z-index: -1;
 }
