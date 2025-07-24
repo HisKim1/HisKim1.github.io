@@ -1,0 +1,13 @@
+/* Teaching page styles */
+
+.intro {
+  text-align: center;
+  font-size: 1.05rem;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+.intro i {
+  font-style: italic;
+  color: #4ca1af;
+  font-weight: 500;
+}

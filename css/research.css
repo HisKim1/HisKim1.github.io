@@ -1,0 +1,21 @@
+/* Research page styles */
+.publication-list,
+.conference-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.publication-list li,
+.conference-list li {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.publication-list .status,
+.conference-list .status {
+  display: inline-block;
+  font-style: italic;
+  color: #4ca1af;
+}

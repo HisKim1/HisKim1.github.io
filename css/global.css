@@ -20,6 +20,24 @@ body {
   min-height: 100vh;
 }
 
+section {
+  width: 90%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+section h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #4ca1af;
+}
+
 .footer {
   margin-top: auto;
   background: linear-gradient(135deg, #4ca1af, #2c3e50);
@@ -155,16 +173,6 @@ body {
 
   .nav-indicator {
     display: none; /* 인디케이터 숨김 */
-  }
-  .profile-circle {
-    width: 150px;
-    height: 150px;
-  }
-  .big-name {
-    font-size: 1.5rem;
-  }
-  .sub-title {
-    font-size: 1.1rem;
   }
   .nav-right ul {
     max-height: 0;
