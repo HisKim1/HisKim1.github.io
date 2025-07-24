@@ -1,0 +1,69 @@
+/* Contact page styles */
+.contact-section {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  margin-top: 40px;
+}
+.contact-links p {
+  margin: 10px 0;
+  font-size: 1.05rem;
+}
+.contact-links a {
+  color: #4ca1af;
+  text-decoration: none;
+  font-weight: 500;
+}
+.contact-links a:hover {
+  text-decoration: underline;
+}
+.fun-fact {
+  margin-top: 50px;
+  padding: 25px;
+  border-left: 6px solid #4ca1af;
+  background-color: #fef9ff;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.card.fun-fact-card {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  cursor: pointer;
+  padding: 0px 0px;
+  max-width: 600px;
+  margin: 40px auto 20px;
+  border-radius: 6px;
+  gap: 0;
+}
+.card.fun-fact-card .card-header {
+  font-size: 1rem;
+  padding: 0px 0px 0px 0px;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+.card.fun-fact-card .card-header h5 {
+  margin: 10px 0px 10px 0px;
+  text-align: center;
+  color: #959595;
+  width: 100%;
+}
+.card.fun-fact-card .card-content {
+  margin-top: 0px;
+  line-height: 1.5;
+  text-align: left;
+}
+.card.fun-fact-card .card-content p {
+  font-size: 0.8rem;
+  margin-top: 0px;
+}
+.card.fun-fact-card.active .card-content {
+  display: block;
+}
