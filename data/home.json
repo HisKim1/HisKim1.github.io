@@ -1,0 +1,20 @@
+{
+  "profile": {
+    "img": "images/profile.jpg",
+    "name": "Hisu Kim",
+    "subtitle": "Forecasts the Future Forecasting"
+  },
+  "academic": {
+    "title": "🎓 Academic Journey",
+    "paragraphs": [
+      "I'm expected to graduate with a bachelor's degree this summer and will begin my master's studies at the Climate Analysis Modeling Lab under the supervision of Prof. Jinho Yoon at GIST.",
+      "My majors are Computer Science and Environmental Engineering with a minor in Mathematics."
+    ]
+  },
+  "research": {
+    "title": "🔬 Research Passion",
+    "paragraphs": [
+      "I'm interested in understanding the physics behind deep learning weather and climate models, and in making them more trustworthy. Currently, I'm exploring how the butterfly effect shows up in these models and what it means from a spectral perspective."
+    ]
+  }
+} 

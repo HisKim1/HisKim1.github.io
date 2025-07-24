@@ -73,22 +73,211 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadPage(page) {
+    console.log('loadPage', page);
     isAnimating = true;
-    await animateOut(mainContent);
-    const res = await fetch(`pages/${page}.html`);
-    mainContent.innerHTML = await res.text();
-    await animateIn(mainContent);
-  
+    // await animateOut(mainContent); // 사라지는 애니메이션 제거
+    // 1. HTML과 데이터 fetch를 병렬로 시작
+    const htmlPromise = fetch(`pages/${page}.html`).then(res => res.text());
+    let dataPromise = null;
+    let needsData = false;
+    if (page === 'projects') { dataPromise = fetch('data/projects.json').then(res => res.json()); needsData = true; }
+    else if (page === 'teaching') { dataPromise = fetch('data/teaching.json').then(res => res.json()); needsData = true; }
+    else if (page === 'education') { dataPromise = fetch('data/education.json').then(res => res.json()); needsData = true; }
+    else if (page === 'research') { dataPromise = fetch('data/research.json').then(res => res.json()); needsData = true; }
+    else if (page === 'home') { dataPromise = fetch('data/home.json').then(res => res.json()); needsData = true; }
+
+    // 2. 둘 다 준비될 때까지 기다림
+    let html, data;
+    if (needsData) {
+      [html, data] = await Promise.all([htmlPromise, dataPromise]);
+    } else {
+      html = await htmlPromise;
+    }
+
+    // 3. mainContent에 HTML을 한 번에 넣음
+    mainContent.innerHTML = html;
+
+    // 4. 데이터 기반 렌더링 함수 호출 (data를 인자로 넘김) - requestAnimationFrame으로 감싸기
     if (page === 'projects') {
-      await generateProjectCardsFromTemplate();
+      requestAnimationFrame(() => generateProjectCardsFromTemplate(data));
     } else if (page === 'teaching') {
-      await generateTeachingCardsFromTemplate();
-    } 
-    else {
+      requestAnimationFrame(() => generateTeachingCardsFromTemplate(data));
+    } else if (page === 'education') {
+      requestAnimationFrame(() => generateEducationContentFromTemplate(data));
+    } else if (page === 'research') {
+      requestAnimationFrame(() => {
+        generateResearchPublications(data);
+        generateResearchConferences(data);
+        generateResearchExperience(data);
+      });
+    } else if (page === 'home') {
+      requestAnimationFrame(() => generateHomeContentFromTemplate(data));
+    } else {
       initCardAccordion();
     }
-  
+    await animateIn(mainContent);
+    mainContent.style.opacity = '1';
     isAnimating = false;
+  }
+
+  // 각 렌더링 함수에서 data 인자를 받도록 수정
+  async function generateProjectCardsFromTemplate(projectData) {
+    const container = document.getElementById('project-cards');
+    console.log('[ProjectCards] container:', container, 'data:', projectData);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    const templateRes = await fetch('snippets/cards.html');
+    const templateText = await templateRes.text();
+    console.log('[ProjectCards] template loaded');
+    const cardsHTML = projectData.map(project =>
+      templateText
+        .replace('{{title}}', project.title)
+        .replace('{{description}}', project.description)
+        .replace('{{images}}', project.images)
+    ).join('');
+    container.innerHTML = cardsHTML;
+    console.log('[ProjectCards] cards rendered');
+    initCardAccordion(); // 카드 접힘 기능 적용
+    console.log('[ProjectCards] accordion initialized');
+  }
+
+  async function generateTeachingCardsFromTemplate(teachingData) {
+    const container = document.getElementById('teaching-cards');
+    console.log('[TeachingCards] container:', container, 'data:', teachingData);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    const templateRes = await fetch('snippets/teachingCards.html');
+    const templateText = await templateRes.text();
+    console.log('[TeachingCards] template loaded');
+    const cardsHTML = teachingData.map(project =>
+      templateText
+        .replace('{{title}}', project.title)
+        .replace('{{description}}', project.description)
+    ).join('');
+    container.innerHTML = cardsHTML;
+    console.log('[TeachingCards] cards rendered');
+    initCardAccordion(); // 카드 접힘 기능 적용
+    console.log('[TeachingCards] accordion initialized');
+  }
+
+  async function generateEducationContentFromTemplate(data) {
+    const container = document.getElementById('education-content');
+    console.log('[Education] container:', container, 'data:', data);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    let html = '<ul class="education-list">';
+    data.main.forEach(item => {
+      html += `<li><div class="education-item">
+        <div class="edu-top">
+          <span class="edu-school">${item.school}</span>
+          <span class="edu-period">${item.period}</span>
+        </div>
+        <div class="edu-bottom">
+          <span class="edu-detail">
+            ${item.degree ? item.degree + '<br>' : ''}
+            ${item.minor ? item.minor + '<br>' : ''}
+            ${item.extra ? item.extra + '<br>' : ''}
+            ${item.thesis ? '<span style="display: inline-block; margin-top: 4px;">Thesis: <i>' + item.thesis + '</i></span>' : ''}
+          </span>
+          <span class="edu-tgpa">${item.tgpa || ''}</span>
+        </div>
+      </div></li>`;
+    });
+    html += '</ul>';
+    html += '<h3>Extracurricular Education</h3><ul class="education-list">';
+    data.extracurricular.forEach(item => {
+      html += `<li><div class="education-item">
+        <div class="edu-top">
+          <span class="edu-school">${item.school}</span>
+          <span class="edu-period">${item.period}</span>
+        </div>
+        <div class="edu-bottom">
+          <span class="edu-detail">${item.org}</span>
+        </div>
+      </div></li>`;
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+    console.log('[Education] content rendered');
+  }
+
+  async function generateResearchPublications(data) {
+    const container = document.getElementById('research-content');
+    console.log('[Research:Publications] container:', container, 'data:', data);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    let html = '<ul class="publication-list">';
+    data.publications.forEach(pub => {
+      html += '<li>';
+      if (pub.authors) html += pub.authors + ' ';
+      if (pub.title) html += pub.title + ' ';
+      if (pub.link) html += `<a href="${pub.link}" target="_blank" rel="noopener noreferrer">[Preprint]</a> `;
+      if (pub.status) html += `<span class="status"> ${pub.status}</span>`;
+      html += '</li>';
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+    console.log('[Research:Publications] content rendered');
+  }
+
+  async function generateResearchConferences(data) {
+    const container = document.getElementById('conference-content');
+    console.log('[Research:Conferences] container:', container, 'data:', data);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    let html = '<ul class="conference-list">';
+    data.conferences.forEach(conf => {
+      html += '<li>';
+      if (conf.authors) html += conf.authors + ' ';
+      if (conf.title) html += conf.title + ' ';
+      if (conf.link) html += `<a href="${conf.link}" target="_blank" rel="noopener noreferrer">[Link]</a> `;
+      if (conf.status) html += `<span class="status"> ${conf.status}</span>`;
+      html += '</li>';
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+    console.log('[Research:Conferences] content rendered');
+  }
+
+  async function generateResearchExperience(data) {
+    const container = document.getElementById('experience-content');
+    console.log('[Research:Experience] container:', container, 'data:', data);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    let html = '<ul class="education-list">';
+    data.experience.forEach(exp => {
+      html += `<li><div class="education-item">
+        <div class="edu-top">
+          <span class="edu-school">${exp.lab}</span>
+          <span class="edu-period">${exp.period}</span>
+        </div>
+        <div class="edu-bottom">
+          <span class="edu-detail">${exp.position}<br>`;
+      exp.details.forEach(d => { html += '• ' + d + '<br>'; });
+      html += '</span></div></div></li>';
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+    console.log('[Research:Experience] content rendered');
+  }
+
+  async function generateHomeContentFromTemplate(data) {
+    const container = document.getElementById('home-content');
+    console.log('[Home] container:', container, 'data:', data);
+    if (!container) return;
+    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    let html = '<div class="home-wrapper"><div class="home-content">';
+    html += `<div class="profile-circle"><img src="${data.profile.img}" alt="${data.profile.name}" class="profile-pic"></div>`;
+    html += `<h1 class="big-name">${data.profile.name}</h1>`;
+    html += `<h2 class="sub-title">${data.profile.subtitle}</h2>`;
+    html += `<div class="info-box"><h3 class="info-title">${data.academic.title}</h3>`;
+    data.academic.paragraphs.forEach(p => { html += `<p>${p}</p>`; });
+    html += '</div>';
+    html += `<div class="info-box"><h3 class="info-title">${data.research.title}</h3>`;
+    data.research.paragraphs.forEach(p => { html += `<p>${p}</p>`; });
+    html += '</div></div></div>';
+    container.innerHTML = html;
+    console.log('[Home] content rendered');
   }
   
 
@@ -101,145 +290,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // projects.html : kwak
-  const projectData = [
-    {
-      images: "images/AIweatherquest.png",
-      title: "AI Weather Quest 2025",
-      description: `
-        Hosted by European Centre ofr Medium-Range Weather Forecasts (ECMWF)
-        <ul>
-          <li>
-            Currently preparing for the AI Weather Quest 2025 competition with my lab members
-          </li>
-          <li>
-            Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts
-          </li>
-        </ul>
-      `
-    },
-    {
-      images: "images/pacman.jpeg",
-      title: "The Pac-Man Project",
-      description: `from UC Berkeley CS188: <i>Intro. to AI</i>
-        <ul>
-          <li>Programmed the Pac-Man artificial intelligence using simple search algorithms (DFS, BFS, A* search, search tree),
- based on Bayes Net and using reinforcement learning</li>
-          <li>Built neural networks and examined parameter values to classify MNIST dataset and words from different
- languages</li>
-        </ul>
-      `
-    },
-    {
-
-      images: "images/PACA.jpg",
-      title: "PACA: Python Autograder for Coding Assignment",
-      description: `from GIST EC4206: <i>Computer Networking</i>
-        <ul>
-          <li>Developed a web server with Flask framework to communicate with the back-end server using socket programming</li>
-          <li>Modified a web design sample to apply our project and connected it to the web server</li>
-          <li>Designed presentation slides and introduced the product with a code review</li>
-        </ul>
-      
-      `
-    },
-    {
-      images: "images/treatment system cut.png",
-      title: "Environmental Impact Assessment of Potential Wastewater Treatment System in Putignano, Italy",
-      description: `
-      from WUT: <i>Environmental Impact Assessments</i>
-          <li>
-            Analyzed regional climate patterns near the target area using ERA5 reanalysis data and applied Leopold matrices to evaluate impacts during construction, operation, and liquidation phases
-          </li>
-          <li>
-            Designed a biological wastewater treatment system, compared its environmental performance against chemical and electrochemical alternatives, and proposed mitigation strategies
-          </li>
-      `
-    },
-    {
-      images: "images/Bratislava.jpg",
-      title: "🚧Under Construction🚧",
-      description: `
-      Several more projects have been completed but haven’t made it to this page yet. This page is still catching up!
-      `
-    }
-  ];
-
-  // 템플릿을 불러와 카드로 변환
-  async function generateProjectCardsFromTemplate() {
-    const container = document.getElementById('project-cards');
-    if (!container) return;
-
-    const templateRes = await fetch('snippets/cards.html');
-    const templateText = await templateRes.text();
-
-    const cardsHTML = projectData.map(project =>
-      templateText
-        .replace('{{title}}', project.title)
-        .replace('{{description}}', project.description)
-        .replace('{{images}}', project.images)
-    ).join('');
-
-    container.innerHTML = cardsHTML;
-    initCardAccordion(); // 카드 접힘 기능 적용
-  }
-
-  const teachingData = [
-    {
-      title: "Mathematics",
-      description: `
-        <h4>Multivariable Calculus (2025 Spring)</h4>
-        <h4>Graph Theory (2024 Fall)</h4>
-      `
-    },
-    {
-      title: "Computer Science",
-      description: `
-        <h4>Digital Design (2023 Spring)</h4>
-      `
-    },
-    {
-      title: "Literature",
-      description: `
-        <h4>Prof. Soo-Jeong Lee's Literature Courses (2023 Spring – Present)</h4>
-        <p><i>Reading Contemporary Poetry</i>, <i>Korean Poets</i>, <i>Understanding Poetry</i>, <br>
-           <i>Ri Sangs Literature and Science</i>, and <i>Writing I: Creative Writing</i></p>
-      `
-    },
-    {
-      title: "Mentoring",
-      description: `
-        <h4>GIST 101 (2023, 2024 Spring)</h4>
-      `
-    }
-  ];
-  
-
-  async function generateTeachingCardsFromTemplate() {
-    const container = document.getElementById('teaching-cards');
-    if (!container) return;
-
-    const templateRes = await fetch('snippets/teachingCards.html');
-    const templateText = await templateRes.text();
-
-    const cardsHTML = teachingData.map(project =>
-      templateText
-        .replace('{{title}}', project.title)
-        .replace('{{description}}', project.description)
-    ).join('');
-
-    container.innerHTML = cardsHTML;
-    initCardAccordion(); // 카드 접힘 기능 적용
-  }
- 
-
   function animateOut(el) {
-    return gsap.to(el, { y: -50, opacity: 0, duration: 0.3 });
+    return new Promise(resolve => {
+      try {
+        gsap.to(el, {
+          y: -50,
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            el.style.opacity = '1';
+            resolve();
+          }
+        });
+      } catch (e) {
+        el.style.opacity = '1';
+        resolve();
+      }
+    });
   }
 
   function animateIn(el) {
-    gsap.set(el, { y: 50, opacity: 0 });
-    return gsap.to(el, { y: 0, opacity: 1, duration: 0.3 });
+    return new Promise(resolve => {
+      try {
+        gsap.set(el, { y: 50, opacity: 0 });
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          duration: 0.6, // 더 느리게
+          onComplete: () => {
+            el.style.opacity = '1';
+            resolve();
+          }
+        });
+      } catch (e) {
+        el.style.opacity = '1';
+        resolve();
+      }
+    });
   }
 
   window.addEventListener('load', () => {

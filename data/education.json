@@ -1,0 +1,43 @@
+{
+  "main": [
+    {
+      "school": "Gwangju Institute of Science and Technology (GIST), South Korea",
+      "period": "2019 – 2025",
+      "degree": "B.S. in Electrical Engineering and Computer Science & Environment and Energy Engineering",
+      "minor": "Minor in Mathematics",
+      "thesis": "Butterfly Effect in Deep Learning Weather Prediction Model: Kinetic Energy (KE) Spectra Change",
+      "tgpa": "4.09/4.5"
+    },
+    {
+      "school": "Warsaw University of Technology (WUT), Poland",
+      "period": "2023 Fall",
+      "degree": "Exchange Student, Faculty of Building Services, Hydro and Environmental Engineering",
+      "extra": "Took 25 ECTS",
+      "tgpa": "4.86/5.0"
+    },
+    {
+      "school": "University of California, Berkeley, USA",
+      "period": "2023 Summer",
+      "degree": "Summer Session C",
+      "extra": "Courses: CS70, CS188",
+      "tgpa": "4.0/4.0"
+    }
+  ],
+  "extracurricular": [
+    {
+      "school": "Summer School of Artificial Inteligence",
+      "period": "28 - 31 July 2025",
+      "org": "Korean Mathematicial Society & National Institute for Mathematical Sciences, South Korea"
+    },
+    {
+      "school": "Advanced School on Foundation Models for Scientific Discovery (virtual)",
+      "period": "10 - 18 July 2025",
+      "org": "International Centre for Theoretical Physics, Italy"
+    },
+    {
+      "school": "Summer School of Mathematics: Algorithms",
+      "period": "23 - 27 June 2025",
+      "org": "Eötvös Loránd University, Hungary"
+    }
+  ]
+} 
