@@ -12,18 +12,30 @@ function initNavigation() {
 }
 
 function initSpotlight() {
+  if (window.matchMedia('(max-width: 600px)').matches) return;
   document.addEventListener('mousemove', e => {
     document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
     document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
-    const x = (e.clientX / window.innerWidth - 0.5) * 20;
-    const y = (e.clientY / window.innerHeight - 0.5) * 20;
-    document.documentElement.style.setProperty('--hex-x', x + '%');
-    document.documentElement.style.setProperty('--hex-y', y + '%');
   });
 }
 
 function createTagHTML(tag) {
   return `<span class="tag">${tag}</span>`;
+}
+
+function applyCardHoverEffects() {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      cards.forEach(c => {
+        if (c !== card) c.classList.add('faded');
+        else c.classList.add('active');
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      cards.forEach(c => c.classList.remove('faded', 'active'));
+    });
+  });
 }
 
 function generateHome(data) {
@@ -35,7 +47,10 @@ function generateHome(data) {
       <h1>Hello, my name is</h1>
       <h2>${data.profile.name}</h2>
       <p>${data.academic.paragraphs[0]}</p>
-      <a class="btn" href="#contact">Get In Touch</a>
+      <div class="social">
+        <a href="mailto:tomm1203@gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
     </div>
   `;
 }
@@ -64,6 +79,7 @@ function generateEducation(data) {
     `).join('');
   }
   list.innerHTML = html;
+  applyCardHoverEffects();
 }
 
 function generateProjects(data) {
@@ -78,6 +94,7 @@ function generateProjects(data) {
       </div>
     </div>
   `).join('');
+  applyCardHoverEffects();
 }
 
 function generateTeaching(data) {
@@ -86,6 +103,7 @@ function generateTeaching(data) {
   grid.innerHTML = data.map(t => `
     <div class="card"><h3>${t.title}</h3>${t.description}</div>
   `).join('');
+  applyCardHoverEffects();
 }
 
 function generateResearch(data) {
@@ -104,6 +122,7 @@ function generateResearch(data) {
       </div>
     `).join('');
   }
+  applyCardHoverEffects();
 }
 
 async function init() {
@@ -114,6 +133,7 @@ async function init() {
   generateProjects(await fetchJSON('data/projects.json'));
   generateTeaching(await fetchJSON('data/teaching.json'));
   generateResearch(await fetchJSON('data/research.json'));
+  applyCardHoverEffects();
 }
 
 document.addEventListener('DOMContentLoaded', init);

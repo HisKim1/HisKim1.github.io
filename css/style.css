@@ -5,11 +5,9 @@
   --white: #e6f1ff;
   --slate: #8892b0;
   --light-slate: #ccd6f6;
-  --accent: #64ffda;
+  --accent: #7db5ff;
   --cursor-x: 50vw;
   --cursor-y: 50vh;
-  --hex-x: 0%;
-  --hex-y: 0%;
 }
 
 html {
@@ -31,7 +29,7 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle 200px at var(--cursor-x) var(--cursor-y), rgba(255,255,255,0.15), transparent 60%);
+  background: radial-gradient(circle 300px at var(--cursor-x) var(--cursor-y), rgba(125,181,255,0.2), transparent 60%);
   mix-blend-mode: screen;
   z-index: -1;
 }
@@ -43,7 +41,7 @@ body::after {
   pointer-events: none;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon fill='%23ffffff' points='50,5 90,30 90,70 50,95 10,70 10,30'/%3E%3C/svg%3E") no-repeat center/80vmin;
   opacity: 0.06;
-  transform: translate(var(--hex-x), var(--hex-y)) scale(1.1) rotate(5deg);
+  transform: scale(1.1) rotate(5deg);
   z-index: -2;
   background-attachment: fixed;
 }
@@ -99,9 +97,9 @@ nav a:focus {
 }
 
 section {
-  padding: 120px 20px;
+  padding: 80px 20px;
   max-width: 800px;
-  margin: 0 auto 80px auto;
+  margin: 0 auto 60px auto;
 }
 
 .hero {
@@ -131,6 +129,10 @@ section {
   margin: 0 0 20px 0;
 }
 
+.hero .social {
+  margin-top: 1rem;
+}
+
 .btn {
   display: inline-block;
   border: 1px solid var(--accent);
@@ -144,7 +146,7 @@ section {
 
 .btn:hover,
 .btn:focus {
-  background: rgba(100, 255, 218, 0.1);
+  background: rgba(125, 181, 255, 0.1);
 }
 
 .grid {
@@ -176,8 +178,7 @@ section {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 1rem;
@@ -185,10 +186,21 @@ section {
   transition: all 0.3s ease;
 }
 
-.card:hover {
+.card:hover,
+.card.active {
   transform: scale(1.015);
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.card.active h3,
+.card:hover h3 {
+  color: var(--accent);
+}
+
+.card.faded {
+  opacity: 0.5;
 }
 
 .social {
@@ -212,6 +224,26 @@ section {
 @media (max-width: 600px) {
   .toggle {
     display: flex;
+  }
+
+  section {
+    padding: 60px 15px;
+    margin: 0 auto 40px auto;
+  }
+
+  .project-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .project-img {
+    flex-basis: auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  body::before {
+    display: none;
   }
 
   nav ul {
