@@ -63,10 +63,11 @@ function generateEducation(data) {
     html += `<div class="card">
       <h3>${item.school}</h3>
       <p>${item.degree || ''}</p>
-      <p>${item.minor ? item.minor : ''}</p>
+      <p>${item.double_degree ? 'Double Major: ' + item.double_degree : ''}</p>
+      <p>${item.minor ? 'Minor: ' + item.minor : ''}</p>
       <p class="date">${item.period}</p>
-      ${item.tgpa ? `<p>GPA: ${item.tgpa}</p>` : ''}
-      ${item.thesis ? `<p>Thesis: ${item.thesis}</p>` : ''}
+      ${item.tgpa ? `<p>TGPA: ${item.tgpa}</p>` : ''}
+      ${item.thesis ? `<p>Thesis:</p> <p><i>${item.thesis}</i></p>` : ''}
     </div>`;
   });
 

@@ -3,7 +3,8 @@
     {
       "school": "Gwangju Institute of Science and Technology (GIST), South Korea",
       "period": "2019 – 2025",
-      "degree": "B.S. in Electrical Engineering and Computer Science\n & Earth Science and Environmental Engineering",
+      "degree": "B.S. in Electrical Engineering and Computer Science",
+      "double_degree": "Earth Science and Environmental Engineering",
       "minor": "Minor in Mathematics",
       "thesis": "Butterfly Effect in Deep Learning Weather Prediction Model: Kinetic Energy (KE) Spectra Change",
       "tgpa": "4.10/4.5"
