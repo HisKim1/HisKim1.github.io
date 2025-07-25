@@ -2,26 +2,26 @@
   "main": [
     {
       "school": "Gwangju Institute of Science and Technology (GIST), South Korea",
-      "period": "2019 – 2025",
-      "degree": "B.S. in Electrical Engineering and Computer Science",
-      "double_degree": "Earth Science and Environmental Engineering",
+      "period": "2019 – 2025  |  B.S.",
+      "degree": "Electrical Engineering and Computer Science",
+      "double_degree": "Double major in Earth Science and Environmental Engineering",
       "minor": "Minor in Mathematics",
       "thesis": "Butterfly Effect in Deep Learning Weather Prediction Model: Kinetic Energy (KE) Spectra Change",
-      "tgpa": "4.10/4.5"
+      "tgpa": "4.10 / 4.5"
     },
     {
       "school": "Warsaw University of Technology (WUT), Poland",
-      "period": "2023 Fall",
-      "degree": "Exchange Student, Faculty of Building Services, Hydro and Environmental Engineering",
+      "period": "2023 Fall  |  Exchange Student",
+      "degree": "Faculty of Building Services, Hydro and Environmental Engineering",
       "extra": "Took 25 ECTS",
-      "tgpa": "4.86/5.0"
+      "tgpa": "4.86 / 5.0"
     },
     {
       "school": "University of California, Berkeley, USA",
-      "period": "2023 Summer",
-      "degree": "Summer Session C",
-      "extra": "Courses: CS70, CS188",
-      "tgpa": "4.0/4.0"
+      "period": "2023 Summer  |  Summer Session C",
+      "degree": "Courses: CS70, CS188",
+      "extra": "",
+      "tgpa": "4.0 / 4.0"
     }
   ],
   "extracurricular": [

@@ -61,12 +61,14 @@ function generateEducation(data) {
   let html = '';
   data.main.forEach(item => {
     html += `<div class="card">
-      <h3>${item.school}</h3>
-      <p>${item.degree || ''}</p>
-      <p>${item.double_degree ? 'Double Major: ' + item.double_degree : ''}</p>
-      <p>${item.minor ? 'Minor: ' + item.minor : ''}</p>
       <p class="date">${item.period}</p>
-      ${item.tgpa ? `<p>TGPA: ${item.tgpa}</p>` : ''}
+      <h3>${item.school}</h3>
+      <div class="degree-tgpa-row">
+        <span class="degree">${item.degree || ''}</span>
+        ${item.tgpa ? `<span class="tgpa">TGPA: ${item.tgpa}</span>` : ''}
+      </div>
+      <p>${item.double_degree ? item.double_degree : ''}</p>
+      <p>${item.minor ? item.minor : ''}</p>
       ${item.thesis ? `<p>Thesis:</p> <p><i>${item.thesis}</i></p>` : ''}
     </div>`;
   });
@@ -74,8 +76,8 @@ function generateEducation(data) {
   if (data.extracurricular) {
     html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
       <div class="card">
-        <h3>${e.school}</h3>
         <p class="date">${e.period}</p>
+        <h3>${e.school}</h3>
         <p>${e.org}</p>
       </div>
     `).join('');
@@ -117,9 +119,9 @@ function generateResearch(data) {
   if (exp) {
     exp.innerHTML = data.experience.map(e => `
       <div class="card">
+        <p class="date">${e.period}</p>
         <h3>${e.lab}</h3>
         <p>${e.position}</p>
-        <p class="date">${e.period}</p>
         ${e.details ? '<ul>' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
       </div>
     `).join('');

@@ -190,6 +190,43 @@ section {
   transition: all 0.3s ease;
 }
 
+.card .date {
+  font-size: 0.95em;
+  color: var(--slate);
+  margin-bottom: 0em;   /* h3와의 간격을 좁게 */
+  margin-top: 0;
+  display: block;
+  line-height: 1.2;
+}
+
+.degree-tgpa-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.2em;
+}
+.degree-tgpa-row .degree {
+  text-align: left;
+}
+.degree-tgpa-row .tgpa {
+  text-align: right;
+  color: #b7b7b7;
+}
+
+.card.active .date {
+  color: #ffffff; /* 또는 원하는 색상 */
+}
+
+.card p {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 0.15em;
+}
+
 .card:hover,
 .card.active {
   transform: scale(1.015);
@@ -300,5 +337,5 @@ h4 {
 
 .date {
   font-size: 0.85rem;
-  opacity: 0.6;
+  opacity: 0.8;
 }
