@@ -70,6 +70,7 @@ function generateEducation(data) {
       <p>${item.double_degree ? item.double_degree : ''}</p>
       <p>${item.minor ? item.minor : ''}</p>
       ${item.thesis ? `<p>Thesis:</p> <p><i>${item.thesis}</i></p>` : ''}
+      <p>${item.advisor ? item.advisor : ''}</p>
     </div>`;
   });
 
