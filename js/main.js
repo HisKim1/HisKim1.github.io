@@ -47,10 +47,12 @@ function generateHome(data) {
       <h1>Hello, my name is</h1>
       <h2>${data.profile.name}</h2>
       <p>${data.academic.paragraphs[0]}</p>
+      <!-- 
       <div class="social">
-        <a href="mailto:tomm1203@gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="mailto:hisu.kim.hisu@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
         <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
       </div>
+      -->
     </div>
   `;
 }
