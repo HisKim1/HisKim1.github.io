@@ -132,6 +132,8 @@ function generateResearch(data) {
   applyCardHoverEffects();
 }
 
+
+
 async function init() {
   initNavigation();
   initSpotlight();
