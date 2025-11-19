@@ -11,12 +11,23 @@
     {
       "school": "Gwangju Institute of Science and Technology (GIST), South Korea",
       "period": "2019 – 2025  |  B.S.",
-      "degree": "Major in Electrical Engineering and Computer Science",
-      "double_degree": "Double major in Earth Science and Environmental Engineering",
-      "minor": "Minor in Mathematics",
-      "thesis": "Butterfly Effect in Deep Learning Weather Prediction Model: Kinetic Energy (KE) Spectra Change",
-      "advisor": "Advisor: Prof. Gunhyuk Park & Prof. Jinho Yoon",
-      "tgpa": "4.10 / 4.5"
+      "degree": "",
+      "tgpa": "4.10 / 4.5",
+      "honors": "Magna Cum Laude",
+      "details": [
+        {
+          "label": "Major",
+          "value": "Electrical Engineering and Computer Science"
+        },
+        {
+          "label": "Double Major",
+          "value": "Earth Science and Environmental Engineering"
+        },
+        {
+          "label": "Minor",
+          "value": "Mathematics"
+        }
+      ]
     },
     {
       "school": "Warsaw University of Technology (WUT), Poland",

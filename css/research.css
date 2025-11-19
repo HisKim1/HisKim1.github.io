@@ -1,21 +1,84 @@
 /* Research page styles */
-.publication-list,
-.conference-list {
-  list-style: none;
-  padding-left: 0;
+.research-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.research-panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.apa-list {
   margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.publication-list li,
-.conference-list li {
-  margin-bottom: 20px;
-  font-size: 1rem;
-  line-height: 1.6;
-  padding-left: 15px;
-  padding-right: 15px;
+
+.apa-list li {
+  line-height: 1.7;
+  font-size: 0.95rem;
 }
-.publication-list .status,
-.conference-list .status {
-  display: inline-block;
+
+.apa-list a {
+  color: #bfe0ff;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 0.2s ease;
+}
+
+.apa-list a:visited {
+  color: #d4b8ff;
+}
+
+.apa-list a:hover,
+.apa-list a:focus {
+  color: #ffffff;
+}
+
+.apa-journal {
   font-style: italic;
-  color: #4ca1af;
+}
+
+.apa-volume {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.apa-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.research-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--slate);
+}
+
+.empty-placeholder {
+  margin: 0;
+  padding: 1rem 0;
+  color: var(--slate);
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .research-panel {
+    padding: 1.25rem;
+  }
 }

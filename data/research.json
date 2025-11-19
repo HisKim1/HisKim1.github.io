@@ -1,28 +1,61 @@
 {
   "publications": [
     {
-      "authors": "<strong><u>H. Kim</u></strong>, J. Ryu, S. Son, J. Jeong, H. Kim, &  J. Yoon.",
+      "type": "journal-article",
+      "authors": [
+        "Kim, H.",
+        "Ryu, J.",
+        "Son, S.",
+        "Jeong, J.",
+        "Kim, H.",
+        "Yoon, J."
+      ],
+      "year": 2025,
       "title": "A spectral test of the butterfly effect and physical consistency in the diffusion-based GenCast's ensembles",
+      "journal": "npj Climate and Atmospheric Science",
+      "status": "Under review",
+      "status_note": "Under review at npj Climate and Atmospheric Science",
       "link": "",
-      "status": "(Under review at npj Climate and Atmospheric Science)"
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "doi": "",
+      "highlight_author_indices": [0]
     },
     {
-      "authors": "J. Ryu, <strong><u>H. Kim</u></strong>, S. Wang, J. Yoon.",
-      "title": "Increasing Resolution and Accuracy in Sub-Seasonal Forecasting through 3D U-Net: the Western US",
+      "type": "journal-article",
+      "authors": [
+        "Ryu, J.",
+        "Kim, H.",
+        "Wang, S.",
+        "Yoon, J."
+      ],
+      "year": 2025,
+      "title": "Increasing resolution and accuracy in sub-seasonal forecasting through 3D U-Net: The Western US",
+      "journal": "Geoscientific Model Development",
+      "status": "In press",
+      "status_note": "Accepted for publication",
       "link": "https://egusphere.copernicus.org/preprints/2025/egusphere-2025-308/",
-      "status": "(Accepted for publication at Geoscientific Model Development)"
+      "volume": "",
+      "issue": "",
+      "pages": "",
+      "doi": "https://doi.org/10.5194/gmd-2025-308",
+      "highlight_author_indices": [1]
     }
-    // {
-    //   "title": "Will be updated soon...!"
-    // }
   ],
   "conferences": [
     {
-      "conferences": "AGU25 Meeting",
-      "type": "Oral presentation",
-      "authors": "<strong><u>H. Kim</u></strong> &  J. Yoon.",
-      "title": "Revealing the butterfly effect in deep learning weather prediction model via kinetic energy spectra change",
-      "location": "New Orleans, LA, USA"
+      "authors": [
+        "Kim, H.",
+        "Yoon, J."
+      ],
+      "year": 2025,
+      "month": "December",
+      "title": "Revealing the butterfly effect in deep learning weather prediction models via kinetic energy spectra change",
+      "event": "AGU25 Meeting",
+      "presentation_type": "Oral presentation",
+      "location": "New Orleans, LA, USA",
+      "highlight_author_indices": [0]
     }
   ],
   "experience": [
@@ -46,4 +79,4 @@
       ]
     }
   ]
-} 
+}

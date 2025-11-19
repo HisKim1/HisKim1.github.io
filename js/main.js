@@ -38,6 +38,146 @@ function applyCardHoverEffects() {
   });
 }
 
+const PRIMARY_NAME_PATTERN = /(Kim,\s*H\.|H\.?\s*Kim)/gi;
+
+function emphasizePrimaryName(text = '') {
+  return text.replace(PRIMARY_NAME_PATTERN, match => `<strong><u>${match}</u></strong>`);
+}
+
+function formatAuthorList(authors = [], highlightIndices) {
+  if (!Array.isArray(authors) || !authors.length) return '';
+  const useExplicitHighlight = Array.isArray(highlightIndices);
+  const formattedAuthors = authors.map((author, index) => {
+    if (useExplicitHighlight) {
+      return highlightIndices.includes(index) ? emphasizePrimaryName(author) : author;
+    }
+    return emphasizePrimaryName(author);
+  });
+  if (formattedAuthors.length === 1) return formattedAuthors[0];
+  if (formattedAuthors.length === 2) {
+    return `${formattedAuthors[0]} & ${formattedAuthors[1]}`;
+  }
+  const leadAuthors = formattedAuthors.slice(0, -1).join(', ');
+  const finalAuthor = formattedAuthors[formattedAuthors.length - 1];
+  return `${leadAuthors}, & ${finalAuthor}`;
+}
+
+function splitPeriod(period = '') {
+  if (!period) return { timeline: '', degreeLabel: '' };
+  const [timeline, label] = period.split('|').map(part => part.trim());
+  return {
+    timeline: timeline || period,
+    degreeLabel: label || ''
+  };
+}
+
+function createApaList(items, renderItem) {
+  if (!Array.isArray(items) || !items.length) {
+    return '<p class="empty-placeholder">Updates are on the way.</p>';
+  }
+  return `<ol class="apa-list">${items.map(renderItem).join('')}</ol>`;
+}
+
+function renderPublicationAPA(entry = {}) {
+  const segments = [];
+  const authors = formatAuthorList(entry.authors, entry.highlight_author_indices);
+  if (authors) segments.push(authors);
+  if (entry.year) segments.push(`(${entry.year}).`);
+
+  if (entry.title) {
+    const titleText = entry.link
+      ? `<a href="${entry.link}" target="_blank" rel="noopener noreferrer">${entry.title}</a>`
+      : entry.title;
+    segments.push(`${titleText}.`);
+  }
+
+  if (entry.journal) {
+    let journalSegment = `<span class="apa-journal">${entry.journal}</span>`;
+    if (entry.volume) {
+      journalSegment += `, <span class="apa-volume">${entry.volume}</span>`;
+      if (entry.issue) {
+        journalSegment += `(${entry.issue})`;
+      }
+    }
+    if (entry.pages) {
+      journalSegment += `, ${entry.pages}`;
+    }
+    journalSegment += '.';
+    segments.push(journalSegment);
+  }
+
+  if (entry.doi) {
+    segments.push(`<a href="${entry.doi}" target="_blank" rel="noopener noreferrer">${entry.doi}</a>.`);
+  }
+
+  if (entry.status_note) {
+    segments.push(`<span class="apa-status">${entry.status_note}</span>`);
+  }
+
+  return `<li>${segments.join(' ')}</li>`;
+}
+
+function renderConferenceAPA(entry = {}) {
+  const segments = [];
+  const authors = formatAuthorList(entry.authors, entry.highlight_author_indices);
+  if (authors) segments.push(authors);
+
+  if (entry.year) {
+    const monthPart = entry.month ? `, ${entry.month}` : '';
+    segments.push(`(${entry.year}${monthPart}).`);
+  }
+
+  if (entry.title) {
+    segments.push(`${entry.title}.`);
+  }
+
+  if (entry.event) {
+    const presentationPrefix = entry.presentation_type ? `${entry.presentation_type} presented at` : 'Presented at';
+    segments.push(`${presentationPrefix} <span class="apa-journal">${entry.event}</span>.`);
+  }
+
+  const metadata = entry.location
+    ? `<div class="research-meta"><span>${entry.location}</span></div>`
+    : '';
+
+  return `<li>${segments.join(' ')}${metadata}</li>`;
+}
+
+function deriveEducationDetails(item = {}) {
+  const mappings = [
+    { key: 'double_degree', label: 'Double Major' },
+    { key: 'minor', label: 'Minor' },
+    { key: 'extra', label: 'Note' },
+    { key: 'thesis', label: 'Thesis' },
+    { key: 'advisor', label: 'Advisor' }
+  ];
+
+  return mappings
+    .map(({ key, label }) => (item[key] ? { label, value: item[key] } : null))
+    .filter(Boolean);
+}
+
+function buildEducationDetailsMarkup(item = {}) {
+  const details = Array.isArray(item.details) && item.details.length
+    ? item.details
+    : deriveEducationDetails(item);
+
+  if (!details.length) return '';
+
+  return `
+    <dl class="edu-details">
+      ${details
+        .map(detail => `
+          <div class="edu-detail-row">
+            <dt data-label="${detail.label}">${detail.label}</dt>
+            <dd>${detail.value}</dd>
+          </div>
+        `)
+        .join('')}
+    </dl>
+  `;
+}
+
 function generateHome(data) {
   const container = document.getElementById('home-section');
   if (!container) return;
@@ -60,23 +200,35 @@ function generateHome(data) {
 function generateEducation(data) {
   const list = document.getElementById('education-list');
   if (!list) return;
-  let html = '';
-  data.main.forEach(item => {
-    html += `<div class="card">
-      <p class="date">${item.period}</p>
-      <h3>${item.school}</h3>
-      <div class="degree-tgpa-row">
-        <span class="degree">${item.degree || ''}</span>
-        ${item.tgpa ? `<span class="tgpa">TGPA: ${item.tgpa}</span>` : ''}
-      </div>
-      <p>${item.double_degree ? item.double_degree : ''}</p>
-      <p>${item.minor ? item.minor : ''}</p>
-      ${item.thesis ? `<p>Thesis:</p> <p><i>${item.thesis}</i></p>` : ''}
-      <p>${item.advisor ? item.advisor : ''}</p>
-    </div>`;
-  });
+  console.log('[generateEducation] Rendering education timeline');
+  let html = data.main
+    .map(item => {
+      const tgpa = (item.tgpa || '').trim();
+      const { timeline, degreeLabel } = splitPeriod(item.period || '');
+      const metaItems = [
+        item.honors ? `<span class="honor-note">${item.honors}</span>` : '',
+        tgpa ? `<span class="tgpa">GPA ${tgpa}</span>` : ''
+      ].filter(Boolean).join('');
+      const metaBlock = metaItems ? `<div class="education-meta">${metaItems}</div>` : '';
+      return `
+        <div class="card education-card">
+          <div class="card-heading">
+            <div>
+              <p class="date">${timeline}</p>
+              <h3>${item.school || ''}</h3>
+            </div>
+            ${degreeLabel ? `<span class="degree-chip">${degreeLabel}</span>` : ''}
+          </div>
+          ${metaBlock}
+          ${item.degree ? `<p class="degree-detail">${item.degree}</p>` : ''}
+          ${buildEducationDetailsMarkup(item)}
+        </div>
+      `;
+    })
+    .join('');
 
-  if (data.extracurricular) {
+  if (data.extracurricular && data.extracurricular.length) {
+    console.log('[generateEducation] Rendering extracurricular highlights');
     html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
       <div class="card">
         <p class="date">${e.period}</p>
@@ -114,21 +266,34 @@ function generateTeaching(data) {
 }
 
 function generateResearch(data) {
-  const pub = document.getElementById('pub-list');
-  const exp = document.getElementById('exp-list');
-  if (pub) {
-    pub.innerHTML = '<ul>' + data.publications.map(p => `<li>${p.authors || ''} ${p.title || ''}</li>`).join('') + '</ul>';
+  const pubsContainer = document.getElementById('research-publications');
+  const confContainer = document.getElementById('research-conferences');
+  const expContainer = document.getElementById('research-experience');
+
+  console.log('[generateResearch] Rendering publications and presentations');
+
+  if (pubsContainer) {
+    pubsContainer.innerHTML = createApaList(data.publications, renderPublicationAPA);
+    console.log(`[generateResearch] Publications rendered: ${data.publications ? data.publications.length : 0}`);
   }
-  if (exp) {
-    exp.innerHTML = data.experience.map(e => `
+
+  if (confContainer) {
+    confContainer.innerHTML = createApaList(data.conferences, renderConferenceAPA);
+    console.log(`[generateResearch] Conferences rendered: ${data.conferences ? data.conferences.length : 0}`);
+  }
+
+  if (expContainer && Array.isArray(data.experience)) {
+    expContainer.innerHTML = data.experience.map(e => `
       <div class="card">
-        <p class="date">${e.period}</p>
-        <h3>${e.lab}</h3>
-        <p>${e.position}</p>
+        <p class="date">${e.period || ''}</p>
+        <h3>${e.lab || ''}</h3>
+        <p>${e.position || ''}</p>
         ${e.details ? '<ul>' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
       </div>
     `).join('');
+    console.log(`[generateResearch] Research experiences rendered: ${data.experience.length}`);
   }
+
   applyCardHoverEffects();
 }
 
