@@ -721,7 +721,7 @@ footer .easter-egg-keyword:hover {
 /* Fun Fact Page Styles */
 .fun-fact-page {
   min-height: 100vh;
-  padding: 0;
+  padding: 80px 20px;
   margin: 0;
   background: var(--navy);
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -734,9 +734,9 @@ main {
 }
 
 .fun-fact-container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 20px;
+  padding: 0;
 }
 
 .back-button {
