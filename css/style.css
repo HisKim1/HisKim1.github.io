@@ -346,6 +346,18 @@ section {
   color: var(--light-slate);
 }
 
+.experience-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.experience-position {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--light-slate);
+}
+
 .edu-details {
   margin: 0;
   display: grid;

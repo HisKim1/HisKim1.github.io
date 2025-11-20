@@ -367,17 +367,15 @@ function generateResearch(data) {
     expContainer.innerHTML = data.experience.map(e => {
       const { timeline } = splitPeriod(e.period || '');
       return `
-        <div class="card education-card">
+        <div class="card experience-card">
           <div class="card-heading">
             <div>
               <p class="date">${timeline || e.period || ''}</p>
-              <div class="school-name-row">
-                <h3>${e.lab || ''}</h3>
-                ${e.organization ? `<span class="country-badge">${e.organization}</span>` : ''}
-              </div>
+              <h3>${e.lab || ''}</h3>
             </div>
+            ${e.organization ? `<span class="country-badge">${e.organization}</span>` : ''}
           </div>
-          ${e.position ? `<p class="degree-detail">${e.position || ''}</p>` : ''}
+          ${e.position ? `<p class="experience-position">${e.position || ''}</p>` : ''}
           ${e.details && e.details.length > 0 ? `
             <ul class="experience-details">
               ${e.details.map(d => `<li>${d}</li>`).join('')}
