@@ -457,67 +457,92 @@ section {
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     margin-bottom: 0.75rem;
   }
 
   h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   h4 {
-    font-size: 1rem;
-  }
-
-  .hero h2 {
-    font-size: clamp(32px, 10vw, 48px);
-  }
-
-  .hero h1 {
-    font-size: 1rem;
-  }
-
-  .card h3 {
-    font-size: 1.1rem;
-  }
-
-  .card p {
     font-size: 0.9rem;
   }
 
+  .hero h2 {
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .hero h1 {
+    font-size: 0.9rem;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+  }
+
   .project-title-section h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .project-source {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .project-details li,
   .project-description {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .teaching-card h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .teaching-items li,
   .teaching-description {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .apa-list li {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     line-height: 1.6;
   }
 
   .education-card .card-heading h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .edu-details dd {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .degree-detail {
+    font-size: 0.85rem;
+  }
+
+  .experience-details li {
+    font-size: 0.85rem;
+  }
+
+  .country-badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .degree-chip {
+    font-size: 0.75rem;
+  }
+
+  .honor-note {
+    font-size: 0.8rem;
+  }
+
+  .education-meta .tgpa {
+    font-size: 0.8rem;
   }
 
   .section-glass-panel {
