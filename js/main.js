@@ -240,11 +240,11 @@ function generateEducation(data) {
       <div class="card education-card">
         <div class="card-heading">
           <div>
-            <p class="date">${e.period || ''}</p>
-            <div class="school-name-row">
-              <h3>${e.school || ''}</h3>
+            <div class="date-row">
+              <p class="date">${e.period || ''}</p>
               ${e.country ? `<span class="country-badge">${e.country}</span>` : ''}
             </div>
+            <h3>${e.school || ''}</h3>
           </div>
         </div>
         ${e.org ? `<p class="degree-detail">${e.org}</p>` : ''}
