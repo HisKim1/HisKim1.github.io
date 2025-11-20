@@ -352,6 +352,13 @@ section {
   gap: 0.5rem;
 }
 
+.experience-card .card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
 .experience-position {
   margin: 0;
   font-size: 0.95rem;
