@@ -277,18 +277,20 @@ function generateProjects(data) {
     
     return `
       <div class="card project-card">
-        <div class="project-header">
+        <div class="project-title-section">
+          <h3>${p.title}</h3>
+          ${source ? `<p class="project-source">${source}</p>` : ''}
+        </div>
+        <div class="project-content">
           <img class="project-img" src="${p.images}" alt="${p.title}">
-          <div class="project-title-section">
-            <h3>${p.title}</h3>
-            ${source ? `<p class="project-source">${source}</p>` : ''}
+          <div class="project-text-content">
+            ${hasDetails ? `
+              <ul class="project-details">
+                ${details.map(d => `<li>${d}</li>`).join('')}
+              </ul>
+            ` : hasPlainText ? `<div class="project-description">${plainText}</div>` : ''}
           </div>
         </div>
-        ${hasDetails ? `
-          <ul class="project-details">
-            ${details.map(d => `<li>${d}</li>`).join('')}
-          </ul>
-        ` : hasPlainText ? `<div class="project-description">${plainText}</div>` : ''}
       </div>
     `;
   }).join('');

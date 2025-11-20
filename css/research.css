@@ -3,6 +3,15 @@
   padding-top: 40px;
 }
 
+.research-glass-panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
 .research-columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

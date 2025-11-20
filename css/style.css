@@ -107,6 +107,19 @@ section {
   margin: 0 auto 60px auto;
 }
 
+.section-glass-panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.section-glass-panel h2 {
+  margin-top: 0;
+}
+
 
 .hero {
   height: 100vh;
@@ -172,26 +185,10 @@ section {
 .project-card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.project-header {
-  display: flex;
   gap: 1.25rem;
-  align-items: flex-start;
-}
-
-.project-img {
-  flex-shrink: 0;
-  width: 180px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .project-title-section {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -210,8 +207,27 @@ section {
   font-style: italic;
 }
 
+.project-content {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.project-img {
+  flex-shrink: 0;
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-text-content {
+  flex: 1;
+}
+
 .project-details {
-  margin: 0.5rem 0 0 0;
+  margin: 0;
   padding-left: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -225,21 +241,21 @@ section {
 }
 
 .project-description {
-  margin-top: 0.5rem;
+  margin: 0;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--light-slate);
 }
 
 @media (max-width: 600px) {
-  .project-header {
+  .project-content {
     flex-direction: column;
   }
   
   .project-img {
     width: 100%;
     height: auto;
-    max-height: 200px;
+    max-height: 250px;
   }
 }
 
