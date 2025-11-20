@@ -206,8 +206,8 @@ function generateEducation(data) {
       const tgpa = (item.tgpa || '').trim();
       const { timeline, degreeLabel } = splitPeriod(item.period || '');
       const metaItems = [
-        item.honors ? `<span class="honor-note">${item.honors}</span>` : '',
-        tgpa ? `<span class="tgpa">GPA ${tgpa}</span>` : ''
+        tgpa ? `<span class="tgpa">GPA ${tgpa}</span>` : '',
+        item.honors ? `<span class="honor-note">${item.honors}</span>` : ''
       ].filter(Boolean).join('');
       const metaBlock = metaItems ? `<div class="education-meta">${metaItems}</div>` : '';
       return `
