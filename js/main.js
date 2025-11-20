@@ -188,9 +188,13 @@ function generateHome(data) {
   const keywords = data.profile.keywords && data.profile.keywords.length > 0
     ? `<div class="profile-keywords">${data.profile.keywords.map(k => `<span class="keyword-badge">${k}</span>`).join('')}</div>`
     : '';
+  const easterEgg = '<span class="easter-egg-keyword">CrossFitter & Dancer</span>';
   container.innerHTML = `
     <div class="hero">
-      <img src="${data.profile.img}" alt="${data.profile.name}" class="profile-img">
+      <div class="profile-img-wrapper">
+        <img src="${data.profile.img}" alt="${data.profile.name}" class="profile-img">
+        ${easterEgg}
+      </div>
       <h1>Hello, my name is</h1>
       <h2>${data.profile.name}</h2>
       <p>${data.academic.paragraphs[0]}</p>
