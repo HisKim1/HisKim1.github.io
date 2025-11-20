@@ -307,15 +307,19 @@ section {
 }
 
 .country-badge {
-  padding: 0.15rem 0.6rem;
+  padding: 0.15rem 0.5rem;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   color: var(--slate);
   background: rgba(255, 255, 255, 0.03);
   font-weight: 500;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .education-meta {
@@ -562,8 +566,9 @@ section {
   }
 
   .country-badge {
-    font-size: 0.7rem;
-    padding: 0.1rem 0.5rem;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    letter-spacing: 0.02em;
   }
 
   .degree-chip {
