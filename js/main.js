@@ -185,11 +185,16 @@ function buildEducationDetailsMarkup(item = {}) {
 function generateHome(data) {
   const container = document.getElementById('home-section');
   if (!container) return;
+  const keywords = data.profile.keywords && data.profile.keywords.length > 0
+    ? `<div class="profile-keywords">${data.profile.keywords.map(k => `<span class="keyword-badge">${k}</span>`).join('')}</div>`
+    : '';
   container.innerHTML = `
     <div class="hero">
       <img src="${data.profile.img}" alt="${data.profile.name}" class="profile-img">
       <h1>Hello, my name is</h1>
       <h2>${data.profile.name}</h2>
+      ${data.profile.subtitle ? `<p class="profile-subtitle">${data.profile.subtitle}</p>` : ''}
+      ${keywords}
       <p>${data.academic.paragraphs[0]}</p>
       <!-- 
       <div class="social">

@@ -2,7 +2,13 @@
   "profile": {
     "img": "images/profile.jpg",
     "name": "Hisu Kim",
-    "subtitle": "Forecasts the Future Forecasting"
+    "subtitle": "Forecasts the Future Forecasting",
+    "keywords": [
+      "Math Enjoyer",
+      "Climate Researcher",
+      "AI/ML Enthusiast",
+      "Deep Learning Researcher"
+    ]
   },
   "academic": {
     "title": "🎓 Academic Journey",
