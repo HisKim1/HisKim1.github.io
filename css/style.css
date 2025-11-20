@@ -183,6 +183,13 @@ section {
   transform: translateY(-2px);
 }
 
+.keyword-badge.fun-fact {
+  opacity: 0.65;
+  font-size: 0.8rem;
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+}
+
 .hero .social {
   margin-top: 1rem;
 }

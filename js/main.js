@@ -186,7 +186,10 @@ function generateHome(data) {
   const container = document.getElementById('home-section');
   if (!container) return;
   const keywords = data.profile.keywords && data.profile.keywords.length > 0
-    ? `<div class="profile-keywords">${data.profile.keywords.map(k => `<span class="keyword-badge">${k}</span>`).join('')}</div>`
+    ? `<div class="profile-keywords">${data.profile.keywords.map(k => {
+        const isFunFact = k.includes('CrossFitter') || k.includes('Dancer');
+        return `<span class="keyword-badge ${isFunFact ? 'fun-fact' : ''}">${k}</span>`;
+      }).join('')}</div>`
     : '';
   container.innerHTML = `
     <div class="hero">
