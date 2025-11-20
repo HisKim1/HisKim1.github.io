@@ -1,7 +1,8 @@
 {
   "main": [
     {
-      "school": "Gwangju Institute of Science and Technology (GIST), South Korea",
+      "school": "Gwangju Institute of Science and Technology (GIST)",
+      "country": "South Korea",
       "period": "2025 – Present  |  M.S.",
       "degree":  "Climate Analysis and Modeling Lab",
       "tgpa": " ",
@@ -9,7 +10,8 @@
     },
 
     {
-      "school": "Gwangju Institute of Science and Technology (GIST), South Korea",
+      "school": "Gwangju Institute of Science and Technology (GIST)",
+      "country": "South Korea",
       "period": "2019 – 2025  |  B.S.",
       "degree": "",
       "tgpa": "4.10 / 4.5",
@@ -30,14 +32,16 @@
       ]
     },
     {
-      "school": "Warsaw University of Technology (WUT), Poland",
+      "school": "Warsaw University of Technology (WUT)",
+      "country": "Poland",
       "period": "2023 Fall  |  Exchange Student",
       "degree": "Faculty of Building Services, Hydro and Environmental Engineering",
       "extra": "Took 25 ECTS",
       "tgpa": "4.86 / 5.0"
     },
     {
-      "school": "University of California, Berkeley, USA",
+      "school": "University of California, Berkeley",
+      "country": "USA",
       "period": "2023 Summer  |  Summer Session C",
       "degree": "Courses: CS70, CS188",
       "extra": "",
