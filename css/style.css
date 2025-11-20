@@ -107,18 +107,6 @@ section {
   margin: 0 auto 60px auto;
 }
 
-.section-glass {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 3rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(30px) saturate(180%);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.section-glass h2 {
-  margin-top: 0;
-}
 
 .hero {
   height: 100vh;

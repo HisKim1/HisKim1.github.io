@@ -242,18 +242,28 @@ function generateEducation(data) {
 }
 
 function parseProjectDescription(description = '') {
-  if (!description) return { source: '', details: [] };
+  if (!description) return { source: '', details: [], plainText: '' };
   const details = [];
   let source = '';
+  let plainText = '';
+  
   const liMatches = description.matchAll(/<li>(.*?)<\/li>/g);
   for (const match of liMatches) {
     details.push(match[1]);
   }
-  const withoutList = description.replace(/<ul>.*?<\/ul>/gs, '').trim();
-  if (withoutList) {
-    source = withoutList;
+  
+  const withoutList = description.replace(/<ul>.*?<\/ul>/gs, '').replace(/<li>.*?<\/li>/g, '').trim();
+  
+  if (details.length > 0) {
+    const sourceMatch = withoutList.match(/^(.+?)(?:\n|$)/);
+    if (sourceMatch) {
+      source = sourceMatch[1].trim();
+    }
+  } else {
+    plainText = withoutList;
   }
-  return { source, details };
+  
+  return { source, details, plainText };
 }
 
 function generateProjects(data) {
@@ -261,8 +271,10 @@ function generateProjects(data) {
   if (!grid) return;
   console.log('[generateProjects] Rendering project cards');
   grid.innerHTML = data.map(p => {
-    const { source, details } = parseProjectDescription(p.description);
+    const { source, details, plainText } = parseProjectDescription(p.description);
     const hasDetails = details.length > 0;
+    const hasPlainText = plainText.length > 0;
+    
     return `
       <div class="card project-card">
         <div class="project-header">
@@ -276,7 +288,7 @@ function generateProjects(data) {
           <ul class="project-details">
             ${details.map(d => `<li>${d}</li>`).join('')}
           </ul>
-        ` : p.description ? `<div class="project-description">${p.description}</div>` : ''}
+        ` : hasPlainText ? `<div class="project-description">${plainText}</div>` : ''}
       </div>
     `;
   }).join('');
