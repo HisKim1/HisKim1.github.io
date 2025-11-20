@@ -237,10 +237,17 @@ function generateEducation(data) {
   if (data.extracurricular && data.extracurricular.length) {
     console.log('[generateEducation] Rendering extracurricular highlights');
     html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
-      <div class="card">
-        <p class="date">${e.period}</p>
-        <h3>${e.school}</h3>
-        <p>${e.org}</p>
+      <div class="card education-card">
+        <div class="card-heading">
+          <div>
+            <p class="date">${e.period || ''}</p>
+            <div class="school-name-row">
+              <h3>${e.school || ''}</h3>
+              ${e.country ? `<span class="country-badge">${e.country}</span>` : ''}
+            </div>
+          </div>
+        </div>
+        ${e.org ? `<p class="degree-detail">${e.org}</p>` : ''}
       </div>
     `).join('');
   }
@@ -358,11 +365,15 @@ function generateResearch(data) {
 
   if (expContainer && Array.isArray(data.experience)) {
     expContainer.innerHTML = data.experience.map(e => `
-      <div class="card">
-        <p class="date">${e.period || ''}</p>
-        <h3>${e.lab || ''}</h3>
-        <p>${e.position || ''}</p>
-        ${e.details ? '<ul>' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
+      <div class="card education-card">
+        <div class="card-heading">
+          <div>
+            <p class="date">${e.period || ''}</p>
+            <h3>${e.lab || ''}</h3>
+          </div>
+        </div>
+        ${e.position ? `<p class="degree-detail">${e.position || ''}</p>` : ''}
+        ${e.details ? '<ul class="experience-details">' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
       </div>
     `).join('');
     console.log(`[generateResearch] Research experiences rendered: ${data.experience.length}`);

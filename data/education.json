@@ -52,17 +52,20 @@
     {
       "school": "Summer School of Artificial Inteligence",
       "period": "28 - 31 July 2025",
-      "org": "Korean Mathematicial Society & National Institute for Mathematical Sciences, South Korea"
+      "org": "Korean Mathematicial Society & National Institute for Mathematical Sciences",
+      "country": "South Korea"
     },
     {
       "school": "Advanced School on Foundation Models for Scientific Discovery (virtual)",
       "period": "10 - 18 July 2025",
-      "org": "International Centre for Theoretical Physics, Italy"
+      "org": "International Centre for Theoretical Physics",
+      "country": "Italy"
     },
     {
       "school": "Summer School of Mathematics: Algorithms",
       "period": "23 - 27 June 2025",
-      "org": "Eötvös Loránd University, Hungary"
+      "org": "Eötvös Loránd University",
+      "country": "Hungary"
     }
   ]
 } 
