@@ -107,6 +107,19 @@ section {
   margin: 0 auto 60px auto;
 }
 
+.section-glass {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 3rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(30px) saturate(180%);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.section-glass h2 {
+  margin-top: 0;
+}
+
 .hero {
   height: 100vh;
   display: flex;
@@ -168,21 +181,78 @@ section {
   gap: 1.5rem;
 }
 
-.project-item {
+.project-card {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-  align-items: center;
+}
+
+.project-header {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
 }
 
 .project-img {
-  flex-basis: 33%;
-  max-width: 250px;
-  border-radius: 4px;
+  flex-shrink: 0;
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.project-text {
+.project-title-section {
   flex: 1;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-title-section h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.project-source {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--slate);
+  font-style: italic;
+}
+
+.project-details {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-details li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--light-slate);
+}
+
+.project-description {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--light-slate);
+}
+
+@media (max-width: 600px) {
+  .project-header {
+    flex-direction: column;
+  }
+  
+  .project-img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
 }
 
 .card {

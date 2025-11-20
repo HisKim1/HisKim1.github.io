@@ -241,18 +241,45 @@ function generateEducation(data) {
   applyCardHoverEffects();
 }
 
+function parseProjectDescription(description = '') {
+  if (!description) return { source: '', details: [] };
+  const details = [];
+  let source = '';
+  const liMatches = description.matchAll(/<li>(.*?)<\/li>/g);
+  for (const match of liMatches) {
+    details.push(match[1]);
+  }
+  const withoutList = description.replace(/<ul>.*?<\/ul>/gs, '').trim();
+  if (withoutList) {
+    source = withoutList;
+  }
+  return { source, details };
+}
+
 function generateProjects(data) {
   const grid = document.getElementById('project-grid');
   if (!grid) return;
-  grid.innerHTML = data.map(p => `
-    <div class="project-item card">
-      <img class="project-img" src="${p.images}" alt="${p.title}">
-      <div class="project-text">
-        <h3>${p.title}</h3>
-        <p>${p.description}</p>
+  console.log('[generateProjects] Rendering project cards');
+  grid.innerHTML = data.map(p => {
+    const { source, details } = parseProjectDescription(p.description);
+    const hasDetails = details.length > 0;
+    return `
+      <div class="card project-card">
+        <div class="project-header">
+          <img class="project-img" src="${p.images}" alt="${p.title}">
+          <div class="project-title-section">
+            <h3>${p.title}</h3>
+            ${source ? `<p class="project-source">${source}</p>` : ''}
+          </div>
+        </div>
+        ${hasDetails ? `
+          <ul class="project-details">
+            ${details.map(d => `<li>${d}</li>`).join('')}
+          </ul>
+        ` : p.description ? `<div class="project-description">${p.description}</div>` : ''}
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
   applyCardHoverEffects();
 }
 

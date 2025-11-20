@@ -1,8 +1,4 @@
 /* Research page styles */
-#research {
-  padding-top: 40px;
-}
-
 .research-columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
