@@ -364,18 +364,25 @@ function generateResearch(data) {
   }
 
   if (expContainer && Array.isArray(data.experience)) {
-    expContainer.innerHTML = data.experience.map(e => `
-      <div class="card education-card">
-        <div class="card-heading">
-          <div>
-            <p class="date">${e.period || ''}</p>
-            <h3>${e.lab || ''}</h3>
+    expContainer.innerHTML = data.experience.map(e => {
+      const { timeline } = splitPeriod(e.period || '');
+      return `
+        <div class="card education-card">
+          <div class="card-heading">
+            <div>
+              <p class="date">${timeline || e.period || ''}</p>
+              <h3>${e.lab || ''}</h3>
+            </div>
           </div>
+          ${e.position ? `<p class="degree-detail">${e.position || ''}</p>` : ''}
+          ${e.details && e.details.length > 0 ? `
+            <ul class="experience-details">
+              ${e.details.map(d => `<li>${d}</li>`).join('')}
+            </ul>
+          ` : ''}
         </div>
-        ${e.position ? `<p class="degree-detail">${e.position || ''}</p>` : ''}
-        ${e.details ? '<ul class="experience-details">' + e.details.map(d => `<li>${d}</li>`).join('') + '</ul>' : ''}
-      </div>
-    `).join('');
+      `;
+    }).join('');
     console.log(`[generateResearch] Research experiences rendered: ${data.experience.length}`);
   }
 
