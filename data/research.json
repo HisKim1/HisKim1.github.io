@@ -61,7 +61,8 @@
   ],
   "experience": [
     {
-      "lab": "Climate Analysis and Modeling Lab, GIST",
+      "lab": "Climate Analysis and Modeling Lab",
+      "organization": "GIST",
       "period": "Feb. 2023 – Aug. 2025",
       "position": "Undergraduate Research Intern under Prof. Jin-ho Yoon",
       "details": [
@@ -71,11 +72,12 @@
       ]
     },
     {
-      "lab": "Computer Emergency Response Team (CERT), Republic of Korea Naval Fleet Command",
+      "lab": "Computer Emergency Response Team (CERT)",
+      "organization": "Republic of Korea Naval Fleet Command",
       "period": "Feb. 2021 – Oct. 2022",
       "position": "Information Security Controller",
       "details": [
-        "Distributed batch files to edit registry through NAC (Network Access Control) program and removed vulnerable files in servers and users’ computers to prevent \"MS-MSDT\" and \"log4j\" vulnerabilities that allow unauthorized remote access to the Linux server",
+        "Distributed batch files to edit registry through NAC (Network Access Control) program and removed vulnerable files in servers and users' computers to prevent \"MS-MSDT\" and \"log4j\" vulnerabilities that allow unauthorized remote access to the Linux server",
         "Analyzed packets and logs of cybersecurity equipment such as firewall and IPS (Intrusion Prevention System), found unidentified or unnecessary communication"
       ]
     }

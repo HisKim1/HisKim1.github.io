@@ -371,7 +371,10 @@ function generateResearch(data) {
           <div class="card-heading">
             <div>
               <p class="date">${timeline || e.period || ''}</p>
-              <h3>${e.lab || ''}</h3>
+              <div class="school-name-row">
+                <h3>${e.lab || ''}</h3>
+                ${e.organization ? `<span class="country-badge">${e.organization}</span>` : ''}
+              </div>
             </div>
           </div>
           ${e.position ? `<p class="degree-detail">${e.position || ''}</p>` : ''}
