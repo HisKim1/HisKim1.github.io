@@ -414,10 +414,26 @@ function showFunFactPage() {
   const footer = document.querySelector('footer');
   
   if (mainContent && funFactPage) {
-    mainContent.style.display = 'none';
-    funFactPage.style.display = 'block';
-    if (header) header.style.display = 'none';
-    if (footer) footer.style.display = 'none';
+    // Fade out main content
+    mainContent.style.opacity = '0';
+    mainContent.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+      mainContent.style.display = 'none';
+      if (header) header.style.display = 'none';
+      if (footer) footer.style.display = 'none';
+      
+      // Show and fade in fun fact page
+      funFactPage.style.display = 'block';
+      funFactPage.style.opacity = '0';
+      funFactPage.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        funFactPage.style.opacity = '1';
+        funFactPage.style.transform = 'translateY(0)';
+      }, 10);
+    }, 300);
+    
     window.scrollTo(0, 0);
   }
 }
@@ -429,10 +445,26 @@ function showMainPage() {
   const footer = document.querySelector('footer');
   
   if (mainContent && funFactPage) {
-    mainContent.style.display = 'block';
-    funFactPage.style.display = 'none';
-    if (header) header.style.display = 'block';
-    if (footer) footer.style.display = 'block';
+    // Fade out fun fact page
+    funFactPage.style.opacity = '0';
+    funFactPage.style.transform = 'translateY(-20px)';
+    
+    setTimeout(() => {
+      funFactPage.style.display = 'none';
+      
+      // Show and fade in main content
+      mainContent.style.display = 'block';
+      if (header) header.style.display = 'block';
+      if (footer) footer.style.display = 'block';
+      mainContent.style.opacity = '0';
+      mainContent.style.transform = 'translateY(-20px)';
+      
+      setTimeout(() => {
+        mainContent.style.opacity = '1';
+        mainContent.style.transform = 'translateY(0)';
+      }, 10);
+    }, 300);
+    
     window.scrollTo(0, 0);
   }
 }
