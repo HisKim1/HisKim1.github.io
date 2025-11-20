@@ -407,4 +407,34 @@ async function init() {
   applyCardHoverEffects();
 }
 
+function showFunFactPage() {
+  const mainContent = document.querySelector('main');
+  const funFactPage = document.getElementById('fun-fact');
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
+  
+  if (mainContent && funFactPage) {
+    mainContent.style.display = 'none';
+    funFactPage.style.display = 'block';
+    if (header) header.style.display = 'none';
+    if (footer) footer.style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+}
+
+function showMainPage() {
+  const mainContent = document.querySelector('main');
+  const funFactPage = document.getElementById('fun-fact');
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
+  
+  if (mainContent && funFactPage) {
+    mainContent.style.display = 'block';
+    funFactPage.style.display = 'none';
+    if (header) header.style.display = 'block';
+    if (footer) footer.style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', init);
