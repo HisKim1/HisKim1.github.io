@@ -218,11 +218,11 @@ function generateEducation(data) {
         <div class="card education-card">
           <div class="card-heading">
             <div>
-              <p class="date">${timeline}</p>
-              <div class="school-name-row">
-                <h3>${item.school || ''}</h3>
+              <div class="date-row">
+                <p class="date">${timeline}</p>
                 ${item.country ? `<span class="country-badge">${item.country}</span>` : ''}
               </div>
+              <h3>${item.school || ''}</h3>
             </div>
             ${degreeLabel ? `<span class="degree-chip">${degreeLabel}</span>` : ''}
           </div>
