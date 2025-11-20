@@ -93,4 +93,23 @@
   .research-panel {
     padding: 1.25rem;
   }
+
+  .research-panel h2 {
+    font-size: 1.5rem;
+  }
+
+  .apa-list li {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .research-panel {
+    padding: 1rem;
+  }
+
+  .research-columns {
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
 }

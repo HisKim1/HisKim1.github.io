@@ -423,6 +423,74 @@ section {
     margin: 0 auto 40px auto;
   }
 
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+
+  .hero h2 {
+    font-size: clamp(32px, 10vw, 48px);
+  }
+
+  .hero h1 {
+    font-size: 1rem;
+  }
+
+  .card h3 {
+    font-size: 1.1rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .project-title-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .project-source {
+    font-size: 0.85rem;
+  }
+
+  .project-details li,
+  .project-description {
+    font-size: 0.9rem;
+  }
+
+  .teaching-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .teaching-items li,
+  .teaching-description {
+    font-size: 0.9rem;
+  }
+
+  .apa-list li {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .education-card .card-heading h3 {
+    font-size: 1.1rem;
+  }
+
+  .edu-details dd {
+    font-size: 0.9rem;
+  }
+
+  .section-glass-panel {
+    padding: 1.5rem;
+  }
+
   .project-item {
     flex-direction: column;
     text-align: center;
@@ -459,6 +527,7 @@ section {
     margin-left: 0;
     margin-right: 0;
     max-width: 100%;
+    padding: 0.75rem;
   }
 }
 
