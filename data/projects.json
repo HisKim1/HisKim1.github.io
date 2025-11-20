@@ -2,7 +2,7 @@
   {
     "images": "images/AIweatherquest.png",
     "title": "AI Weather Quest 2025",
-    "description": "Hosted by European Centre ofr Medium-Range Weather Forecasts (ECMWF)\n<ul>\n  <li>Currently preparing for the AI Weather Quest 2025 competition with my lab members</li>\n  <li>Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts</li>\n</ul>"
+      "description": "Hosted by European Centre for Medium-Range Weather Forecasts (ECMWF)\n<ul>\n  <li>Currently preparing for the AI Weather Quest 2025 competition with my lab members</li>\n  <li>Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts</li>\n</ul>"
   },
   {
     "images": "images/pacman.jpeg",

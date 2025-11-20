@@ -136,6 +136,10 @@ function renderConferenceAPA(entry = {}) {
     segments.push(`${presentationPrefix} <span class="apa-journal">${entry.event}</span>.`);
   }
 
+  if (entry.status_note) {
+    segments.push(`<span class="apa-status">${entry.status_note}</span>`);
+  }
+
   const metadata = entry.location
     ? `<div class="research-meta"><span>${entry.location}</span></div>`
     : '';
@@ -297,12 +301,38 @@ function generateProjects(data) {
   applyCardHoverEffects();
 }
 
+function parseTeachingDescription(description = '') {
+  if (!description) return [];
+  const items = [];
+  const lines = description.split('\n').map(l => l.trim()).filter(Boolean);
+  for (const line of lines) {
+    const pMatch = line.match(/<p>(.*?)<\/p>/);
+    if (pMatch) {
+      items.push(pMatch[1]);
+    } else if (!line.includes('<p>') && !line.includes('</p>') && !line.includes('<br>')) {
+      items.push(line);
+    }
+  }
+  return items;
+}
+
 function generateTeaching(data) {
   const grid = document.getElementById('teaching-list');
   if (!grid) return;
-  grid.innerHTML = data.map(t => `
-    <div class="card"><h3>${t.title}</h3><p>${t.description}</p></div>
-  `).join('');
+  console.log('[generateTeaching] Rendering teaching cards');
+  grid.innerHTML = data.map(t => {
+    const items = parseTeachingDescription(t.description);
+    return `
+      <div class="card teaching-card">
+        <h3>${t.title}</h3>
+        ${items.length > 0 ? `
+          <ul class="teaching-items">
+            ${items.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        ` : `<div class="teaching-description">${t.description}</div>`}
+      </div>
+    `;
+  }).join('');
   applyCardHoverEffects();
 }
 

@@ -55,7 +55,8 @@
       "event": "AGU25 Meeting",
       "presentation_type": "Oral presentation",
       "location": "New Orleans, LA, USA",
-      "highlight_author_indices": [0]
+      "highlight_author_indices": [0],
+      "status_note": "Scheduled"
     }
   ],
   "experience": [
