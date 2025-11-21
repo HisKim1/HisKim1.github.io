@@ -38,10 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Throttle resize events for better performance
+  let resizeTimeout;
   window.addEventListener('resize', () => {
-    updateMenu();
-    setIndicator();
-  });
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      updateMenu();
+      setIndicator();
+    }, 150);
+  }, { passive: true });
 
   function updateMenu() {
     if (window.innerWidth > 900) {

@@ -14,16 +14,27 @@
 
 html {
   scroll-behavior: smooth;
+  /* Optimize scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/* Disable smooth scroll on mobile for better performance */
+@media (max-width: 600px) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: var(--navy);
-  /* subtle geometric background */
-  background-attachment: fixed;
   color: var(--white);
   line-height: 1.6;
+  /* Optimize scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 body::before {
@@ -34,6 +45,9 @@ body::before {
   background: radial-gradient(circle 500px at var(--cursor-x) var(--cursor-y), rgba(125, 181, 255, 0.16), transparent 60%);
   mix-blend-mode: screen;
   z-index: -1;
+  /* Optimize for performance - disable on mobile */
+  will-change: background;
+  transform: translateZ(0);
 }
 
 body::after {
@@ -48,7 +62,8 @@ body::after {
     linear-gradient(140deg, rgba(7, 11, 24, 0.95), rgba(15, 23, 42, 0.85));
   opacity: 0.9;
   z-index: -2;
-  background-attachment: fixed;
+  /* Remove background-attachment: fixed for better scroll performance */
+  transform: translateZ(0);
 }
 
 header {
@@ -56,8 +71,12 @@ header {
   top: 0;
   width: 100%;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   background-color: rgba(15, 23, 42, 0.5);
   z-index: 100;
+  /* Optimize for scrolling */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 nav {
@@ -105,6 +124,8 @@ section {
   padding: 80px 20px;
   max-width: 900px;
   margin: 0 auto 60px auto;
+  /* Optimize rendering performance */
+  contain: layout style paint;
 }
 
 .section-glass-panel {
@@ -113,7 +134,11 @@ section {
   padding: 2.5rem;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  /* Optimize for scrolling */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .section-glass-panel h2 {
@@ -306,7 +331,11 @@ section {
   padding: 1rem;
   width: auto;
   max-width: 100%;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  /* Optimize for hover animations and scrolling */
+  will-change: transform;
+  transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .card .date {
@@ -490,10 +519,11 @@ section {
 
 .card:hover,
 .card.active {
-  transform: scale(1.015);
+  transform: scale(1.015) translateZ(0);
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .card.active h3,
@@ -653,6 +683,23 @@ section {
 
   body::before {
     display: none;
+  }
+
+  /* Reduce backdrop blur on mobile for better performance */
+  header {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+  .section-glass-panel {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .card:hover,
+  .card.active {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   nav ul {

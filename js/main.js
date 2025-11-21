@@ -13,10 +13,27 @@ function initNavigation() {
 
 function initSpotlight() {
   if (window.matchMedia('(max-width: 600px)').matches) return;
-  document.addEventListener('mousemove', e => {
-    document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
-    document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
-  });
+  
+  let ticking = false;
+  let lastX = 0;
+  let lastY = 0;
+  
+  function updateCursorPosition(e) {
+    lastX = e.clientX;
+    lastY = e.clientY;
+    
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--cursor-x', lastX + 'px');
+        document.documentElement.style.setProperty('--cursor-y', lastY + 'px');
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  
+  // Use passive listener for better scroll performance
+  document.addEventListener('mousemove', updateCursorPosition, { passive: true });
 }
 
 function createTagHTML(tag) {
@@ -413,27 +430,36 @@ function showFunFactPage() {
   const header = document.querySelector('header');
   const footer = document.querySelector('footer');
   
-  if (mainContent && funFactPage) {
-    // Fade out main content
-    mainContent.style.opacity = '0';
-    mainContent.style.transform = 'translateY(20px)';
+  if (!mainContent || !funFactPage) return;
+  
+  console.log('[showFunFactPage] Transitioning to fun fact page');
+  
+  // Fade out main content
+  mainContent.style.opacity = '0';
+  mainContent.style.transform = 'translateY(20px)';
+  
+  setTimeout(() => {
+    mainContent.style.display = 'none';
+    if (header) header.style.display = 'none';
+    if (footer) footer.style.display = 'none';
     
-    setTimeout(() => {
-      mainContent.style.display = 'none';
-      if (header) header.style.display = 'none';
-      if (footer) footer.style.display = 'none';
-      
-      // Show and fade in fun fact page
-      funFactPage.style.display = 'block';
-      funFactPage.style.opacity = '0';
-      funFactPage.style.transform = 'translateY(20px)';
-      
+    // Show and fade in fun fact page
+    funFactPage.style.display = 'block';
+    funFactPage.style.opacity = '0';
+    funFactPage.style.transform = 'translateY(20px)';
+    
+    requestAnimationFrame(() => {
       setTimeout(() => {
         funFactPage.style.opacity = '1';
         funFactPage.style.transform = 'translateY(0)';
       }, 10);
-    }, 300);
-    
+    });
+  }, 300);
+  
+  // Use smooth scroll only on desktop
+  if (window.innerWidth > 600) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
     window.scrollTo(0, 0);
   }
 }
@@ -444,27 +470,36 @@ function showMainPage() {
   const header = document.querySelector('header');
   const footer = document.querySelector('footer');
   
-  if (mainContent && funFactPage) {
-    // Fade out fun fact page
-    funFactPage.style.opacity = '0';
-    funFactPage.style.transform = 'translateY(-20px)';
+  if (!mainContent || !funFactPage) return;
+  
+  console.log('[showMainPage] Returning to main page');
+  
+  // Fade out fun fact page
+  funFactPage.style.opacity = '0';
+  funFactPage.style.transform = 'translateY(-20px)';
+  
+  setTimeout(() => {
+    funFactPage.style.display = 'none';
     
-    setTimeout(() => {
-      funFactPage.style.display = 'none';
-      
-      // Show and fade in main content
-      mainContent.style.display = 'block';
-      if (header) header.style.display = 'block';
-      if (footer) footer.style.display = 'block';
-      mainContent.style.opacity = '0';
-      mainContent.style.transform = 'translateY(-20px)';
-      
+    // Show and fade in main content
+    mainContent.style.display = 'block';
+    if (header) header.style.display = 'block';
+    if (footer) footer.style.display = 'block';
+    mainContent.style.opacity = '0';
+    mainContent.style.transform = 'translateY(-20px)';
+    
+    requestAnimationFrame(() => {
       setTimeout(() => {
         mainContent.style.opacity = '1';
         mainContent.style.transform = 'translateY(0)';
       }, 10);
-    }, 300);
-    
+    });
+  }, 300);
+  
+  // Use smooth scroll only on desktop
+  if (window.innerWidth > 600) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
     window.scrollTo(0, 0);
   }
 }
