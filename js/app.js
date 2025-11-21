@@ -130,7 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('project-cards');
     console.log('[ProjectCards] container:', container, 'data:', projectData);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    // Small JSON + template fetch: avoid loading spinner to keep UX snappy
+    container.innerHTML = '';
     const templateRes = await fetch('snippets/cards.html');
     const templateText = await templateRes.text();
     console.log('[ProjectCards] template loaded');
@@ -150,7 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('teaching-cards');
     console.log('[TeachingCards] container:', container, 'data:', teachingData);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    // Small JSON: render directly without spinner
+    container.innerHTML = '';
     const templateRes = await fetch('snippets/teachingCards.html');
     const templateText = await templateRes.text();
     console.log('[TeachingCards] template loaded');
@@ -169,7 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('education-content');
     console.log('[Education] container:', container, 'data:', data);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    // Direct render without intermediate loading state
+    container.innerHTML = '';
     let html = '<ul class="education-list">';
     data.main.forEach(item => {
       html += `<li><div class="education-item">
@@ -210,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('research-content');
     console.log('[Research:Publications] container:', container, 'data:', data);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    container.innerHTML = '';
     let html = '<ul class="publication-list">';
     data.publications.forEach(pub => {
       html += '<li>';
@@ -229,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('conference-content');
     console.log('[Research:Conferences] container:', container, 'data:', data);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    container.innerHTML = '';
     let html = '<ul class="conference-list">';
     data.conferences.forEach(conf => {
       html += '<li>';
@@ -248,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('experience-content');
     console.log('[Research:Experience] container:', container, 'data:', data);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    container.innerHTML = '';
     let html = '<ul class="education-list">';
     data.experience.forEach(exp => {
       html += `<li><div class="education-item">
@@ -270,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('home-content');
     console.log('[Home] container:', container, 'data:', data);
     if (!container) return;
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading...</div>';
+    container.innerHTML = '';
     let html = '<div class="home-wrapper"><div class="home-content">';
     html += `<div class="profile-circle"><img src="${data.profile.img}" alt="${data.profile.name}" class="profile-pic"></div>`;
     html += `<h1 class="big-name">${data.profile.name}</h1>`;
