@@ -2,26 +2,6 @@
   {
     "images": "images/AIweatherquest.png",
     "title": "AI Weather Quest 2025",
-      "description": "Hosted by European Centre for Medium-Range Weather Forecasts (ECMWF)\n<ul>\n  <li>Currently preparing for the AI Weather Quest 2025 competition with my lab members</li>\n  <li>Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts</li>\n</ul>"
-  },
-  {
-    "images": "images/pacman.jpeg",
-    "title": "The Pac-Man Project",
-    "description": "from UC Berkeley CS188: <i>Intro. to AI</i>\n<ul>\n  <li>Programmed the Pac-Man artificial intelligence using simple search algorithms (DFS, BFS, A* search, search tree), based on Bayes Net and using reinforcement learning</li>\n  <li>Built neural networks and examined parameter values to classify MNIST dataset and words from different languages</li>\n</ul>"
-  },
-  {
-    "images": "images/PACA.jpg",
-    "title": "PACA: Python Autograder for Coding Assignment",
-    "description": "from GIST EC4206: <i>Computer Networking</i>\n<ul>\n  <li>Developed a web server with Flask framework to communicate with the back-end server using socket programming</li>\n  <li>Modified a web design sample to apply our project and connected it to the web server</li>\n  <li>Designed presentation slides and introduced the product with a code review</li>\n</ul>"
-  },
-  {
-    "images": "images/treatment system cut.png",
-    "title": "Environmental Impact Assessment of Potential Wastewater Treatment System in Putignano, Italy",
-    "description": "from WUT: <i>Environmental Impact Assessments</i>\n  <li>Analyzed regional climate patterns near the target area using ERA5 reanalysis data and applied Leopold matrices to evaluate impacts during construction, operation, and liquidation phases</li>\n  <li>Designed a biological wastewater treatment system, compared its environmental performance against chemical and electrochemical alternatives, and proposed mitigation strategies</li>"
-  },
-  {
-    "images": "images/Bratislava.jpg",
-    "title": "🚧Under Construction🚧",
-    "description": "Several more projects have been completed but haven’t made it to this page yet. This page is still catching up!"
+      "description": "Team CAMExpedition (leader)\n<ul>\n  <li>Currently preparing for the AI Weather Quest 2025 competition with my lab members</li>\n  <li>Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts</li>\n</ul>"
   }
 ] 
