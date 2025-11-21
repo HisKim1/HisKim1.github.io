@@ -257,7 +257,16 @@ function generateEducation(data) {
 
   if (data.extracurricular && data.extracurricular.length) {
     console.log('[generateEducation] Rendering extracurricular highlights');
-    html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => `
+    html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => {
+      const positionBlock = e.position ? `<p class="degree-detail" style="font-weight: 500; color: var(--accent); margin-bottom: 0.5rem;">${e.position}</p>` : '';
+      const orgBlock = e.org ? `<p class="degree-detail">${e.org}</p>` : '';
+      const detailsBlock = e.details && e.details.length > 0 ? `
+        <ul class="experience-details" style="margin-top: 0.75rem;">
+          ${e.details.map(d => `<li>${d}</li>`).join('')}
+        </ul>
+      ` : '';
+      
+      return `
       <div class="card education-card">
         <div class="card-heading">
           <div>
@@ -268,9 +277,12 @@ function generateEducation(data) {
             <h3>${e.school || ''}</h3>
           </div>
         </div>
-        ${e.org ? `<p class="degree-detail">${e.org}</p>` : ''}
+        ${positionBlock}
+        ${orgBlock}
+        ${detailsBlock}
       </div>
-    `).join('');
+    `;
+    }).join('');
   }
   list.innerHTML = html;
   applyCardHoverEffects();
