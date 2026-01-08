@@ -30,16 +30,16 @@
         "Wang, S.",
         "Yoon, J."
       ],
-      "year": 2025,
+      "year": 2026,
       "title": "Increasing resolution and accuracy in sub-seasonal forecasting through 3D U-Net: The Western US",
       "journal": "Geoscientific Model Development",
-      "status": "In press",
-      "status_note": "Accepted for publication",
-      "link": "https://egusphere.copernicus.org/preprints/2025/egusphere-2025-308/",
-      "volume": "",
-      "issue": "",
-      "pages": "",
-      "doi": "https://doi.org/10.5194/gmd-2025-308",
+      "status": "Published",
+      "status_note": "Published",
+      "link": "https://gmd.copernicus.org/articles/19/27/2026/",
+      "volume": "19",
+      "issue": "1",
+      "pages": "27-39",
+      "doi": "https://doi.org/10.5194/gmd-19-27-2026",
       "highlight_author_indices": [1]
     }
   ],
@@ -56,7 +56,7 @@
       "presentation_type": "Oral presentation",
       "location": "New Orleans, LA, USA",
       "highlight_author_indices": [0],
-      "status_note": "Scheduled"
+      "status_note": "Completed"
     }
   ],
   "experience": [
