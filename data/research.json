@@ -12,7 +12,7 @@
       ],
       "year": 2025,
       "title": "A spectral test of the butterfly effect and physical consistency in the diffusion-based GenCast's ensembles",
-      "journal": "npj Climate and Atmospheric Science",
+      "journal": "",
       "status": "Under review",
       "status_note": "Under review at npj Climate and Atmospheric Science",
       "link": "",
@@ -55,6 +55,7 @@
       "event": "AGU25 Meeting",
       "presentation_type": "Oral presentation",
       "location": "New Orleans, LA, USA",
+      "doi": "https://doi.org/10.22541/essoar.176832527.75299944/v1",
       "highlight_author_indices": [0],
       "status_note": ""
     }
