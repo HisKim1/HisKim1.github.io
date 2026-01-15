@@ -157,11 +157,16 @@ function renderConferenceAPA(entry = {}) {
     segments.push(`<span class="apa-status">${entry.status_note}</span>`);
   }
 
-  const metadata = entry.location
-    ? `<div class="research-meta"><span>${entry.location}</span></div>`
-    : '';
+  const metadata = [];
+  if (entry.location) {
+    metadata.push(`<div class="research-meta"><span>${entry.location}</span></div>`);
+  }
+  if (entry.doi) {
+    metadata.push(`<div class="research-meta"><a href="${entry.doi}" target="_blank" rel="noopener noreferrer">${entry.doi}</a></div>`);
+  }
+  const metadataHtml = metadata.join('');
 
-  return `<li>${segments.join(' ')}${metadata}</li>`;
+  return `<li>${segments.join(' ')}${metadataHtml}</li>`;
 }
 
 function deriveEducationDetails(item = {}) {

@@ -37,6 +37,8 @@
 .apa-list li {
   line-height: 1.7;
   font-size: 0.95rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .apa-list a {
@@ -46,6 +48,8 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
   transition: color 0.2s ease;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .apa-list a:visited {
@@ -80,6 +84,13 @@
   gap: 0.5rem;
   font-size: 0.85rem;
   color: var(--slate);
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.research-meta a {
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .empty-placeholder {
