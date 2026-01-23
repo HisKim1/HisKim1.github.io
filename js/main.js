@@ -55,6 +55,133 @@ function applyCardHoverEffects() {
   });
 }
 
+const IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']);
+const VIDEO_EXTENSIONS = new Set(['mp4', 'webm', 'ogg']);
+
+function shuffleArray(items) {
+  const shuffled = [...items];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function mixMediaByType(items) {
+  const videos = [];
+  const images = [];
+  items.forEach(item => {
+    const ext = getExtension(item.filename);
+    if (VIDEO_EXTENSIONS.has(ext)) {
+      videos.push(item);
+    } else {
+      images.push(item);
+    }
+  });
+
+  const shuffledVideos = shuffleArray(videos);
+  const shuffledImages = shuffleArray(images);
+  const result = [];
+  let useVideo = shuffledVideos.length >= shuffledImages.length;
+
+  while (shuffledVideos.length || shuffledImages.length) {
+    if (useVideo && shuffledVideos.length) {
+      result.push(shuffledVideos.shift());
+    } else if (!useVideo && shuffledImages.length) {
+      result.push(shuffledImages.shift());
+    } else if (shuffledVideos.length) {
+      result.push(shuffledVideos.shift());
+    } else {
+      result.push(shuffledImages.shift());
+    }
+    useVideo = !useVideo;
+  }
+
+  return result;
+}
+
+function getExtension(filename = '') {
+  const match = filename.match(/\.([^.?#/]+)(?:[?#].*)?$/);
+  return match ? match[1].toLowerCase() : '';
+}
+
+function toDisplayName(filename = '') {
+  return filename
+    .replace(/\.[^/.]+$/, '')
+    .replace(/[_-]+/g, ' ')
+    .trim();
+}
+
+async function fetchDirectoryListing(path) {
+  const res = await fetch(path);
+  if (!res.ok) {
+    throw new Error(`Failed to load directory listing: ${path}`);
+  }
+  const html = await res.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return Array.from(doc.querySelectorAll('a'))
+    .map(anchor => anchor.getAttribute('href'))
+    .filter(Boolean);
+}
+
+async function populateMediaGallery({ containerId, prefix, allowVideos }) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  try {
+    const links = await fetchDirectoryListing('images/');
+    const filtered = links
+      .map(link => ({
+        link,
+        filename: decodeURIComponent(link.split('?')[0].split('/').pop() || '')
+      }))
+      .filter(item => item.filename && !item.filename.endsWith('/'))
+      .filter(item => item.filename.toLowerCase().startsWith(prefix.toLowerCase()))
+      .filter(item => {
+        const ext = getExtension(item.filename);
+        if (IMAGE_EXTENSIONS.has(ext)) return true;
+        if (allowVideos && VIDEO_EXTENSIONS.has(ext)) return true;
+        return false;
+      });
+
+    const mixed = mixMediaByType(filtered);
+    const markup = mixed.map(({ link, filename }) => {
+      const ext = getExtension(filename);
+      if (VIDEO_EXTENSIONS.has(ext)) {
+        return `
+          <figure class="media-card media-video">
+            <div class="media-frame">
+              <video controls preload="metadata" playsinline>
+                <source src="images/${link}" type="video/${ext}">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </figure>
+        `;
+      }
+      const alt = toDisplayName(filename);
+      return `
+        <figure class="media-card media-photo">
+          <div class="media-frame">
+            <img src="images/${link}" alt="${alt}" loading="lazy">
+          </div>
+        </figure>
+      `;
+    }).join('');
+
+    container.innerHTML = markup;
+  } catch (error) {
+    console.warn('[populateMediaGallery] Unable to load gallery', error);
+  }
+}
+
+async function initFunFactGalleries() {
+  await Promise.all([
+    populateMediaGallery({ containerId: 'crossfit-gallery', prefix: 'crossfit_', allowVideos: true }),
+    populateMediaGallery({ containerId: 'dance-gallery', prefix: 'dance_', allowVideos: false })
+  ]);
+}
+
 const PRIMARY_NAME_PATTERN = /(Kim,\s*H\.|H\.?\s*Kim)/gi;
 
 function emphasizePrimaryName(text = '') {
@@ -438,6 +565,7 @@ async function init() {
   generateProjects(await fetchJSON('data/projects.json'));
   generateTeaching(await fetchJSON('data/teaching.json'));
   generateResearch(await fetchJSON('data/research.json'));
+  await initFunFactGalleries();
   applyCardHoverEffects();
 }
 
