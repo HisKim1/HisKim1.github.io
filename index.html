@@ -14,9 +14,6 @@
   <header>
     <nav>
       <a href="#home" class="logo">Hisu Kim</a>
-      <div class="toggle" aria-label="Toggle navigation" tabindex="0">
-        <span></span><span></span><span></span>
-      </div>
       <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#education">Education</a></li>
@@ -25,6 +22,15 @@
         <li><a href="#projects">Projects</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">
+          <i class="fas fa-sun" aria-hidden="true"></i>
+          <span class="theme-label">Light</span>
+        </button>
+        <div class="toggle" aria-label="Toggle navigation" tabindex="0">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -42,16 +48,16 @@
 
     <section id="research" aria-label="Research">
       <div class="research-columns">
-        <article class="research-panel">
+        <article class="research-panel section-glass-panel">
           <h2>Publications</h2>
           <div id="research-publications"></div>
         </article>
-        <article class="research-panel">
+        <article class="research-panel section-glass-panel">
           <h2>Conferences</h2>
           <div id="research-conferences"></div>
         </article>
       </div>
-      <article class="research-panel">
+      <article class="research-panel section-glass-panel">
         <h2>Experience</h2>
         <div id="research-experience" class="vertical"></div>
       </article>
@@ -60,7 +66,7 @@
     <section id="teaching" aria-label="Teaching">
       <div class="section-glass-panel">
         <h2>Teaching</h2>
-        <div id="teaching-list" class="vertical"></div>
+        <div id="teaching-list" class="teaching-grid"></div>
       </div>
     </section>
 

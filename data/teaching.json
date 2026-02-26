@@ -1,18 +1,18 @@
 [
   {
     "title": "Mathematics",
-    "description": "Multivariable Calculus (2025 Spring, Fall)\n<p>Graph Theory (2024 Fall)</p>"
-  },
-  {
-    "title": "Computer Science",
-    "description": "<p>Digital Design (2023 Spring)</p>"
+    "description": "Single Variable Calculus and Applications (2026 Spring)\n<p>Multivariable Calculus and Applications (2025 Spring, 2025 Fall)</p>\n<p>Graph Theory (2024 Fall)</p>"
   },
   {
     "title": "Literature",
     "description": "<p>Prof. Soo-Jeong Lee's Literature Courses (2023 Spring – Present)</p>\n<p><i>Reading Contemporary Poetry</i>, <i>Korean Poets</i>, <i>Understanding Poetry</i>, <br> <i>Ri Sangs Literature and Science</i>, and <i>Writing I: Creative Writing</i></p>"
   },
   {
+    "title": "Computer Science",
+    "description": "<p>Digital Design (2023 Spring)</p>"
+  },
+  {
     "title": "Mentoring",
-    "description": "<p>GIST 101 (2023, 2024 Spring)</p>"
+    "description": "<p>GIST 101 (2023 Spring, 2024 Spring)</p>"
   }
-] 
+]

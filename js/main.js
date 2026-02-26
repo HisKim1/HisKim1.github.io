@@ -11,6 +11,46 @@ function initNavigation() {
   }
 }
 
+const THEME_STORAGE_KEY = 'theme-preference';
+
+function getPreferredTheme() {
+  const stored = localStorage.getItem(THEME_STORAGE_KEY);
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+function updateThemeToggle(button, theme) {
+  if (!button) return;
+  const isDark = theme === 'dark';
+  const icon = button.querySelector('i');
+  const label = button.querySelector('.theme-label');
+  if (icon) {
+    icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  if (label) {
+    label.textContent = isDark ? 'Light' : 'Dark';
+  }
+  button.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+function applyTheme(theme, button) {
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeToggle(button, theme);
+}
+
+function initThemeToggle() {
+  const button = document.querySelector('.theme-toggle');
+  if (!button) return;
+  const initialTheme = getPreferredTheme();
+  applyTheme(initialTheme, button);
+  button.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    applyTheme(nextTheme, button);
+  });
+}
+
 function initSpotlight() {
   if (window.matchMedia('(max-width: 600px)').matches) return;
   
@@ -34,6 +74,29 @@ function initSpotlight() {
   
   // Use passive listener for better scroll performance
   document.addEventListener('mousemove', updateCursorPosition, { passive: true });
+}
+
+function initScrollBackground() {
+  const root = document.documentElement;
+  let ticking = false;
+
+  function update() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+    root.style.setProperty('--bg-shift', progress.toFixed(3));
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  update();
 }
 
 function createTagHTML(tag) {
@@ -222,6 +285,39 @@ function createApaList(items, renderItem) {
   return `<ol class="apa-list">${items.map(renderItem).join('')}</ol>`;
 }
 
+const MONTH_ORDER = {
+  january: 1,
+  february: 2,
+  march: 3,
+  april: 4,
+  may: 5,
+  june: 6,
+  july: 7,
+  august: 8,
+  september: 9,
+  october: 10,
+  november: 11,
+  december: 12
+};
+
+function getMonthIndex(month = '') {
+  if (!month) return 0;
+  const normalized = month.trim().toLowerCase();
+  return MONTH_ORDER[normalized] || 0;
+}
+
+function sortByRecency(items = []) {
+  return [...items].sort((a, b) => {
+    const yearA = Number(a.year) || 0;
+    const yearB = Number(b.year) || 0;
+    if (yearA !== yearB) return yearB - yearA;
+    const monthA = getMonthIndex(a.month);
+    const monthB = getMonthIndex(b.month);
+    if (monthA !== monthB) return monthB - monthA;
+    return 0;
+  });
+}
+
 function renderPublicationAPA(entry = {}) {
   const segments = [];
   const authors = formatAuthorList(entry.authors, entry.highlight_author_indices);
@@ -275,9 +371,8 @@ function renderConferenceAPA(entry = {}) {
     segments.push(`${entry.title}.`);
   }
 
-  if (entry.event) {
-    const presentationPrefix = entry.presentation_type ? `${entry.presentation_type} presented at` : 'Presented at';
-    segments.push(`${presentationPrefix} <span class="apa-journal">${entry.event}</span>.`);
+  if (entry.presentation_type) {
+    segments.push(`<span class="apa-presentation">${entry.presentation_type}</span>.`);
   }
 
   if (entry.status_note) {
@@ -285,8 +380,11 @@ function renderConferenceAPA(entry = {}) {
   }
 
   const metadata = [];
-  if (entry.location) {
-    metadata.push(`<div class="research-meta"><span>${entry.location}</span></div>`);
+  if (entry.event || entry.location) {
+    const parts = [];
+    if (entry.event) parts.push(entry.event);
+    if (entry.location) parts.push(entry.location);
+    metadata.push(`<div class="research-meta"><span>${parts.join(', ')}</span></div>`);
   }
   if (entry.doi) {
     metadata.push(`<div class="research-meta"><a href="${entry.doi}" target="_blank" rel="noopener noreferrer">${entry.doi}</a></div>`);
@@ -389,32 +487,35 @@ function generateEducation(data) {
 
   if (data.extracurricular && data.extracurricular.length) {
     console.log('[generateEducation] Rendering extracurricular highlights');
-    html += `<h3>Extracurricular</h3>` + data.extracurricular.map(e => {
-      const positionBlock = e.position ? `<p class="degree-detail" style="font-weight: 500; color: var(--accent); margin-bottom: 0.5rem;">${e.position}</p>` : '';
-      const orgBlock = e.org ? `<p class="degree-detail">${e.org}</p>` : '';
+    const extracurricularItems = data.extracurricular.map(e => {
+      const metaParts = [e.org, e.country].filter(Boolean).join(' · ');
       const detailsBlock = e.details && e.details.length > 0 ? `
-        <ul class="experience-details" style="margin-top: 0.75rem;">
+        <ul class="extracurricular-details">
           ${e.details.map(d => `<li>${d}</li>`).join('')}
         </ul>
       ` : '';
-      
       return `
-      <div class="card education-card">
-        <div class="card-heading">
-          <div>
-            <div class="date-row">
-              <p class="date">${e.period || ''}</p>
-              ${e.country ? `<span class="country-badge">${e.country}</span>` : ''}
+        <li class="extracurricular-item">
+          <div class="extracurricular-row">
+            <div class="extracurricular-main">
+              <span class="extracurricular-title">${e.school || ''}</span>
+              ${e.position ? `<span class="extracurricular-role">${e.position}</span>` : ''}
             </div>
-            <h3>${e.school || ''}</h3>
+            <div class="extracurricular-meta">
+              ${e.period ? `<span class="extracurricular-period">${e.period}</span>` : ''}
+            </div>
           </div>
-        </div>
-        ${positionBlock}
-        ${orgBlock}
-        ${detailsBlock}
+          ${metaParts ? `<div class="extracurricular-sub">${metaParts}</div>` : ''}
+          ${detailsBlock}
+        </li>
+      `;
+    }).join('');
+    html += `
+      <div class="education-extracurricular">
+        <div class="education-extracurricular-title">Extracurricular</div>
+        <ul class="extracurricular-list">${extracurricularItems}</ul>
       </div>
     `;
-    }).join('');
   }
   list.innerHTML = html;
   applyCardHoverEffects();
@@ -477,18 +578,80 @@ function generateProjects(data) {
 }
 
 function parseTeachingDescription(description = '') {
-  if (!description) return [];
+  if (!description) return { intro: '', introTerm: '', items: [] };
   const items = [];
+  let intro = '';
+  let introTerm = '';
   const lines = description.split('\n').map(l => l.trim()).filter(Boolean);
+
+  function stripTags(text) {
+    return text.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  function splitOutsideParens(text) {
+    const parts = [];
+    let current = '';
+    let depth = 0;
+    for (const char of text) {
+      if (char === '(') depth += 1;
+      if (char === ')') depth = Math.max(0, depth - 1);
+      if (char === ',' && depth === 0) {
+        if (current.trim()) parts.push(current.trim());
+        current = '';
+        continue;
+      }
+      current += char;
+    }
+    if (current.trim()) parts.push(current.trim());
+    return parts;
+  }
+
+  function pushCourseLine(line) {
+    const cleaned = stripTags(line);
+    if (!cleaned) return;
+    const normalized = cleaned.replace(/,\s*and\s+/gi, ', ');
+    const parts = splitOutsideParens(normalized);
+    parts.forEach(part => {
+      const match = part.match(/^(.*?)(?:\s*\(([^)]+)\))?$/);
+      if (!match) return;
+      const title = (match[1] || '').trim();
+      const term = (match[2] || '').trim();
+      if (!title) return;
+      items.push({ title, term });
+    });
+  }
+
   for (const line of lines) {
     const pMatch = line.match(/<p>(.*?)<\/p>/);
-    if (pMatch) {
-      items.push(pMatch[1]);
-    } else if (!line.includes('<p>') && !line.includes('</p>') && !line.includes('<br>')) {
-      items.push(line);
+    const content = pMatch ? pMatch[1] : line;
+    if (!content) continue;
+    const cleaned = stripTags(content);
+    if (!cleaned) continue;
+    if (!intro && /courses|prof\.|professor|teaching/i.test(cleaned)) {
+      const match = cleaned.match(/^(.*?)(?:\s*\(([^)]+)\))?$/);
+      intro = (match?.[1] || cleaned).trim();
+      introTerm = (match?.[2] || '').trim();
+      continue;
     }
+    pushCourseLine(content);
   }
-  return items;
+
+  return { intro, introTerm, items };
+}
+
+function normalizeTeachingTerms(term = '') {
+  if (!term) return [];
+  const parts = term.split(',').map(p => p.trim()).filter(Boolean);
+  if (!parts.length) return [];
+  const yearMatch = parts[0].match(/^(\d{4})\s+(.*)$/);
+  if (yearMatch) {
+    const year = yearMatch[1];
+    return parts.map((part, index) => {
+      if (index === 0) return part;
+      return /^\d{4}\b/.test(part) ? part : `${year} ${part}`;
+    });
+  }
+  return parts;
 }
 
 function generateTeaching(data) {
@@ -496,15 +659,33 @@ function generateTeaching(data) {
   if (!grid) return;
   console.log('[generateTeaching] Rendering teaching cards');
   grid.innerHTML = data.map(t => {
-    const items = parseTeachingDescription(t.description);
+    const { intro, introTerm, items } = parseTeachingDescription(t.description);
+    const listHtml = items.length > 0
+      ? `
+        <ul class="teaching-list">
+          ${items.map(item => `
+            <li class="teaching-item">
+              <span class="teaching-course">${item.title}</span>
+              ${item.term ? `
+                <span class="teaching-terms">
+                  ${normalizeTeachingTerms(item.term).map(term => `<span class="teaching-term">${term}</span>`).join('')}
+                </span>
+              ` : ''}
+            </li>
+          `).join('')}
+        </ul>
+      `
+      : '';
     return `
       <div class="card teaching-card">
         <h3>${t.title}</h3>
-        ${items.length > 0 ? `
-          <ul class="teaching-items">
-            ${items.map(item => `<li>${item}</li>`).join('')}
-          </ul>
-        ` : `<div class="teaching-description">${t.description}</div>`}
+        ${intro ? `
+          <div class="teaching-intro-row">
+            <p class="teaching-intro">${intro}</p>
+            ${introTerm ? `<span class="teaching-term">${introTerm}</span>` : ''}
+          </div>
+        ` : ''}
+        ${listHtml || `<div class="teaching-description">${t.description}</div>`}
       </div>
     `;
   }).join('');
@@ -519,12 +700,14 @@ function generateResearch(data) {
   console.log('[generateResearch] Rendering publications and presentations');
 
   if (pubsContainer) {
-    pubsContainer.innerHTML = createApaList(data.publications, renderPublicationAPA);
+    const publications = sortByRecency(data.publications);
+    pubsContainer.innerHTML = createApaList(publications, renderPublicationAPA);
     console.log(`[generateResearch] Publications rendered: ${data.publications ? data.publications.length : 0}`);
   }
 
   if (confContainer) {
-    confContainer.innerHTML = createApaList(data.conferences, renderConferenceAPA);
+    const conferences = sortByRecency(data.conferences);
+    confContainer.innerHTML = createApaList(conferences, renderConferenceAPA);
     console.log(`[generateResearch] Conferences rendered: ${data.conferences ? data.conferences.length : 0}`);
   }
 
@@ -559,7 +742,9 @@ function generateResearch(data) {
 
 async function init() {
   initNavigation();
+  initThemeToggle();
   initSpotlight();
+  initScrollBackground();
   generateHome(await fetchJSON('data/home.json'));
   generateEducation(await fetchJSON('data/education.json'));
   generateProjects(await fetchJSON('data/projects.json'));
