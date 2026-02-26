@@ -6,9 +6,21 @@ async function fetchJSON(path) {
 function initNavigation() {
   const toggle = document.querySelector('.toggle');
   const nav = document.querySelector('nav');
+  const links = document.querySelectorAll('nav a[href^="#"]');
   if (toggle) {
     toggle.addEventListener('click', () => nav.classList.toggle('open'));
   }
+  links.forEach(link => {
+    link.addEventListener('click', event => {
+      const targetId = link.getAttribute('href');
+      if (!targetId) return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      nav.classList.remove('open');
+    });
+  });
 }
 
 const THEME_STORAGE_KEY = 'theme-preference';
