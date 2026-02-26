@@ -22,14 +22,8 @@ function getPreferredTheme() {
 function updateThemeToggle(button, theme) {
   if (!button) return;
   const isDark = theme === 'dark';
-  const icon = button.querySelector('i');
-  const label = button.querySelector('.theme-label');
-  if (icon) {
-    icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-  }
-  if (label) {
-    label.textContent = isDark ? 'Light' : 'Dark';
-  }
+  button.dataset.theme = theme;
+  button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
   button.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
 }
 
@@ -43,6 +37,9 @@ function initThemeToggle() {
   if (!button) return;
   const initialTheme = getPreferredTheme();
   applyTheme(initialTheme, button);
+  requestAnimationFrame(() => {
+    document.documentElement.classList.add('theme-ready');
+  });
   button.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -175,31 +172,30 @@ function toDisplayName(filename = '') {
     .trim();
 }
 
-async function fetchDirectoryListing(path) {
-  const res = await fetch(path);
-  if (!res.ok) {
-    throw new Error(`Failed to load directory listing: ${path}`);
+let mediaManifestPromise;
+
+async function fetchMediaManifest() {
+  if (!mediaManifestPromise) {
+    mediaManifestPromise = fetch('data/media.json').then(res => {
+      if (!res.ok) {
+        throw new Error('Failed to load media manifest');
+      }
+      return res.json();
+    });
   }
-  const html = await res.text();
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  return Array.from(doc.querySelectorAll('a'))
-    .map(anchor => anchor.getAttribute('href'))
-    .filter(Boolean);
+  return mediaManifestPromise;
 }
 
-async function populateMediaGallery({ containerId, prefix, allowVideos }) {
+async function populateMediaGallery({ containerId, key, allowVideos }) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
   try {
-    const links = await fetchDirectoryListing('images/');
-    const filtered = links
-      .map(link => ({
-        link,
-        filename: decodeURIComponent(link.split('?')[0].split('/').pop() || '')
-      }))
-      .filter(item => item.filename && !item.filename.endsWith('/'))
-      .filter(item => item.filename.toLowerCase().startsWith(prefix.toLowerCase()))
+    const manifest = await fetchMediaManifest();
+    const entries = Array.isArray(manifest[key]) ? manifest[key] : [];
+    const filtered = entries
+      .map(filename => ({ link: filename, filename }))
+      .filter(item => item.filename)
       .filter(item => {
         const ext = getExtension(item.filename);
         if (IMAGE_EXTENSIONS.has(ext)) return true;
@@ -210,12 +206,13 @@ async function populateMediaGallery({ containerId, prefix, allowVideos }) {
     const mixed = mixMediaByType(filtered);
     const markup = mixed.map(({ link, filename }) => {
       const ext = getExtension(filename);
+      const safeLink = encodeURI(link);
       if (VIDEO_EXTENSIONS.has(ext)) {
         return `
           <figure class="media-card media-video">
             <div class="media-frame">
               <video controls preload="metadata" playsinline>
-                <source src="images/${link}" type="video/${ext}">
+                <source src="images/${safeLink}" type="video/${ext}">
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -226,7 +223,7 @@ async function populateMediaGallery({ containerId, prefix, allowVideos }) {
       return `
         <figure class="media-card media-photo">
           <div class="media-frame">
-            <img src="images/${link}" alt="${alt}" loading="lazy">
+            <img src="images/${safeLink}" alt="${alt}" loading="lazy">
           </div>
         </figure>
       `;
@@ -240,8 +237,8 @@ async function populateMediaGallery({ containerId, prefix, allowVideos }) {
 
 async function initFunFactGalleries() {
   await Promise.all([
-    populateMediaGallery({ containerId: 'crossfit-gallery', prefix: 'crossfit_', allowVideos: true }),
-    populateMediaGallery({ containerId: 'dance-gallery', prefix: 'dance_', allowVideos: false })
+    populateMediaGallery({ containerId: 'crossfit-gallery', key: 'crossfit', allowVideos: true }),
+    populateMediaGallery({ containerId: 'dance-gallery', key: 'dance', allowVideos: false })
   ]);
 }
 
@@ -512,12 +509,40 @@ function generateEducation(data) {
     }).join('');
     html += `
       <div class="education-extracurricular">
-        <div class="education-extracurricular-title">Extracurricular</div>
-        <ul class="extracurricular-list">${extracurricularItems}</ul>
+        <button class="extracurricular-toggle" type="button" aria-expanded="false">
+          <span>Extracurricular</span>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="education-extracurricular-body" data-state="collapsed">
+          <ul class="extracurricular-list">${extracurricularItems}</ul>
+        </div>
       </div>
     `;
   }
   list.innerHTML = html;
+  const toggle = list.querySelector('.extracurricular-toggle');
+  const panel = list.querySelector('.education-extracurricular-body');
+  if (toggle && panel) {
+    const setOpen = isOpen => {
+      panel.dataset.state = isOpen ? 'open' : 'collapsed';
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      } else {
+        panel.style.maxHeight = '0px';
+      }
+    };
+    setOpen(false);
+    toggle.addEventListener('click', () => {
+      const isOpen = panel.dataset.state === 'open';
+      setOpen(!isOpen);
+    });
+    window.addEventListener('resize', () => {
+      if (panel.dataset.state === 'open') {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      }
+    }, { passive: true });
+  }
   applyCardHoverEffects();
 }
 

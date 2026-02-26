@@ -1,6 +1,0 @@
-/* Projects page container */
-#project-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}

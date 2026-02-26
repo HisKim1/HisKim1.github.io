@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hisu Kim</title>
+  <script>
+    (() => {
+      const key = 'theme-preference';
+      const stored = localStorage.getItem(key);
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      const theme = stored === 'light' || stored === 'dark' ? stored : (prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,9 +32,12 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="theme-toggle" type="button" aria-label="Toggle theme">
-          <i class="fas fa-sun" aria-hidden="true"></i>
-          <span class="theme-label">Light</span>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+          <span class="theme-toggle-label theme-toggle-label-light">Light</span>
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="theme-toggle-label theme-toggle-label-dark">Dark</span>
         </button>
         <div class="toggle" aria-label="Toggle navigation" tabindex="0">
           <span></span><span></span><span></span>
