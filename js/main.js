@@ -3,22 +3,41 @@ async function fetchJSON(path) {
   return res.json();
 }
 
-function initNavigation() {
-  const toggle = document.querySelector('.toggle');
-  const nav = document.querySelector('nav');
-  const links = document.querySelectorAll('nav a[href^="#"]');
-  if (toggle) {
-    toggle.addEventListener('click', () => nav.classList.toggle('open'));
+function initDotNav() {
+  const contentArea = document.getElementById('content-area');
+  if (!contentArea) return;
+  const sections = Array.from(contentArea.querySelectorAll('section[id]'));
+  const dots = document.querySelectorAll('.dot-item[data-section]');
+  if (!sections.length) return;
+
+  let ticking = false;
+
+  function updateDots() {
+    const containerTop = contentArea.getBoundingClientRect().top;
+    const threshold = contentArea.clientHeight * 0.4;
+    let activeId = sections[0].id;
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top - containerTop <= threshold) activeId = s.id;
+    });
+    dots.forEach(d => d.classList.toggle('active', d.dataset.section === activeId));
+    ticking = false;
   }
-  links.forEach(link => {
-    link.addEventListener('click', event => {
-      const targetId = link.getAttribute('href');
-      if (!targetId) return;
-      const target = document.querySelector(targetId);
-      if (!target) return;
-      event.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      nav.classList.remove('open');
+
+  function onDotScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateDots);
+      ticking = true;
+    }
+  }
+
+  contentArea.addEventListener('scroll', onDotScroll, { passive: true });
+  updateDots();
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById(dot.dataset.section);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 }
@@ -87,12 +106,13 @@ function initSpotlight() {
 
 function initScrollBackground() {
   const root = document.documentElement;
+  const contentArea = document.getElementById('content-area');
   let ticking = false;
 
   function update() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+    const scrollTop = contentArea ? contentArea.scrollTop : (window.scrollY || document.documentElement.scrollTop);
+    const scrollHeight = contentArea ? contentArea.scrollHeight - contentArea.clientHeight : document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
     root.style.setProperty('--bg-shift', progress.toFixed(3));
     ticking = false;
   }
@@ -104,7 +124,7 @@ function initScrollBackground() {
     }
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  (contentArea || window).addEventListener('scroll', onScroll, { passive: true });
   update();
 }
 
@@ -112,20 +132,6 @@ function createTagHTML(tag) {
   return `<span class="tag">${tag}</span>`;
 }
 
-function applyCardHoverEffects() {
-  const cards = document.querySelectorAll('.card');
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      cards.forEach(c => {
-        if (c !== card) c.classList.add('faded');
-        else c.classList.add('active');
-      });
-    });
-    card.addEventListener('mouseleave', () => {
-      cards.forEach(c => c.classList.remove('faded', 'active'));
-    });
-  });
-}
 
 const IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']);
 const VIDEO_EXTENSIONS = new Set(['mp4', 'webm', 'ogg']);
@@ -555,7 +561,6 @@ function generateEducation(data) {
       }
     }, { passive: true });
   }
-  applyCardHoverEffects();
 }
 
 function parseProjectDescription(description = '') {
@@ -611,7 +616,6 @@ function generateProjects(data) {
       </div>
     `;
   }).join('');
-  applyCardHoverEffects();
 }
 
 function parseTeachingDescription(description = '') {
@@ -726,7 +730,6 @@ function generateTeaching(data) {
       </div>
     `;
   }).join('');
-  applyCardHoverEffects();
 }
 
 function generateResearch(data) {
@@ -772,13 +775,12 @@ function generateResearch(data) {
     console.log(`[generateResearch] Research experiences rendered: ${data.experience.length}`);
   }
 
-  applyCardHoverEffects();
 }
 
 
 
 async function init() {
-  initNavigation();
+  initDotNav();
   initThemeToggle();
   initSpotlight();
   initScrollBackground();
@@ -788,87 +790,62 @@ async function init() {
   generateTeaching(await fetchJSON('data/teaching.json'));
   generateResearch(await fetchJSON('data/research.json'));
   await initFunFactGalleries();
-  applyCardHoverEffects();
 }
 
 function showFunFactPage() {
-  const mainContent = document.querySelector('main');
+  const layout = document.querySelector('.layout');
+  const dotNav = document.querySelector('.dot-nav');
   const funFactPage = document.getElementById('fun-fact');
-  const header = document.querySelector('header');
-  const footer = document.querySelector('footer');
-  
-  if (!mainContent || !funFactPage) return;
-  
+  const contentArea = document.getElementById('content-area');
+
+  if (!layout || !funFactPage) return;
+
   console.log('[showFunFactPage] Transitioning to fun fact page');
-  
-  // Fade out main content
-  mainContent.style.opacity = '0';
-  mainContent.style.transform = 'translateY(20px)';
-  
+
+  layout.style.opacity = '0';
+  layout.style.transform = 'translateY(20px)';
+
   setTimeout(() => {
-    mainContent.style.display = 'none';
-    if (header) header.style.display = 'none';
-    if (footer) footer.style.display = 'none';
-    
-    // Show and fade in fun fact page
+    layout.style.display = 'none';
+    if (dotNav) dotNav.style.display = 'none';
+    if (contentArea) contentArea.scrollTop = 0;
+
     funFactPage.style.display = 'block';
     funFactPage.style.opacity = '0';
     funFactPage.style.transform = 'translateY(20px)';
-    
+
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        funFactPage.style.opacity = '1';
-        funFactPage.style.transform = 'translateY(0)';
-      }, 10);
+      funFactPage.style.opacity = '1';
+      funFactPage.style.transform = 'translateY(0)';
     });
   }, 300);
-  
-  // Use smooth scroll only on desktop
-  if (window.innerWidth > 600) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } else {
-    window.scrollTo(0, 0);
-  }
 }
 
 function showMainPage() {
-  const mainContent = document.querySelector('main');
+  const layout = document.querySelector('.layout');
+  const dotNav = document.querySelector('.dot-nav');
   const funFactPage = document.getElementById('fun-fact');
-  const header = document.querySelector('header');
-  const footer = document.querySelector('footer');
-  
-  if (!mainContent || !funFactPage) return;
-  
+
+  if (!layout || !funFactPage) return;
+
   console.log('[showMainPage] Returning to main page');
-  
-  // Fade out fun fact page
+
   funFactPage.style.opacity = '0';
   funFactPage.style.transform = 'translateY(-20px)';
-  
+
   setTimeout(() => {
     funFactPage.style.display = 'none';
-    
-    // Show and fade in main content
-    mainContent.style.display = 'block';
-    if (header) header.style.display = 'block';
-    if (footer) footer.style.display = 'block';
-    mainContent.style.opacity = '0';
-    mainContent.style.transform = 'translateY(-20px)';
-    
+
+    layout.style.display = '';
+    if (dotNav) dotNav.style.display = '';
+    layout.style.opacity = '0';
+    layout.style.transform = 'translateY(-20px)';
+
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        mainContent.style.opacity = '1';
-        mainContent.style.transform = 'translateY(0)';
-      }, 10);
+      layout.style.opacity = '1';
+      layout.style.transform = 'translateY(0)';
     });
   }, 300);
-  
-  // Use smooth scroll only on desktop
-  if (window.innerWidth > 600) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } else {
-    window.scrollTo(0, 0);
-  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
