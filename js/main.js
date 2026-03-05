@@ -780,7 +780,6 @@ function generateResearch(data) {
 
 
 async function init() {
-  initDotNav();
   initThemeToggle();
   initSpotlight();
   initScrollBackground();
@@ -790,6 +789,7 @@ async function init() {
   generateTeaching(await fetchJSON('data/teaching.json'));
   generateResearch(await fetchJSON('data/research.json'));
   await initFunFactGalleries();
+  initDotNav();
 }
 
 function showFunFactPage() {
@@ -809,6 +809,9 @@ function showFunFactPage() {
     layout.style.display = 'none';
     if (dotNav) dotNav.style.display = 'none';
     if (contentArea) contentArea.scrollTop = 0;
+
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
 
     funFactPage.style.display = 'block';
     funFactPage.style.opacity = '0';
@@ -835,6 +838,9 @@ function showMainPage() {
 
   setTimeout(() => {
     funFactPage.style.display = 'none';
+
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
 
     layout.style.display = '';
     if (dotNav) dotNav.style.display = '';

@@ -22,14 +22,7 @@
 <body>
   <div class="layout">
     <aside class="sidebar">
-      <div id="home-section"></div>
-      <div class="sidebar-social">
-        <a href="mailto:tomm1203@gm.gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i></a>
-        <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/hisu-kim/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://www.instagram.com/his_kim_1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      </div>
-      <div class="sidebar-bottom">
+      <div class="sidebar-top">
         <button class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
           <span class="theme-toggle-track" aria-hidden="true">
             <i class="fas fa-sun  theme-icon-sun"></i>
@@ -37,9 +30,20 @@
             <i class="fas fa-moon theme-icon-moon"></i>
           </span>
         </button>
+      </div>
+      <div class="sidebar-profile">
+        <div id="home-section"></div>
+        <div class="sidebar-social">
+          <a href="mailto:tomm1203@gm.gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i></a>
+          <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/hisu-kim/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          <a href="https://www.instagram.com/his_kim_1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <span class="easter-egg-keyword" onclick="showFunFactPage()" style="cursor: pointer;">His casual life</span>
         <footer>
           Built by Hisu Kim on GitHub Pages
-          <span class="easter-egg-keyword" onclick="showFunFactPage()" style="cursor: pointer;">CrossFitter &amp; Dancer</span>
         </footer>
       </div>
     </aside>
