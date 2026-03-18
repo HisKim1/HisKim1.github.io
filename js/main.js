@@ -30,8 +30,7 @@ const appState = {
   spotlightBound: false,
   themeToggleBound: false,
   resizeBound: false,
-  mediaManifestPromise: null,
-  revealDebugScrollCount: 0
+  mediaManifestPromise: null
 };
 
 /* -------------------------------------------------------------------------- */
@@ -102,43 +101,6 @@ function getScrollHeight() {
     return contentArea ? contentArea.scrollHeight - contentArea.clientHeight : 0;
   }
   return document.documentElement.scrollHeight - window.innerHeight;
-}
-
-function getRevealDebugSnapshot(limit = 8) {
-  const root = getRevealRoot();
-  const rootRect = root
-    ? root.getBoundingClientRect()
-    : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
-  const enterOffset = Math.max(rootRect.height * 0.14, 56);
-
-  return collectRevealTargets().slice(0, limit).map((target, index) => {
-    const rect = target.getBoundingClientRect();
-    return {
-      index,
-      classes: target.className,
-      top: Math.round(rect.top),
-      bottom: Math.round(rect.bottom),
-      height: Math.round(rect.height),
-      visible: target.classList.contains('is-visible'),
-      shouldReveal: rect.top <= rootRect.bottom - enterOffset && rect.bottom >= rootRect.top + 24
-    };
-  });
-}
-
-function logRevealDebugSnapshot(label) {
-  const root = getRevealRoot();
-  const scrollTarget = getScrollEventTarget();
-  const payload = {
-    label,
-    root: root ? '#content-area' : 'window',
-    scrollTop: root ? root.scrollTop : window.scrollY,
-    clientHeight: root ? root.clientHeight : window.innerHeight,
-    scrollHeight: root ? root.scrollHeight : document.documentElement.scrollHeight,
-    targetType: scrollTarget === window ? 'window' : '#content-area',
-    items: getRevealDebugSnapshot()
-  };
-
-  console.log('[reveal:debug]', payload);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -518,7 +480,7 @@ function renderEducation(data) {
   const list = document.getElementById('education-list');
   if (!list) return;
 
-  let html = (data.main || []).map(item => {
+  const renderEducationCard = item => {
     const tgpa = (item.tgpa || '').trim();
     const { timeline, degreeLabel } = splitPeriod(item.period || '');
     const metaItems = [
@@ -544,7 +506,50 @@ function renderEducation(data) {
         ${buildEducationDetailsMarkup(item)}
       </div>
     `;
-  }).join('');
+  };
+
+  const isExchangeItem = item => {
+    const school = (item.school || '').toLowerCase();
+    const period = (item.period || '').toLowerCase();
+    return period.includes('exchange student')
+      || school.includes('warsaw university of technology')
+      || school.includes('university of california, berkeley');
+  };
+
+  const mainItems = (data.main || []).filter(item => !isExchangeItem(item));
+  const exchangeItems = (data.main || []).filter(isExchangeItem);
+
+  let html = mainItems.map(renderEducationCard).join('');
+
+  const renderTopicSection = ({
+    title,
+    bodyClassName,
+    listClassName,
+    itemsMarkup,
+    defaultOpen = false
+  }) => `
+    <div class="education-topic">
+      <button class="education-topic-toggle" type="button" aria-expanded="${defaultOpen ? 'true' : 'false'}">
+        <span class="education-topic-label">${title}</span>
+        <span class="education-topic-icon" aria-hidden="true">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </button>
+      <div class="education-topic-body ${bodyClassName}" data-state="${defaultOpen ? 'open' : 'collapsed'}" data-default-open="${defaultOpen ? 'true' : 'false'}">
+        <div class="${listClassName}">${itemsMarkup}</div>
+      </div>
+    </div>
+  `;
+
+  if (exchangeItems.length) {
+    html += renderTopicSection({
+      title: 'Exchange Student',
+      bodyClassName: 'education-topic-body-cards',
+      listClassName: 'education-topic-card-list',
+      itemsMarkup: exchangeItems.map(renderEducationCard).join(''),
+      defaultOpen: true
+    });
+  }
 
   if (Array.isArray(data.extracurricular) && data.extracurricular.length) {
     const extracurricularItems = data.extracurricular.map(item => {
@@ -574,17 +579,13 @@ function renderEducation(data) {
       `;
     }).join('');
 
-    html += `
-      <div class="education-extracurricular">
-        <button class="extracurricular-toggle" type="button" aria-expanded="false">
-          <span>Extracurricular</span>
-          <i class="fas fa-chevron-down" aria-hidden="true"></i>
-        </button>
-        <div class="education-extracurricular-body" data-state="collapsed">
-          <ul class="extracurricular-list">${extracurricularItems}</ul>
-        </div>
-      </div>
-    `;
+    html += renderTopicSection({
+      title: 'Extracurricular',
+      bodyClassName: 'education-topic-body-list',
+      listClassName: 'extracurricular-list',
+      itemsMarkup: extracurricularItems,
+      defaultOpen: false
+    });
   }
 
   list.innerHTML = html;
@@ -594,28 +595,38 @@ function bindEducationAccordion() {
   const list = document.getElementById('education-list');
   if (!list) return;
 
-  const toggle = list.querySelector('.extracurricular-toggle');
-  const panel = list.querySelector('.education-extracurricular-body');
+  const topics = Array.from(list.querySelectorAll('.education-topic'));
+  if (!topics.length) return;
 
-  if (!toggle || !panel) return;
+  const resizeHandlers = [];
 
-  function setOpen(isOpen) {
-    panel.dataset.state = isOpen ? 'open' : 'collapsed';
-    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    panel.style.maxHeight = isOpen ? `${panel.scrollHeight}px` : '0px';
-  }
+  topics.forEach(topic => {
+    const toggle = topic.querySelector('.education-topic-toggle');
+    const panel = topic.querySelector('.education-topic-body');
+    if (!toggle || !panel) return;
 
-  setOpen(false);
+    const setOpen = isOpen => {
+      panel.dataset.state = isOpen ? 'open' : 'collapsed';
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      panel.style.maxHeight = isOpen ? `${panel.scrollHeight}px` : '0px';
+    };
 
-  toggle.addEventListener('click', () => {
-    const isOpen = panel.dataset.state === 'open';
-    setOpen(!isOpen);
+    setOpen(panel.dataset.defaultOpen === 'true');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = panel.dataset.state === 'open';
+      setOpen(!isOpen);
+    });
+
+    resizeHandlers.push(() => {
+      if (panel.dataset.state === 'open') {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      }
+    });
   });
 
   window.addEventListener('resize', () => {
-    if (panel.dataset.state === 'open') {
-      panel.style.maxHeight = `${panel.scrollHeight}px`;
-    }
+    resizeHandlers.forEach(handler => handler());
   }, { passive: true });
 }
 
@@ -1057,7 +1068,6 @@ function initLenis() {
 
   appState.lenisRafId = requestAnimationFrame(animate);
   appState.scrollController = appState.lenis;
-  console.log('[initLenis] Lenis initialized');
   return appState.lenis;
 }
 
@@ -1078,11 +1088,6 @@ function evaluateRevealTargets() {
     target.classList.add('is-visible');
     activatedCount += 1;
   });
-
-  if (activatedCount > 0) {
-    console.log(`[initScrollReveal] Activated ${activatedCount} element(s)`);
-    logRevealDebugSnapshot('activation');
-  }
 }
 
 function scheduleRevealEvaluation() {
@@ -1102,26 +1107,10 @@ function bindRevealFallback() {
   const scrollTarget = getScrollEventTarget();
 
   const onScroll = () => {
-    appState.revealDebugScrollCount += 1;
-    if (appState.revealDebugScrollCount <= 5 || appState.revealDebugScrollCount % 10 === 0) {
-      console.log('[reveal:scroll]', {
-        count: appState.revealDebugScrollCount,
-        target: scrollTarget === window ? 'window' : '#content-area',
-        scrollTop: getScrollPosition(),
-        usesNestedScrollContainer: usesNestedScrollContainer(),
-        lenisActive: Boolean(appState.lenis),
-        smoothControllerActive: Boolean(appState.scrollController)
-      });
-    }
     scheduleRevealEvaluation();
   };
 
   const onResize = () => {
-    console.log('[reveal:resize]', {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      usesNestedScrollContainer: usesNestedScrollContainer()
-    });
     scheduleRevealEvaluation();
   };
 
@@ -1179,11 +1168,8 @@ function collectRevealTargets() {
 
 function initScrollReveal() {
   const targets = collectRevealTargets();
-  console.log(`[initScrollReveal] Observing ${targets.length} elements (root: ${getRevealRoot() ? '#content-area' : 'window'})`);
-
   if (!targets.length) return;
   bindRevealFallback();
-  appState.revealDebugScrollCount = 0;
 
   targets.forEach((target, index) => {
     target.classList.add('reveal-item');
@@ -1199,16 +1185,6 @@ function initScrollReveal() {
   if (targets[0]) {
     void targets[0].offsetHeight;
   }
-
-  window.__portfolioRevealDebug = {
-    snapshot: () => logRevealDebugSnapshot('manual'),
-    list: () => getRevealDebugSnapshot(32),
-    root: () => getRevealRoot(),
-    scrollTop: () => getScrollPosition(),
-    targetCount: () => collectRevealTargets().length
-  };
-  console.log('[reveal:debug] window.__portfolioRevealDebug available');
-  logRevealDebugSnapshot('init');
 
   requestAnimationFrame(() => {
     scheduleRevealEvaluation();
@@ -1322,11 +1298,6 @@ async function init() {
   initThemeToggle();
   initSpotlight();
   bindResizeHandler();
-
-  console.log('[motion]', {
-    forceAnimations: false,
-    prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  });
 
   const appData = await fetchAppData();
   await renderAppContent(appData);
