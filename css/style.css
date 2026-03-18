@@ -148,14 +148,15 @@ body::-webkit-scrollbar-thumb:hover,
 }
 
 .sidebar {
-  width: 300px;
+  width: clamp(320px, 24vw + 36px, 420px);
+  flex-basis: clamp(320px, 24vw + 36px, 420px);
   flex-shrink: 0;
   height: 100vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2.5rem 2rem;
+  padding: clamp(2rem, 3vw, 2.75rem) clamp(1.8rem, 2.6vw, 2.5rem);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   box-sizing: border-box;
 }
@@ -196,7 +197,7 @@ body::-webkit-scrollbar-thumb:hover,
   flex: 1;
   height: 100vh;
   overflow-y: auto;
-  padding: 2rem 3rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 4vw, 3.2rem);
   box-sizing: border-box;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }

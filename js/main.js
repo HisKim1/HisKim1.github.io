@@ -7,6 +7,8 @@ let lenis = null;
 let lenisRafId = 0;
 let revealObserver = null;
 let lenisResizeRafId = 0;
+let revealFallbackRafId = 0;
+let revealListenersBound = false;
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -32,6 +34,53 @@ function shouldUseLenis() {
   return window.innerWidth > 768 && getComputedStyle(contentArea).overflowY !== 'visible';
 }
 
+function getRevealRoot() {
+  const contentArea = document.getElementById('content-area');
+  if (!contentArea) return null;
+  return getComputedStyle(contentArea).overflowY === 'visible' ? null : contentArea;
+}
+
+function revealVisibleElements() {
+  const root = getRevealRoot();
+  const rootRect = root
+    ? root.getBoundingClientRect()
+    : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
+  const enterOffset = Math.max(rootRect.height * 0.14, 56);
+  const leaveOffset = 24;
+
+  document.querySelectorAll('.reveal-on-scroll:not(.is-visible)').forEach(target => {
+    const rect = target.getBoundingClientRect();
+    const isInVerticalRange = rect.top <= rootRect.bottom - enterOffset && rect.bottom >= rootRect.top + leaveOffset;
+    if (isInVerticalRange) {
+      target.classList.add('is-visible');
+      if (revealObserver) {
+        revealObserver.unobserve(target);
+      }
+    }
+  });
+}
+
+function scheduleRevealCheck() {
+  if (revealFallbackRafId) return;
+  revealFallbackRafId = requestAnimationFrame(() => {
+    revealVisibleElements();
+    revealFallbackRafId = 0;
+  });
+}
+
+function bindRevealListeners() {
+  if (revealListenersBound) return;
+  const contentArea = document.getElementById('content-area');
+
+  if (contentArea) {
+    contentArea.addEventListener('scroll', scheduleRevealCheck, { passive: true });
+  }
+
+  window.addEventListener('scroll', scheduleRevealCheck, { passive: true });
+  window.addEventListener('resize', scheduleRevealCheck, { passive: true });
+  revealListenersBound = true;
+}
+
 function initLenis() {
   const contentArea = document.getElementById('content-area');
   const content = contentArea?.querySelector('.content-scroll-body');
@@ -54,6 +103,10 @@ function initLenis() {
     touchMultiplier: 1,
     gestureOrientation: 'vertical'
   });
+
+  if (typeof lenis.on === 'function') {
+    lenis.on('scroll', scheduleRevealCheck);
+  }
 
   const raf = time => {
     if (lenis) {
@@ -84,6 +137,7 @@ function handleLenisResize() {
 function initScrollReveal() {
   const revealTargets = Array.from(document.querySelectorAll('section .section-glass-panel, section .card, section .media-card'));
   if (!revealTargets.length) return;
+  bindRevealListeners();
 
   if (prefersReducedMotion()) {
     revealTargets.forEach(target => {
@@ -94,6 +148,7 @@ function initScrollReveal() {
   }
 
   if (!revealObserver) {
+    const root = getRevealRoot();
     revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -101,17 +156,28 @@ function initScrollReveal() {
         observer.unobserve(entry.target);
       });
     }, {
+      root,
       threshold: 0.14,
       rootMargin: '0px 0px -12% 0px'
     });
   }
 
+  const pendingTargets = [];
   revealTargets.forEach((target, index) => {
     if (target.dataset.revealBound === 'true') return;
     target.classList.add('reveal-on-scroll');
     target.style.setProperty('--reveal-delay', `${Math.min(index % 6, 5) * 70}ms`);
-    revealObserver.observe(target);
     target.dataset.revealBound = 'true';
+    pendingTargets.push(target);
+  });
+
+  requestAnimationFrame(() => {
+    pendingTargets.forEach(target => {
+      if (revealObserver) {
+        revealObserver.observe(target);
+      }
+    });
+    scheduleRevealCheck();
   });
 }
 
@@ -126,6 +192,7 @@ function refreshScrollReveal() {
   });
 
   initScrollReveal();
+  scheduleRevealCheck();
 }
 
 function initDotNav() {
