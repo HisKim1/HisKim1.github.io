@@ -21,6 +21,7 @@ const MONTH_ORDER = {
 const appState = {
   lenis: null,
   lenisRafId: 0,
+  scrollController: null,
   revealCleanup: null,
   revealRafId: 0,
   resizeRafId: 0,
@@ -57,7 +58,7 @@ async function waitForDomMount() {
 }
 
 function prefersReducedMotion() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return false;
 }
 
 function getContentArea() {
@@ -831,6 +832,9 @@ function initThemeToggle() {
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
     applyTheme(nextTheme, button);
+    requestAnimationFrame(() => {
+      initScrollBackground();
+    });
   });
 
   appState.themeToggleBound = true;
@@ -903,8 +907,8 @@ function initDotNav() {
     const target = document.getElementById(event.currentTarget.dataset.section);
     if (!target) return;
 
-    if (appState.lenis) {
-      appState.lenis.scrollTo(target, { duration: 1.1 });
+    if (appState.scrollController && typeof appState.scrollController.scrollTo === 'function') {
+      appState.scrollController.scrollTo(target, { duration: 0.85 });
       return;
     }
 
@@ -936,27 +940,108 @@ function destroyLenis() {
   }
 
   appState.lenis = null;
+
+  if (appState.scrollController && typeof appState.scrollController.destroy === 'function') {
+    appState.scrollController.destroy();
+  }
+  appState.scrollController = null;
+}
+
+function createSmoothScrollFallback(contentArea) {
+  let targetScrollTop = contentArea.scrollTop;
+  let rafId = 0;
+  let animating = false;
+
+  function clampScroll(value) {
+    const maxScroll = Math.max(0, contentArea.scrollHeight - contentArea.clientHeight);
+    return Math.min(Math.max(value, 0), maxScroll);
+  }
+
+  function animate() {
+    const delta = targetScrollTop - contentArea.scrollTop;
+
+    if (Math.abs(delta) < 0.5) {
+      contentArea.scrollTop = targetScrollTop;
+      animating = false;
+      rafId = 0;
+      return;
+    }
+
+    animating = true;
+    contentArea.scrollTop += delta * 0.14;
+    rafId = requestAnimationFrame(animate);
+  }
+
+  function requestTick() {
+    if (rafId) return;
+    rafId = requestAnimationFrame(animate);
+  }
+
+  function onWheel(event) {
+    event.preventDefault();
+    targetScrollTop = clampScroll(targetScrollTop + event.deltaY);
+    requestTick();
+  }
+
+  function onScroll() {
+    if (animating) return;
+    targetScrollTop = contentArea.scrollTop;
+  }
+
+  contentArea.addEventListener('wheel', onWheel, { passive: false });
+  contentArea.addEventListener('scroll', onScroll, { passive: true });
+
+  return {
+    scrollTo(target, options = {}) {
+      const nextTop = typeof target === 'number'
+        ? target
+        : target.offsetTop;
+
+      targetScrollTop = clampScroll(nextTop);
+
+      if (options.immediate) {
+        contentArea.scrollTop = targetScrollTop;
+        return;
+      }
+
+      requestTick();
+    },
+    destroy() {
+      contentArea.removeEventListener('wheel', onWheel);
+      contentArea.removeEventListener('scroll', onScroll);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    }
+  };
 }
 
 function initLenis() {
   const contentArea = getContentArea();
   const content = getContentScrollBody();
 
-  if (typeof window.Lenis !== 'function' || !contentArea || !content || !usesNestedScrollContainer() || prefersReducedMotion()) {
+  if (!contentArea || !content || !usesNestedScrollContainer() || prefersReducedMotion()) {
     destroyLenis();
     return null;
   }
 
   destroyLenis();
 
+  if (typeof window.Lenis !== 'function') {
+    console.warn('[initLenis] Lenis CDN unavailable, enabling fallback smooth scroll');
+    appState.scrollController = createSmoothScrollFallback(contentArea);
+    return appState.scrollController;
+  }
+
   appState.lenis = new window.Lenis({
     wrapper: contentArea,
     content,
-    duration: 1.1,
-    lerp: 0.085,
+    duration: 0.9,
+    lerp: 0.14,
     smoothWheel: true,
     syncTouch: false,
-    wheelMultiplier: 0.95,
+    wheelMultiplier: 0.82,
     gestureOrientation: 'vertical'
   });
 
@@ -971,6 +1056,8 @@ function initLenis() {
   };
 
   appState.lenisRafId = requestAnimationFrame(animate);
+  appState.scrollController = appState.lenis;
+  console.log('[initLenis] Lenis initialized');
   return appState.lenis;
 }
 
@@ -1022,7 +1109,8 @@ function bindRevealFallback() {
         target: scrollTarget === window ? 'window' : '#content-area',
         scrollTop: getScrollPosition(),
         usesNestedScrollContainer: usesNestedScrollContainer(),
-        lenisActive: Boolean(appState.lenis)
+        lenisActive: Boolean(appState.lenis),
+        smoothControllerActive: Boolean(appState.scrollController)
       });
     }
     scheduleRevealEvaluation();
@@ -1057,6 +1145,13 @@ function initScrollBackground() {
   let ticking = false;
 
   function update() {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    if (theme === 'dark') {
+      root.style.setProperty('--bg-shift', '0');
+      ticking = false;
+      return;
+    }
+
     const scrollTop = getScrollPosition();
     const scrollHeight = getScrollHeight();
     const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
@@ -1227,6 +1322,11 @@ async function init() {
   initThemeToggle();
   initSpotlight();
   bindResizeHandler();
+
+  console.log('[motion]', {
+    forceAnimations: false,
+    prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  });
 
   const appData = await fetchAppData();
   await renderAppContent(appData);

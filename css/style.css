@@ -19,8 +19,8 @@
   --surface: rgba(255, 255, 255, 0.04);
   --surface-strong: rgba(255, 255, 255, 0.08);
   --panel-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  --section-padding: 64px;
-  --section-gap: 44px;
+  --section-padding: 52px;
+  --section-gap: 35px;
   --panel-padding: 2rem;
   --content-gap: 1.25rem;
   --theme-transition: background-color 1.4s ease, background 1.4s ease, color 1.4s ease, border-color 1.4s ease, box-shadow 1.4s ease, backdrop-filter 1.4s ease, filter 1.4s ease;
@@ -50,22 +50,16 @@
 }
 
 html {
-  font-size: clamp(13.5px, 0.25vw + 12.6px, 16.2px);
+  font-size: clamp(12.15px, 0.225vw + 11.34px, 14.58px);
   scroll-behavior: auto;
   /* Optimize scrolling on mobile */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: clamp(0.96rem, 0.18vw + 0.92rem, 1.05rem);
   background-color: var(--navy);
   color: var(--white);
@@ -365,25 +359,6 @@ html.theme-ready {
   transition: var(--theme-transition);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .theme-ready body,
-  .theme-ready .sidebar,
-  .theme-ready .content-area,
-  .theme-ready .theme-toggle,
-  .theme-ready .theme-toggle-track,
-  .theme-ready .back-button,
-  .theme-ready .project-img,
-  .theme-ready .keyword-badge,
-  .theme-ready .extracurricular-item,
-  .theme-ready .extracurricular-toggle,
-  .theme-ready footer,
-  .theme-ready .fun-fact-page,
-  .theme-ready .fun-fact-section,
-  .theme-ready .project-source {
-    transition: none;
-  }
-}
-
 body::before {
   content: "";
   position: fixed;
@@ -404,16 +379,16 @@ body::after {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at calc(15% + var(--bg-shift, 0) * 20%) 18%, rgba(94, 211, 255, calc(0.22 + var(--bg-shift, 0) * 0.14)), transparent 55%),
-    radial-gradient(circle at calc(85% - var(--bg-shift, 0) * 15%) 10%, rgba(255, 127, 80, calc(0.2 + var(--bg-shift, 0) * 0.12)), transparent 50%),
-    radial-gradient(circle at calc(68% + var(--bg-shift, 0) * 12%) 82%, rgba(139, 92, 246, calc(0.2 + var(--bg-shift, 0) * 0.14)), transparent 56%),
+    radial-gradient(circle at 15% 18%, rgba(94, 211, 255, 0.2), transparent 55%),
+    radial-gradient(circle at 85% 10%, rgba(255, 127, 80, 0.18), transparent 50%),
+    radial-gradient(circle at 68% 82%, rgba(139, 92, 246, 0.18), transparent 56%),
     radial-gradient(circle at 22% 86%, rgba(34, 197, 94, 0.16), transparent 60%),
     linear-gradient(140deg, rgba(7, 11, 24, 0.95), rgba(15, 23, 42, 0.85));
-  opacity: 0.9;
+  opacity: 0.88;
   z-index: -2;
   /* Remove background-attachment: fixed for better scroll performance */
   transform: translateZ(0);
-  transition: background 1.4s ease, opacity 1.4s ease;
+  transition: opacity 1.4s ease;
 }
 
 [data-theme="light"] body::before {
@@ -870,13 +845,13 @@ section {
 }
 
 .project-details li {
-  line-height: 1.6;
+  line-height: 1.44;
   color: var(--light-slate);
 }
 
 .project-description {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.44;
   color: var(--light-slate);
 }
 
@@ -899,7 +874,7 @@ section {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 0.9rem;
+  padding: 0.82rem;
   width: auto;
   max-width: 100%;
   transition: opacity 0.75s var(--micro-interaction-ease), transform 0.75s var(--micro-interaction-ease), background 0.45s var(--micro-interaction-ease), border-color 0.45s var(--micro-interaction-ease), box-shadow 0.45s var(--micro-interaction-ease);
@@ -944,7 +919,7 @@ section {
 .education-card {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.68rem;
 }
 
 .education-card .card-heading {
@@ -957,15 +932,15 @@ section {
 .date-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.18rem;
 }
 
 .school-name-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
 }
 
@@ -1034,6 +1009,7 @@ section {
 .degree-detail {
   margin: 0;
   font-size: clamp(0.94rem, 0.14vw + 0.9rem, 1rem);
+  line-height: 1.44;
   color: var(--light-slate);
 }
 
@@ -1044,7 +1020,7 @@ section {
 .experience-card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .experience-card .card-heading {
@@ -1057,6 +1033,7 @@ section {
 .experience-position {
   margin: 0;
   font-size: clamp(0.94rem, 0.14vw + 0.9rem, 1rem);
+  line-height: 1.4;
   color: var(--light-slate);
 }
 
@@ -1064,13 +1041,13 @@ section {
   margin: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem 1rem;
+  gap: 0.6rem 0.9rem;
 }
 
 .edu-detail-row {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.08rem;
 }
 
 .edu-details dt {
@@ -1094,20 +1071,21 @@ section {
   font-size: clamp(0.96rem, 0.18vw + 0.92rem, 1.06rem);
   color: var(--white);
   font-weight: 500;
-  padding-left: 0.5rem;
+  line-height: 1.38;
+  padding-left: 0.4rem;
 }
 
 .experience-details {
-  margin: 0.75rem 0 0 0;
+  margin: 0.6rem 0 0 0;
   padding-left: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .experience-details li {
   font-size: 0.95rem;
-  line-height: 1.7;
+  line-height: 1.5;
   color: var(--light-slate);
   position: relative;
 }
@@ -1281,13 +1259,15 @@ section {
 }
 
 .card p {
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
+  margin-top: 0.16em;
+  margin-bottom: 0.16em;
+  line-height: 1.44;
 }
 
 .card h3 {
   margin-top: 0;
-  margin-bottom: 0.15em;
+  margin-bottom: 0.12em;
+  line-height: 1.28;
 }
 
 
@@ -1523,7 +1503,7 @@ section {
     margin-left: 0;
     margin-right: 0;
     max-width: 100%;
-    padding: 0.7rem;
+    padding: 0.64rem;
   }
 }
 
@@ -1896,18 +1876,4 @@ footer {
   opacity: 1;
   --reveal-y: 0px;
   transition-delay: 0ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal-item,
-  .reveal-item.is-visible,
-  .section-glass-panel,
-  .card,
-  .media-card {
-    opacity: 1;
-    --reveal-y: 0px;
-    --interaction-y: 0px;
-    --interaction-scale: 1;
-    transition: none !important;
-  }
 }
