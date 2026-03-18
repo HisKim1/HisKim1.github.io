@@ -18,6 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
 </head>
 <body>
   <div class="layout">
@@ -49,44 +50,45 @@
     </aside>
 
     <main class="content-area" id="content-area">
-      <section id="education" aria-label="Education">
-        <div class="section-glass-panel">
-          <h2>Education</h2>
-          <div id="education-list" class="vertical"></div>
-        </div>
-      </section>
+      <div class="content-scroll-body">
+        <section id="education" aria-label="Education">
+          <div class="section-glass-panel">
+            <h2>Education</h2>
+            <div id="education-list" class="vertical"></div>
+          </div>
+        </section>
 
-      <section id="research" aria-label="Research">
-        <div class="research-columns">
+        <section id="research" aria-label="Research">
+          <div class="research-columns">
+            <article class="research-panel section-glass-panel">
+              <h2>Publications</h2>
+              <div id="research-publications"></div>
+            </article>
+            <article class="research-panel section-glass-panel">
+              <h2>Conferences</h2>
+              <div id="research-conferences"></div>
+            </article>
+          </div>
           <article class="research-panel section-glass-panel">
-            <h2>Publications</h2>
-            <div id="research-publications"></div>
+            <h2>Experience</h2>
+            <div id="research-experience" class="vertical"></div>
           </article>
-          <article class="research-panel section-glass-panel">
-            <h2>Conferences</h2>
-            <div id="research-conferences"></div>
-          </article>
-        </div>
-        <article class="research-panel section-glass-panel">
-          <h2>Experience</h2>
-          <div id="research-experience" class="vertical"></div>
-        </article>
-      </section>
+        </section>
 
-      <section id="teaching" aria-label="Teaching">
-        <div class="section-glass-panel">
-          <h2>Teaching</h2>
-          <div id="teaching-list" class="teaching-grid"></div>
-        </div>
-      </section>
+        <section id="teaching" aria-label="Teaching">
+          <div class="section-glass-panel">
+            <h2>Teaching</h2>
+            <div id="teaching-list" class="teaching-grid"></div>
+          </div>
+        </section>
 
-      <section id="projects" aria-label="Projects">
-        <div class="section-glass-panel">
-          <h2>Projects</h2>
-          <div id="project-grid" class="vertical"></div>
-        </div>
-      </section>
-
+        <section id="projects" aria-label="Projects">
+          <div class="section-glass-panel">
+            <h2>Projects</h2>
+            <div id="project-grid" class="vertical"></div>
+          </div>
+        </section>
+      </div>
     </main>
   </div>
 
