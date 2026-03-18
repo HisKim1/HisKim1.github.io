@@ -23,7 +23,7 @@
   --section-gap: 44px;
   --panel-padding: 2rem;
   --content-gap: 1.25rem;
-  --theme-transition: background-color 1.4s ease, background 1.4s ease, color 1.4s ease, border-color 1.4s ease, box-shadow 1.4s ease, opacity 1.4s ease, transform 1.4s ease, backdrop-filter 1.4s ease, filter 1.4s ease;
+  --theme-transition: background-color 1.4s ease, background 1.4s ease, color 1.4s ease, border-color 1.4s ease, box-shadow 1.4s ease, backdrop-filter 1.4s ease, filter 1.4s ease;
   --micro-interaction-ease: cubic-bezier(0.25, 1, 0.5, 1);
   --reveal-distance: 30px;
   --scrollbar-track: rgba(255, 255, 255, 0.05);
@@ -351,8 +351,6 @@ html.theme-ready {
 .theme-ready body,
 .theme-ready .sidebar,
 .theme-ready .content-area,
-.theme-ready .section-glass-panel,
-.theme-ready .card,
 .theme-ready .theme-toggle,
 .theme-ready .theme-toggle-track,
 .theme-ready .back-button,
@@ -363,7 +361,7 @@ html.theme-ready {
 .theme-ready footer,
 .theme-ready .fun-fact-page,
 .theme-ready .fun-fact-section,
-.theme-ready .media-card {
+.theme-ready .project-source {
   transition: var(--theme-transition);
 }
 
@@ -371,8 +369,6 @@ html.theme-ready {
   .theme-ready body,
   .theme-ready .sidebar,
   .theme-ready .content-area,
-  .theme-ready .section-glass-panel,
-  .theme-ready .card,
   .theme-ready .theme-toggle,
   .theme-ready .theme-toggle-track,
   .theme-ready .back-button,
@@ -383,7 +379,7 @@ html.theme-ready {
   .theme-ready footer,
   .theme-ready .fun-fact-page,
   .theme-ready .fun-fact-section,
-  .theme-ready .media-card {
+  .theme-ready .project-source {
     transition: none;
   }
 }
@@ -1888,21 +1884,23 @@ footer {
   opacity: 0.8;
 }
 
-.reveal-on-scroll {
+/* Scroll Reveal State */
+.reveal-item {
   opacity: 0;
   --reveal-y: var(--reveal-distance);
+  will-change: opacity, transform;
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-.reveal-on-scroll.is-visible {
+.reveal-item.is-visible {
   opacity: 1;
   --reveal-y: 0px;
   transition-delay: 0ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal-on-scroll,
-  .reveal-on-scroll.is-visible,
+  .reveal-item,
+  .reveal-item.is-visible,
   .section-glass-panel,
   .card,
   .media-card {
