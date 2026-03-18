@@ -22,6 +22,8 @@ const appState = {
   lenis: null,
   lenisRafId: 0,
   revealObserver: null,
+  revealCleanup: null,
+  revealRafId: 0,
   resizeRafId: 0,
   dotNavCleanup: null,
   scrollBackgroundCleanup: null,
@@ -921,6 +923,12 @@ function initLenis() {
     gestureOrientation: 'vertical'
   });
 
+  if (typeof appState.lenis.on === 'function') {
+    appState.lenis.on('scroll', () => {
+      scheduleRevealEvaluation();
+    });
+  }
+
   const animate = time => {
     if (!appState.lenis) return;
     appState.lenis.raf(time);
@@ -929,6 +937,52 @@ function initLenis() {
 
   appState.lenisRafId = requestAnimationFrame(animate);
   return appState.lenis;
+}
+
+function evaluateRevealTargets() {
+  const root = getRevealRoot();
+  const rootRect = root
+    ? root.getBoundingClientRect()
+    : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
+  const enterOffset = Math.max(rootRect.height * 0.14, 56);
+  const leaveOffset = 24;
+
+  document.querySelectorAll('.reveal-item:not(.is-visible)').forEach(target => {
+    const rect = target.getBoundingClientRect();
+    const isVisibleWithinRoot = rect.top <= rootRect.bottom - enterOffset && rect.bottom >= rootRect.top + leaveOffset;
+
+    if (!isVisibleWithinRoot) return;
+
+    target.classList.add('is-visible');
+    if (appState.revealObserver) {
+      appState.revealObserver.unobserve(target);
+    }
+  });
+}
+
+function scheduleRevealEvaluation() {
+  if (appState.revealRafId) return;
+  appState.revealRafId = requestAnimationFrame(() => {
+    evaluateRevealTargets();
+    appState.revealRafId = 0;
+  });
+}
+
+function bindRevealFallback() {
+  if (appState.revealCleanup) {
+    appState.revealCleanup();
+    appState.revealCleanup = null;
+  }
+
+  const scrollTarget = getScrollEventTarget();
+
+  scrollTarget.addEventListener('scroll', scheduleRevealEvaluation, { passive: true });
+  window.addEventListener('resize', scheduleRevealEvaluation, { passive: true });
+
+  appState.revealCleanup = () => {
+    scrollTarget.removeEventListener('scroll', scheduleRevealEvaluation);
+    window.removeEventListener('resize', scheduleRevealEvaluation);
+  };
 }
 
 function initScrollBackground() {
@@ -974,9 +1028,10 @@ function initScrollReveal() {
   }
 
   const targets = collectRevealTargets();
-  console.log(`[initScrollReveal] Observing ${targets.length} elements`);
+  console.log(`[initScrollReveal] Observing ${targets.length} elements (root: ${getRevealRoot() ? '#content-area' : 'window'})`);
 
   if (!targets.length) return;
+  bindRevealFallback();
 
   targets.forEach((target, index) => {
     target.classList.add('reveal-item');
@@ -1002,9 +1057,15 @@ function initScrollReveal() {
     });
   }, observerOptions);
 
-  targets.forEach(target => {
-    if (target.classList.contains('is-visible')) return;
-    appState.revealObserver.observe(target);
+  requestAnimationFrame(() => {
+    targets.forEach(target => {
+      if (target.classList.contains('is-visible')) return;
+      appState.revealObserver.observe(target);
+    });
+
+    requestAnimationFrame(() => {
+      scheduleRevealEvaluation();
+    });
   });
 }
 
