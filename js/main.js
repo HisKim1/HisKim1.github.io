@@ -21,7 +21,6 @@ const MONTH_ORDER = {
 const appState = {
   lenis: null,
   lenisRafId: 0,
-  revealObserver: null,
   revealCleanup: null,
   revealRafId: 0,
   resizeRafId: 0,
@@ -30,7 +29,8 @@ const appState = {
   spotlightBound: false,
   themeToggleBound: false,
   resizeBound: false,
-  mediaManifestPromise: null
+  mediaManifestPromise: null,
+  revealDebugScrollCount: 0
 };
 
 /* -------------------------------------------------------------------------- */
@@ -101,6 +101,43 @@ function getScrollHeight() {
     return contentArea ? contentArea.scrollHeight - contentArea.clientHeight : 0;
   }
   return document.documentElement.scrollHeight - window.innerHeight;
+}
+
+function getRevealDebugSnapshot(limit = 8) {
+  const root = getRevealRoot();
+  const rootRect = root
+    ? root.getBoundingClientRect()
+    : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
+  const enterOffset = Math.max(rootRect.height * 0.14, 56);
+
+  return collectRevealTargets().slice(0, limit).map((target, index) => {
+    const rect = target.getBoundingClientRect();
+    return {
+      index,
+      classes: target.className,
+      top: Math.round(rect.top),
+      bottom: Math.round(rect.bottom),
+      height: Math.round(rect.height),
+      visible: target.classList.contains('is-visible'),
+      shouldReveal: rect.top <= rootRect.bottom - enterOffset && rect.bottom >= rootRect.top + 24
+    };
+  });
+}
+
+function logRevealDebugSnapshot(label) {
+  const root = getRevealRoot();
+  const scrollTarget = getScrollEventTarget();
+  const payload = {
+    label,
+    root: root ? '#content-area' : 'window',
+    scrollTop: root ? root.scrollTop : window.scrollY,
+    clientHeight: root ? root.clientHeight : window.innerHeight,
+    scrollHeight: root ? root.scrollHeight : document.documentElement.scrollHeight,
+    targetType: scrollTarget === window ? 'window' : '#content-area',
+    items: getRevealDebugSnapshot()
+  };
+
+  console.log('[reveal:debug]', payload);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -924,9 +961,7 @@ function initLenis() {
   });
 
   if (typeof appState.lenis.on === 'function') {
-    appState.lenis.on('scroll', () => {
-      scheduleRevealEvaluation();
-    });
+    appState.lenis.on('scroll', scheduleRevealEvaluation);
   }
 
   const animate = time => {
@@ -945,19 +980,22 @@ function evaluateRevealTargets() {
     ? root.getBoundingClientRect()
     : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
   const enterOffset = Math.max(rootRect.height * 0.14, 56);
-  const leaveOffset = 24;
+  let activatedCount = 0;
 
   document.querySelectorAll('.reveal-item:not(.is-visible)').forEach(target => {
     const rect = target.getBoundingClientRect();
-    const isVisibleWithinRoot = rect.top <= rootRect.bottom - enterOffset && rect.bottom >= rootRect.top + leaveOffset;
+    const isVisibleWithinRoot = rect.top <= rootRect.bottom - enterOffset && rect.bottom >= rootRect.top + 24;
 
     if (!isVisibleWithinRoot) return;
 
     target.classList.add('is-visible');
-    if (appState.revealObserver) {
-      appState.revealObserver.unobserve(target);
-    }
+    activatedCount += 1;
   });
+
+  if (activatedCount > 0) {
+    console.log(`[initScrollReveal] Activated ${activatedCount} element(s)`);
+    logRevealDebugSnapshot('activation');
+  }
 }
 
 function scheduleRevealEvaluation() {
@@ -976,12 +1014,35 @@ function bindRevealFallback() {
 
   const scrollTarget = getScrollEventTarget();
 
-  scrollTarget.addEventListener('scroll', scheduleRevealEvaluation, { passive: true });
-  window.addEventListener('resize', scheduleRevealEvaluation, { passive: true });
+  const onScroll = () => {
+    appState.revealDebugScrollCount += 1;
+    if (appState.revealDebugScrollCount <= 5 || appState.revealDebugScrollCount % 10 === 0) {
+      console.log('[reveal:scroll]', {
+        count: appState.revealDebugScrollCount,
+        target: scrollTarget === window ? 'window' : '#content-area',
+        scrollTop: getScrollPosition(),
+        usesNestedScrollContainer: usesNestedScrollContainer(),
+        lenisActive: Boolean(appState.lenis)
+      });
+    }
+    scheduleRevealEvaluation();
+  };
+
+  const onResize = () => {
+    console.log('[reveal:resize]', {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      usesNestedScrollContainer: usesNestedScrollContainer()
+    });
+    scheduleRevealEvaluation();
+  };
+
+  scrollTarget.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
 
   appState.revealCleanup = () => {
-    scrollTarget.removeEventListener('scroll', scheduleRevealEvaluation);
-    window.removeEventListener('resize', scheduleRevealEvaluation);
+    scrollTarget.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onResize);
   };
 }
 
@@ -1022,19 +1083,16 @@ function collectRevealTargets() {
 }
 
 function initScrollReveal() {
-  if (appState.revealObserver) {
-    appState.revealObserver.disconnect();
-    appState.revealObserver = null;
-  }
-
   const targets = collectRevealTargets();
   console.log(`[initScrollReveal] Observing ${targets.length} elements (root: ${getRevealRoot() ? '#content-area' : 'window'})`);
 
   if (!targets.length) return;
   bindRevealFallback();
+  appState.revealDebugScrollCount = 0;
 
   targets.forEach((target, index) => {
     target.classList.add('reveal-item');
+    target.classList.remove('is-visible');
     target.style.setProperty('--reveal-delay', `${Math.min(index % 6, 5) * 70}ms`);
   });
 
@@ -1043,29 +1101,22 @@ function initScrollReveal() {
     return;
   }
 
-  const observerOptions = {
-    root: getRevealRoot(),
-    threshold: 0.14,
-    rootMargin: '0px 0px -12% 0px'
-  };
+  if (targets[0]) {
+    void targets[0].offsetHeight;
+  }
 
-  appState.revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    });
-  }, observerOptions);
+  window.__portfolioRevealDebug = {
+    snapshot: () => logRevealDebugSnapshot('manual'),
+    list: () => getRevealDebugSnapshot(32),
+    root: () => getRevealRoot(),
+    scrollTop: () => getScrollPosition(),
+    targetCount: () => collectRevealTargets().length
+  };
+  console.log('[reveal:debug] window.__portfolioRevealDebug available');
+  logRevealDebugSnapshot('init');
 
   requestAnimationFrame(() => {
-    targets.forEach(target => {
-      if (target.classList.contains('is-visible')) return;
-      appState.revealObserver.observe(target);
-    });
-
-    requestAnimationFrame(() => {
-      scheduleRevealEvaluation();
-    });
+    scheduleRevealEvaluation();
   });
 }
 

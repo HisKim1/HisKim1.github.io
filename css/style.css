@@ -50,7 +50,7 @@
 }
 
 html {
-  font-size: clamp(15px, 0.28vw + 14px, 18px);
+  font-size: clamp(13.5px, 0.25vw + 12.6px, 16.2px);
   scroll-behavior: auto;
   /* Optimize scrolling on mobile */
   -webkit-overflow-scrolling: touch;
