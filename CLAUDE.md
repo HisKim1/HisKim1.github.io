@@ -50,3 +50,4 @@ Single-page academic portfolio with one HTML shell and data-driven content rende
 - Author highlighting uses `highlight_author_indices` (array of 0-based indices into `authors[]`). The primary name pattern `/(Kim,\s*H\.|H\.?\s*Kim)/gi` is also applied as a fallback.
 - The `period` field in education/experience cards supports a pipe separator: `"2020–2024 | B.S."` — the part before `|` becomes the date and the part after becomes a chip label.
 - `pages/` and `snippets/` directories are intentionally empty (legacy structure cleaned up).
+- `autotester.py` is an unrelated GPU monitoring script (SSH-based); ignore it when working on the site.

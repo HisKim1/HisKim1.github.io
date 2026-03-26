@@ -3,9 +3,18 @@
     "img": "images/profile.jpg",
     "name": "Hisu Kim",
     "keywords": [
-      "Meteorology",
-      "Mathematics",
-      "Trustworthy AI"
+      {
+        "label": "Meteorology",
+        "tooltip": "My domain. Earth's components interact like a <strong>living organism</strong> — dynamic, entangled, endlessly complex. Understanding and predicting this system never stops being fascinating. <mark>Weather forecasting is a universal service</mark> — improving it means sharing that benefit with all of humanity."
+      },
+      {
+        "label": "Mathematics",
+        "tooltip": "My <strong>academic hobby</strong>. I feel most at ease when my thinking is structured like math. I've spent a lot of time on <strong>graph theory</strong>, and lately I've been drawn to <mark>universal approximation</mark> — exploring what function spaces neural networks can actually cover."
+      },
+      {
+        "label": "Trustworthy AI",
+        "tooltip": "When the news calls AI <strong>'omnipotent,'</strong> I quietly think: not quite. AI has immense potential — but we need <mark>honest diagnostics first</mark>. What does it know? Where does it fail? Getting that right is how the <strong>next generation develops better</strong>. That's what I'm trying to contribute to."
+      }
     ]
   },
   "academic": {

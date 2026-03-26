@@ -24,14 +24,14 @@
 
 .apa-list {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .apa-list li {
-  line-height: 1.7;
+  line-height: 1.8;
   font-size: 0.95rem;
   word-break: break-word;
   overflow-wrap: break-word;

@@ -30,7 +30,8 @@ const appState = {
   spotlightBound: false,
   themeToggleBound: false,
   resizeBound: false,
-  mediaManifestPromise: null
+  mediaManifestPromise: null,
+  educationAccordionCleanup: null
 };
 
 /* -------------------------------------------------------------------------- */
@@ -56,9 +57,6 @@ async function waitForDomMount() {
   await nextFrame();
 }
 
-function prefersReducedMotion() {
-  return false;
-}
 
 function getContentArea() {
   return document.getElementById('content-area');
@@ -462,7 +460,12 @@ function renderHome(data) {
   if (!container) return;
 
   const keywords = Array.isArray(data.profile?.keywords) && data.profile.keywords.length
-    ? `<div class="profile-keywords">${data.profile.keywords.map(keyword => `<span class="keyword-badge">${keyword}</span>`).join('')}</div>`
+    ? `<div class="profile-keywords">${data.profile.keywords.map(kw => {
+        const label = typeof kw === 'string' ? kw : kw.label;
+        const tooltip = typeof kw === 'object' && kw.tooltip ? kw.tooltip : '';
+        const tooltipAttr = tooltip ? ` data-tooltip="${tooltip.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}"` : '';
+        return `<span class="keyword-badge"${tooltipAttr}>${label}</span>`;
+      }).join('')}</div>`
     : '';
 
   container.innerHTML = `
@@ -598,6 +601,11 @@ function bindEducationAccordion() {
   const topics = Array.from(list.querySelectorAll('.education-topic'));
   if (!topics.length) return;
 
+  if (appState.educationAccordionCleanup) {
+    appState.educationAccordionCleanup();
+    appState.educationAccordionCleanup = null;
+  }
+
   const resizeHandlers = [];
 
   topics.forEach(topic => {
@@ -625,9 +633,9 @@ function bindEducationAccordion() {
     });
   });
 
-  window.addEventListener('resize', () => {
-    resizeHandlers.forEach(handler => handler());
-  }, { passive: true });
+  const onResize = () => resizeHandlers.forEach(h => h());
+  window.addEventListener('resize', onResize, { passive: true });
+  appState.educationAccordionCleanup = () => window.removeEventListener('resize', onResize);
 }
 
 function renderProjects(data) {
@@ -746,8 +754,8 @@ async function populateMediaGallery({ containerId, key, allowVideos }) {
     const entries = Array.isArray(manifest[key]) ? manifest[key] : [];
 
     const filteredEntries = entries
+      .filter(Boolean)
       .map(filename => ({ link: filename, filename }))
-      .filter(item => item.filename)
       .filter(item => {
         const extension = getExtension(item.filename);
         if (IMAGE_EXTENSIONS.has(extension)) return true;
@@ -801,6 +809,146 @@ async function renderAppContent(data) {
   renderResearch(data.research);
   await renderFunFactGalleries();
   bindEducationAccordion();
+  setupKeywordTooltips();
+}
+
+function setupKeywordTooltips() {
+  const badges = Array.from(document.querySelectorAll('.keyword-badge[data-tooltip]'));
+  if (!badges.length) return;
+
+  let activeIndex = 0;
+
+  /* ── Build DOM ── */
+  const overlay = document.createElement('div');
+  overlay.className = 'keyword-overlay';
+
+  const backBtn = document.createElement('button');
+  backBtn.className = 'keyword-overlay-back back-button';
+  backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
+
+  const carousel = document.createElement('div');
+  carousel.className = 'keyword-carousel';
+
+  const track = document.createElement('div');
+  track.className = 'keyword-carousel-track';
+
+  const dotsEl = document.createElement('div');
+  dotsEl.className = 'keyword-dots';
+
+  badges.forEach((badge, i) => {
+    const card = document.createElement('div');
+    card.className = 'keyword-card';
+    card.innerHTML = `
+      <span class="keyword-card-label">${badge.textContent.trim()}</span>
+      <p class="keyword-card-desc">${badge.dataset.tooltip}</p>
+    `;
+    track.appendChild(card);
+
+    const dot = document.createElement('span');
+    dot.className = 'keyword-dot';
+    dotsEl.appendChild(dot);
+  });
+
+  carousel.appendChild(track);
+  overlay.appendChild(backBtn);
+  overlay.appendChild(carousel);
+  overlay.appendChild(dotsEl);
+  document.body.appendChild(overlay);
+
+  const cards  = Array.from(track.children);
+  const dotEls = Array.from(dotsEl.children);
+  const MAX_CARD_W = 480;
+
+  // Click on a peeking card to navigate to it
+  cards.forEach((card, i) => {
+    card.addEventListener('click', () => { if (i !== activeIndex) goTo(i); });
+  });
+
+  /* ── Position & slide ──
+   * Cards are position:absolute within the track.
+   * Active card: centered. Adjacent cards: peeking `peek` px at each edge.
+   * step = (cw + cardW) / 2 - peek
+   * card[i].left = (cw - cardW) / 2 + (i - activeIndex) * step
+   */
+  function goTo(index) {
+    activeIndex = Math.max(0, Math.min(index, badges.length - 1));
+    const cw = overlay.getBoundingClientRect().width;
+    if (cw <= 0) return;
+    const peek  = Math.min(60, cw * 0.12);
+    const cardW = Math.min(MAX_CARD_W, cw - 2 * peek - 20);
+    const gap   = (cw - cardW) / 2 - peek;
+
+    cards.forEach(c => { c.style.width = `${cardW}px`; });
+    track.style.gap = `${gap}px`;
+
+    const offset = cw / 2 - cardW / 2 - activeIndex * (cardW + gap);
+    track.style.transform = `translateX(${offset}px)`;
+    cards.forEach((c, i) => c.classList.toggle('active', i === activeIndex));
+    dotEls.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
+  }
+
+  function positionOverlay() {
+    if (window.innerWidth <= 768) {
+      overlay.style.left   = '0';
+      overlay.style.top    = '0';
+      overlay.style.width  = `${window.innerWidth}px`;
+      overlay.style.height = `${window.innerHeight}px`;
+      return;
+    }
+    const ca = document.getElementById('content-area');
+    if (!ca) return;
+    const r = ca.getBoundingClientRect();
+    overlay.style.left   = `${r.left}px`;
+    overlay.style.top    = `${r.top}px`;
+    overlay.style.width  = `${r.width}px`;
+    overlay.style.height = `${r.height}px`;
+  }
+
+  function showOverlay(index) {
+    const wasVisible = overlay.classList.contains('visible');
+    positionOverlay();
+    overlay.classList.add('visible');
+    if (dotNav) dotNav.classList.add('behind-overlay');
+    if (!wasVisible) {
+      track.style.transition = 'none';
+      requestAnimationFrame(() => {
+        goTo(index);
+        requestAnimationFrame(() => { track.style.transition = ''; });
+      });
+    } else {
+      goTo(index);
+    }
+  }
+
+  /* ── Events ── */
+  const dotNav = document.querySelector('.dot-nav');
+
+  function hideOverlay() {
+    overlay.classList.remove('visible');
+    if (dotNav) dotNav.classList.remove('behind-overlay');
+  }
+
+  backBtn.addEventListener('click', hideOverlay);
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('visible')) return;
+    if (e.key === 'ArrowRight') goTo(activeIndex + 1);
+    else if (e.key === 'ArrowLeft')  goTo(activeIndex - 1);
+    else if (e.key === 'Escape')     hideOverlay();
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  carousel.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) dx < 0 ? goTo(activeIndex + 1) : goTo(activeIndex - 1);
+  });
+
+  badges.forEach((badge, i) => {
+    badge.addEventListener('mouseenter', () => showOverlay(i));
+  });
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1032,7 +1180,7 @@ function initLenis() {
   const contentArea = getContentArea();
   const content = getContentScrollBody();
 
-  if (!contentArea || !content || !usesNestedScrollContainer() || prefersReducedMotion()) {
+  if (!contentArea || !content || !usesNestedScrollContainer()) {
     destroyLenis();
     return null;
   }
@@ -1106,20 +1254,12 @@ function bindRevealFallback() {
 
   const scrollTarget = getScrollEventTarget();
 
-  const onScroll = () => {
-    scheduleRevealEvaluation();
-  };
-
-  const onResize = () => {
-    scheduleRevealEvaluation();
-  };
-
-  scrollTarget.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onResize, { passive: true });
+  scrollTarget.addEventListener('scroll', scheduleRevealEvaluation, { passive: true });
+  window.addEventListener('resize', scheduleRevealEvaluation, { passive: true });
 
   appState.revealCleanup = () => {
-    scrollTarget.removeEventListener('scroll', onScroll);
-    window.removeEventListener('resize', onResize);
+    scrollTarget.removeEventListener('scroll', scheduleRevealEvaluation);
+    window.removeEventListener('resize', scheduleRevealEvaluation);
   };
 }
 
@@ -1171,24 +1311,17 @@ function initScrollReveal() {
   if (!targets.length) return;
   bindRevealFallback();
 
-  targets.forEach((target, index) => {
+  const newTargets = targets.filter(target => !target.classList.contains('reveal-item'));
+  newTargets.forEach((target, index) => {
     target.classList.add('reveal-item');
-    target.classList.remove('is-visible');
     target.style.setProperty('--reveal-delay', `${Math.min(index % 6, 5) * 70}ms`);
   });
 
-  if (prefersReducedMotion()) {
-    targets.forEach(target => target.classList.add('is-visible'));
-    return;
+  if (newTargets.length && newTargets[0]) {
+    void newTargets[0].offsetHeight;
   }
 
-  if (targets[0]) {
-    void targets[0].offsetHeight;
-  }
-
-  requestAnimationFrame(() => {
-    scheduleRevealEvaluation();
-  });
+  scheduleRevealEvaluation();
 }
 
 function refreshResponsiveEffects() {
@@ -1216,11 +1349,7 @@ function bindResizeHandler() {
 /* -------------------------------------------------------------------------- */
 
 function schedulePostTransitionRefresh() {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      refreshResponsiveEffects();
-    });
-  });
+  waitForDomMount().then(refreshResponsiveEffects);
 }
 
 function showFunFactPage() {
