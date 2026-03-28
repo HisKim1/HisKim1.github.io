@@ -37,7 +37,7 @@
   - 사이트의 유일한 HTML 엔트리 포인트
   - 테마 초기값을 인라인 스크립트로 먼저 적용
   - `css/style.css`, Font Awesome, Lenis CDN, `js/main.js`를 로드
-  - `#content-area`, `#fun-fact`, dot navigation, theme toggle 등의 기본 골격을 가짐
+  - `#content-area`, `#fun-fact`, dot navigation (`.layout` 내부 flex 컬럼), theme toggle 등의 기본 골격을 가짐
 
 ### 2. 스타일 계층
 
@@ -72,8 +72,8 @@
     - UI Interactions
     - Animations & Scrolling
   - `data/*.json` fetch
-  - `generate/render` 함수로 DOM 생성
-  - theme toggle, dot nav, fun fact page 전환 처리
+  - `render*` 함수로 DOM 생성 (진입점: `renderAppContent`)
+  - theme toggle, dot nav, keyword overlay, fun fact page 전환 처리
   - Lenis 초기화
   - IntersectionObserver 기반 scroll reveal 초기화
 
@@ -88,12 +88,11 @@
 ### 6. 기타 파일
 
 - `autotester.py`
-  - 로컬 테스트/자동화용 보조 스크립트로 보임
-  - 현재 프론트엔드 실행 경로에는 직접 연결되지 않음
+  - GPU 모니터링용 SSH 스크립트 (사이트와 무관)
 - `CLAUDE.md`
-  - 협업/작업 메모용 문서
+  - Claude Code 작업 가이드 문서
 - `pages/`, `snippets/`
-  - 현재 비어 있으며, 현재 사이트 렌더링 경로에서는 사용되지 않음
+  - 현재 비어 있으며 사이트 렌더링 경로에서 사용되지 않음
 
 ## 실제 렌더링 흐름
 
@@ -123,10 +122,10 @@
 
 ## 앞으로 참고할 핵심 포인트
 
-- 이 프로젝트는 프레임워크 없이 동작하는 정적 SPA 스타일 사이트다.
-- 콘텐츠 소스와 표현 로직이 분리되어 있으므로, 텍스트/카드 내용 수정은 우선 `data/*.json`부터 본다.
-- UI 버그를 수정할 때는 항상 다음 순서로 본다.
-  - `index.html`에 mount target이 있는지
-  - `js/main.js`에서 렌더 함수가 해당 target에 내용을 넣는지
-  - `css/style.css`에서 해당 클래스가 어떻게 보이는지
-- `pages/`, `snippets/`는 현재 활성 구조가 아니므로, 우선순위는 `index.html` + `css/` + `data/` + `js/main.js`다.
+- 빌드 시스템 없음. `python3 -m http.server 8080` 또는 `npx serve .`로 로컬 미리보기 (fetch() 때문에 file:// 불가).
+- 콘텐츠 수정은 `data/*.json`만 건드리면 됨. JS 렌더러가 자동으로 반영.
+- 레이아웃은 `sidebar | content-area | dot-nav` 3열 flex 구조 (`dot-nav`는 `position: fixed` 아님).
+- keyword badge 클릭 시 전체 화면 오버레이(carousel) 표시 — `setupKeywordTooltips()`가 담당.
+- project 카드는 container query 기반으로 460px 이하에서 세로 레이아웃으로 전환.
+- Exchange Student 토글 하위 카드는 degree chip을 렌더링하지 않음 (`hideDegreeChip` 옵션).
+- UI 버그 디버깅 순서: `index.html` mount target → `js/main.js` 렌더 함수 → `css/style.css` 클래스.
