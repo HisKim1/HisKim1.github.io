@@ -23,7 +23,7 @@ Single-page academic portfolio with one HTML shell and data-driven content rende
 
 **`js/main.js`** — all JavaScript logic:
 - On `DOMContentLoaded`, fetches all JSON files in parallel and calls section generators.
-- Each `generate*(data)` function builds and injects HTML into its placeholder `<div>`.
+- Each `render*(data)` function builds and injects HTML into its placeholder `<div>`. Top-level entry point is `renderAppContent(data)` which calls all section renderers.
 - Theme (dark/light) is stored in `localStorage` as `'theme-preference'` and applied via `data-theme` attribute on `<html>`.
 - Spotlight and scroll-background effects update CSS custom properties (`--cursor-x`, `--cursor-y`, `--bg-shift`).
 - The "Fun Fact" page (`#fun-fact` section) is hidden by default; revealed by clicking "CrossFitter & Dancer" in the footer. `showFunFactPage()` / `showMainPage()` handle the transition.

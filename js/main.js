@@ -483,7 +483,7 @@ function renderEducation(data) {
   const list = document.getElementById('education-list');
   if (!list) return;
 
-  const renderEducationCard = item => {
+  const renderEducationCard = (item, { hideDegreeChip = false } = {}) => {
     const tgpa = (item.tgpa || '').trim();
     const { timeline, degreeLabel } = splitPeriod(item.period || '');
     const metaItems = [
@@ -502,7 +502,7 @@ function renderEducation(data) {
             </div>
             <h3>${item.school || ''}</h3>
           </div>
-          ${degreeLabel ? `<span class="degree-chip">${degreeLabel}</span>` : ''}
+          ${degreeLabel && !hideDegreeChip ? `<span class="degree-chip">${degreeLabel}</span>` : ''}
         </div>
         ${metaBlock}
         ${item.degree ? `<p class="degree-detail">${item.degree}</p>` : ''}
@@ -549,7 +549,7 @@ function renderEducation(data) {
       title: 'Exchange Student',
       bodyClassName: 'education-topic-body-cards',
       listClassName: 'education-topic-card-list',
-      itemsMarkup: exchangeItems.map(renderEducationCard).join(''),
+      itemsMarkup: exchangeItems.map(item => renderEducationCard(item, { hideDegreeChip: true })).join(''),
       defaultOpen: true
     });
   }
@@ -888,20 +888,10 @@ function setupKeywordTooltips() {
   }
 
   function positionOverlay() {
-    if (window.innerWidth <= 768) {
-      overlay.style.left   = '0';
-      overlay.style.top    = '0';
-      overlay.style.width  = `${window.innerWidth}px`;
-      overlay.style.height = `${window.innerHeight}px`;
-      return;
-    }
-    const ca = document.getElementById('content-area');
-    if (!ca) return;
-    const r = ca.getBoundingClientRect();
-    overlay.style.left   = `${r.left}px`;
-    overlay.style.top    = `${r.top}px`;
-    overlay.style.width  = `${r.width}px`;
-    overlay.style.height = `${r.height}px`;
+    overlay.style.left   = '0';
+    overlay.style.top    = '0';
+    overlay.style.width  = '100vw';
+    overlay.style.height = '100vh';
   }
 
   function showOverlay(index) {
@@ -947,7 +937,7 @@ function setupKeywordTooltips() {
   });
 
   badges.forEach((badge, i) => {
-    badge.addEventListener('mouseenter', () => showOverlay(i));
+    badge.addEventListener('click', () => showOverlay(i));
   });
 }
 
