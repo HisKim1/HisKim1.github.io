@@ -34,30 +34,22 @@
       <div class="sidebar-profile">
         <div id="home-section"></div>
         <div class="sidebar-social">
-          <a href="mailto:tomm1203@gm.gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i></a>
-          <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-          <a href="https://www.linkedin.com/in/hisu-kim/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-          <a href="https://www.instagram.com/his_kim_1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="mailto:tomm1203@gm.gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i><span class="social-label">Email</span></a>
+          <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i><span class="social-label">GitHub</span></a>
+          <a href="https://www.linkedin.com/in/hisu-kim/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i><span class="social-label">LinkedIn</span></a>
+          <a href="https://scholar.google.com/citations?user=4z2u1DIAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i><span class="social-label">Scholar</span></a>
+          <a href="https://www.overleaf.com/read/rsztdfqtbprb#a6f7d3" target="_blank" rel="noopener noreferrer" aria-label="CV"><i class="fas fa-file-lines"></i><span class="social-label">CV</span></a>
         </div>
-      </div>
-      <div class="sidebar-bottom">
-        <span class="easter-egg-keyword" onclick="showFunFactPage()" style="cursor: pointer;">His casual life</span>
-        <footer>
-          Built by Hisu Kim on GitHub Pages
-        </footer>
       </div>
     </aside>
 
     <main class="content-area" id="content-area">
       <div class="content-scroll-body">
-        <section id="education" aria-label="Education">
-          <div class="section-glass-panel">
-            <h2>Education</h2>
-            <div id="education-list" class="vertical"></div>
-          </div>
-        </section>
-
         <section id="research" aria-label="Research">
+          <article class="research-panel section-glass-panel" id="research-featured-panel" style="display:none">
+            <h2>Recently Updated</h2>
+            <div id="research-featured"></div>
+          </article>
           <div class="research-columns">
             <article class="research-panel section-glass-panel">
               <h2>Publications</h2>
@@ -74,6 +66,13 @@
           </article>
         </section>
 
+        <section id="projects" aria-label="Projects">
+          <div class="section-glass-panel">
+            <h2>Projects</h2>
+            <div id="project-grid" class="vertical"></div>
+          </div>
+        </section>
+
         <section id="teaching" aria-label="Teaching">
           <div class="section-glass-panel">
             <h2>Teaching</h2>
@@ -81,10 +80,18 @@
           </div>
         </section>
 
-        <section id="projects" aria-label="Projects">
+        <section id="background" aria-label="Background">
           <div class="section-glass-panel">
-            <h2>Projects</h2>
-            <div id="project-grid" class="vertical"></div>
+            <h2>Background</h2>
+            <div id="education-list" class="vertical"></div>
+          </div>
+        </section>
+
+        <section id="beyond-lab" aria-label="Beyond the Lab">
+          <div class="section-glass-panel">
+            <h2>Beyond the Lab</h2>
+            <p id="beyond-intro" class="beyond-intro"></p>
+            <div id="beyond-gallery"></div>
           </div>
         </section>
       </div>
@@ -92,44 +99,19 @@
 
     <!-- Dot nav: flex column, always right of content-area -->
     <nav class="dot-nav" aria-label="Section navigation">
-      <a class="dot-item" data-section="education" href="#education"><span class="dot-label">Education</span><span class="dot-inner"></span></a>
-      <a class="dot-item" data-section="research"  href="#research" ><span class="dot-label">Research</span><span class="dot-inner"></span></a>
-      <a class="dot-item" data-section="teaching"  href="#teaching" ><span class="dot-label">Teaching</span><span class="dot-inner"></span></a>
-      <a class="dot-item" data-section="projects"  href="#projects" ><span class="dot-label">Projects</span><span class="dot-inner"></span></a>
+<a class="dot-item" data-section="research"   href="#research"  ><span class="dot-label">Research</span><span class="dot-inner"></span></a>
+      <a class="dot-item" data-section="projects"   href="#projects"  ><span class="dot-label">Projects</span><span class="dot-inner"></span></a>
+      <a class="dot-item" data-section="teaching"   href="#teaching"  ><span class="dot-label">Teaching</span><span class="dot-inner"></span></a>
+      <a class="dot-item" data-section="background" href="#background"><span class="dot-label">About</span><span class="dot-inner"></span></a>
     </nav>
   </div>
 
   <!-- Mobile-only footer (shown only on small screens) -->
   <div class="mobile-page-footer">
-    <span class="easter-egg-keyword" onclick="showFunFactPage()" style="cursor: pointer;">His casual life</span>
     <footer>
       Built by Hisu Kim on GitHub Pages
     </footer>
   </div>
-
-  <section id="fun-fact" class="fun-fact-page" aria-label="Fun Fact" style="display: none;">
-    <div class="fun-fact-container">
-      <button class="back-button" onclick="showMainPage()">
-        <i class="fas fa-arrow-left"></i> Back to Main
-      </button>
-      <h2>Fun Fact: CrossFitter &amp; Dancer</h2>
-      <div class="fun-fact-content">
-        <div class="fun-fact-intro">
-          <p>Beyond research and coding, I'm passionate about fitness and dance! Here's a glimpse into my active side.</p>
-        </div>
-
-        <div class="fun-fact-section crossfit-gallery">
-          <h3>💪 CrossFit</h3>
-          <div id="crossfit-gallery" class="media-grid media-masonry"></div>
-        </div>
-
-        <div class="fun-fact-section dance-gallery">
-          <h3>💃 Dance</h3>
-          <div id="dance-gallery" class="media-grid media-masonry"></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <script src="js/main.js"></script>
 </body>

@@ -106,15 +106,17 @@ function getScrollHeight() {
 /* -------------------------------------------------------------------------- */
 
 async function fetchAppData() {
-  const [home, education, projects, teaching, research] = await Promise.all([
+  const [home, education, projects, teaching, research, now, beyond] = await Promise.all([
     fetchJSON('data/home.json'),
     fetchJSON('data/education.json'),
     fetchJSON('data/projects.json'),
     fetchJSON('data/teaching.json'),
-    fetchJSON('data/research.json')
+    fetchJSON('data/research.json'),
+    fetchJSON('data/now.json'),
+    fetchJSON('data/beyond.json')
   ]);
 
-  return { home, education, projects, teaching, research };
+  return { home, education, projects, teaching, research, now, beyond };
 }
 
 function emphasizePrimaryName(text = '') {
@@ -468,15 +470,62 @@ function renderHome(data) {
       }).join('')}</div>`
     : '';
 
+  const ctaHtml = Array.isArray(data.cta) && data.cta.length
+    ? `<div class="hero-cta">${data.cta.map(c => `<a href="${c.href}" class="cta-btn">${c.label}</a>`).join('')}</div>`
+    : '';
+
   container.innerHTML = `
     <div class="hero">
       <img src="${data.profile.img}" alt="${data.profile.name}" class="profile-img">
-      <h1>Hello, my name is</h1>
-      <h2>${data.profile.name}</h2>
-      <p>${data.academic.paragraphs[0]}</p>
+      ${data.eyebrow ? `<p class="hero-eyebrow">${data.eyebrow}</p>` : ''}
+      <h2 class="profile-name">${data.profile.name}</h2>
       ${keywords}
+      ${data.headline ? `<p class="hero-headline">${data.headline}</p>` : ''}
+      ${data.hero_summary ? `<p class="hero-summary">${data.hero_summary}</p>` : ''}
+      ${ctaHtml}
     </div>
   `;
+}
+
+function renderNow(data) {
+  const updatedEl = document.getElementById('now-updated');
+  const list = document.getElementById('now-list');
+  if (!list) return;
+
+  if (updatedEl && data.updated) {
+    updatedEl.textContent = `Updated: ${data.updated}`;
+  }
+
+  list.innerHTML = (data.items || []).map(item => {
+    if (item.type === 'reading') {
+      return `
+        <div class="card now-card now-reading">
+          <div class="now-card-header">
+            <span class="now-type-badge">Reading</span>
+            <h3>${item.title}</h3>
+          </div>
+          ${item.note ? `<p class="now-note">${item.note}</p>` : ''}
+        </div>
+      `;
+    }
+
+    const statusLabel = item.status
+      ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+      : '';
+
+    return `
+      <div class="card now-card">
+        <div class="now-card-header">
+          <span class="now-type-badge now-type-${item.type}">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</span>
+          ${statusLabel ? `<span class="now-status now-status-${item.status}">${statusLabel}</span>` : ''}
+        </div>
+        <h3>${item.title}</h3>
+        ${item.one_liner ? `<p class="now-one-liner">${item.one_liner}</p>` : ''}
+        ${item.current_focus ? `<p class="now-focus">${item.current_focus}</p>` : ''}
+        ${item.link ? `<a href="${item.link}" class="now-link" target="_blank" rel="noopener noreferrer">Learn more →</a>` : ''}
+      </div>
+    `;
+  }).join('');
 }
 
 function renderEducation(data) {
@@ -643,24 +692,38 @@ function renderProjects(data) {
   if (!grid) return;
 
   grid.innerHTML = data.map(project => {
-    const { source, details, plainText } = parseProjectDescription(project.description);
-    const hasDetails = details.length > 0;
-    const hasPlainText = plainText.length > 0;
+    const stackHtml = Array.isArray(project.stack) && project.stack.length
+      ? `<div class="project-stack">${project.stack.map(s => `<span class="stack-badge">${s}</span>`).join('')}</div>`
+      : '';
+
+    const links = project.links || {};
+    const linksHtml = Object.entries(links)
+      .filter(([, url]) => url)
+      .map(([key, url]) => `<a href="${url}" class="project-link" target="_blank" rel="noopener noreferrer">${key}</a>`)
+      .join('');
+
+    const statusBadge = project.status
+      ? `<span class="project-status project-status-${project.status}">${project.status}</span>`
+      : '';
 
     return `
       <div class="card project-card">
         <div class="project-title-section">
-          <h3>${project.title}</h3>
-          ${source ? `<p class="project-source">${source}</p>` : ''}
+          <div class="project-title-row">
+            <h3>${project.title}</h3>
+            ${statusBadge}
+          </div>
+          ${project.role ? `<p class="project-role">${project.role}</p>` : ''}
+          ${project.one_liner ? `<p class="project-one-liner">${project.one_liner}</p>` : ''}
         </div>
         <div class="project-content">
-          <img class="project-img" src="${project.images}" alt="${project.title}">
+          ${project.images ? `<img class="project-img" src="${project.images}" alt="${project.title}">` : ''}
           <div class="project-text-content">
-            ${hasDetails ? `
-              <ul class="project-details">
-                ${details.map(detail => `<li>${detail}</li>`).join('')}
-              </ul>
-            ` : hasPlainText ? `<div class="project-description">${plainText}</div>` : ''}
+            ${project.problem ? `<div class="project-field"><span class="project-field-label">Problem</span><p>${project.problem}</p></div>` : ''}
+            ${project.approach ? `<div class="project-field"><span class="project-field-label">Approach</span><p>${project.approach}</p></div>` : ''}
+            ${project.why_it_matters ? `<div class="project-field"><span class="project-field-label">Why it matters</span><p>${project.why_it_matters}</p></div>` : ''}
+            ${stackHtml}
+            ${linksHtml ? `<div class="project-links">${linksHtml}</div>` : ''}
           </div>
         </div>
       </div>
@@ -707,6 +770,22 @@ function renderTeaching(data) {
 }
 
 function renderResearch(data) {
+  const featuredContainer = document.getElementById('research-featured');
+  const featuredPanel = document.getElementById('research-featured-panel');
+  if (featuredContainer) {
+    const featuredPubs = (data.publications || []).filter(p => p.featured);
+    if (featuredPubs.length) {
+      featuredContainer.innerHTML = featuredPubs.map(pub => `
+        <div class="research-featured-card">
+          ${pub.driving_question ? `<p class="research-question">${pub.driving_question}</p>` : ''}
+          ${pub.key_finding ? `<p class="research-finding">${pub.key_finding}</p>` : ''}
+          ${pub.title ? `<p class="research-featured-title">Check out ${pub.link ? `<a href="${pub.link}" target="_blank" rel="noopener noreferrer"><em>"${pub.title}"</em></a>` : `<em>"${pub.title}"</em>`}</p>` : ''}
+        </div>
+      `).join('');
+      if (featuredPanel) featuredPanel.style.display = '';
+    }
+  }
+
   const publicationsContainer = document.getElementById('research-publications');
   const conferencesContainer = document.getElementById('research-conferences');
   const experienceContainer = document.getElementById('research-experience');
@@ -794,11 +873,71 @@ async function populateMediaGallery({ containerId, key, allowVideos }) {
   }
 }
 
-async function renderFunFactGalleries() {
-  await Promise.all([
-    populateMediaGallery({ containerId: 'crossfit-gallery', key: 'crossfit', allowVideos: true }),
-    populateMediaGallery({ containerId: 'dance-gallery', key: 'dance', allowVideos: false })
-  ]);
+async function populateBeyondGallery(containerId, mediaFiles, allowVideos) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const entries = (mediaFiles || [])
+    .filter(Boolean)
+    .map(filename => ({ link: filename, filename }))
+    .filter(item => {
+      const extension = getExtension(item.filename);
+      if (IMAGE_EXTENSIONS.has(extension)) return true;
+      if (allowVideos && VIDEO_EXTENSIONS.has(extension)) return true;
+      return false;
+    });
+
+  const mixedEntries = mixMediaByType(entries);
+  container.innerHTML = mixedEntries.map(({ link, filename }) => {
+    const extension = getExtension(filename);
+    const safeLink = encodeURI(link);
+
+    if (VIDEO_EXTENSIONS.has(extension)) {
+      return `
+        <figure class="media-card media-video">
+          <div class="media-frame">
+            <video controls preload="metadata" playsinline>
+              <source src="images/${safeLink}" type="video/${extension}">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </figure>
+      `;
+    }
+
+    return `
+      <figure class="media-card media-photo">
+        <div class="media-frame">
+          <img src="images/${safeLink}" alt="${toDisplayName(filename)}" loading="lazy">
+        </div>
+      </figure>
+    `;
+  }).join('');
+}
+
+async function renderBeyond(data) {
+  const introEl = document.getElementById('beyond-intro');
+  const galleryEl = document.getElementById('beyond-gallery');
+  if (!galleryEl) return;
+
+  if (introEl && data.intro) {
+    introEl.innerHTML = `${data.intro}${data.quote ? `<br><br>${data.quote}` : ''}`;
+  }
+
+  galleryEl.innerHTML = (data.sections || []).map(section => `
+    <div class="beyond-section">
+      <h3 class="beyond-section-label">${section.label}</h3>
+      <div id="beyond-gallery-${section.id}" class="media-grid media-masonry"></div>
+    </div>
+  `).join('');
+
+  await Promise.all((data.sections || []).map(section =>
+    populateBeyondGallery(
+      `beyond-gallery-${section.id}`,
+      section.media,
+      section.id === 'crossfit'
+    )
+  ));
 }
 
 async function renderAppContent(data) {
@@ -807,7 +946,7 @@ async function renderAppContent(data) {
   renderProjects(data.projects);
   renderTeaching(data.teaching);
   renderResearch(data.research);
-  await renderFunFactGalleries();
+  await renderBeyond(data.beyond);
   bindEducationAccordion();
   setupKeywordTooltips();
 }
@@ -1341,73 +1480,6 @@ function bindResizeHandler() {
 function schedulePostTransitionRefresh() {
   waitForDomMount().then(refreshResponsiveEffects);
 }
-
-function showFunFactPage() {
-  const layout = document.querySelector('.layout');
-  const dotNav = document.querySelector('.dot-nav');
-  const funFactPage = document.getElementById('fun-fact');
-  const contentArea = getContentArea();
-
-  if (!layout || !funFactPage) return;
-
-  destroyLenis();
-
-  layout.style.opacity = '0';
-  layout.style.transform = 'translateY(20px)';
-
-  setTimeout(() => {
-    layout.style.display = 'none';
-    if (dotNav) dotNav.style.display = 'none';
-    if (contentArea) contentArea.scrollTop = 0;
-
-    document.body.style.overflow = 'auto';
-    document.body.style.height = 'auto';
-
-    funFactPage.style.display = 'block';
-    funFactPage.style.opacity = '0';
-    funFactPage.style.transform = 'translateY(20px)';
-
-    requestAnimationFrame(() => {
-      funFactPage.style.opacity = '1';
-      funFactPage.style.transform = 'translateY(0)';
-      schedulePostTransitionRefresh();
-    });
-  }, 300);
-}
-
-function showMainPage() {
-  const layout = document.querySelector('.layout');
-  const dotNav = document.querySelector('.dot-nav');
-  const funFactPage = document.getElementById('fun-fact');
-  const contentArea = getContentArea();
-
-  if (!layout || !funFactPage) return;
-
-  funFactPage.style.opacity = '0';
-  funFactPage.style.transform = 'translateY(-20px)';
-
-  setTimeout(() => {
-    funFactPage.style.display = 'none';
-
-    document.body.style.overflow = 'hidden';
-    document.body.style.height = '100vh';
-
-    layout.style.display = '';
-    if (dotNav) dotNav.style.display = '';
-    if (contentArea) contentArea.scrollTop = 0;
-    layout.style.opacity = '0';
-    layout.style.transform = 'translateY(-20px)';
-
-    requestAnimationFrame(() => {
-      layout.style.opacity = '1';
-      layout.style.transform = 'translateY(0)';
-      schedulePostTransitionRefresh();
-    });
-  }, 300);
-}
-
-window.showFunFactPage = showFunFactPage;
-window.showMainPage = showMainPage;
 
 /* -------------------------------------------------------------------------- */
 /* Bootstrap                                                                  */

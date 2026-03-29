@@ -2,6 +2,13 @@
   {
     "images": "images/AIweatherquest.png",
     "title": "AI Weather Quest 2025",
-      "description": "Team CAMExpedition (leader)\n<ul>\n  <li>Currently preparing for the AI Weather Quest 2025 competition with my lab members</li>\n  <li>Aims to develop a DL/ML model to predict Seasonal to Subseasonal (S2S) weather forecasts</li>\n</ul>"
+    "role": "Team Lead",
+    "one_liner": "Building a DL/ML model for Seasonal-to-Subseasonal weather forecasting in a competitive setting.",
+    "problem": "S2S forecasting sits in the 'predictability desert' — beyond weather but before climate. Traditional NWP models struggle here; the question is whether data-driven approaches can do better.",
+    "approach": "Leading team CAMExpedition to develop and evaluate deep learning models on the competition benchmark, focusing on skill in the 2–6 week range.",
+    "why_it_matters": "S2S forecasts have high socioeconomic value for agriculture, disaster planning, and energy management — but remain underserved by current operational models.",
+    "status": "active",
+    "stack": ["PyTorch", "ERA5", "S2S Dataset"],
+    "links": { "code": "", "poster": "", "paper": "" }
   }
-] 
+]

@@ -1,6 +1,9 @@
 {
   "publications": [
     {
+      "featured": true,
+      "driving_question": "Does GenCast's diffusion noise produce physically consistent ensemble spread?",
+      "key_finding": "Good forecast skill ≠ physically coherent uncertainty. The noise diffusion uses to generate ensemble members contaminated the physical structure of the jet stream, revealing a gap between statistical accuracy and physical consistency.",
       "type": "journal-article",
       "authors": [
         "Kim, H.",
@@ -15,7 +18,7 @@
       "journal": "npj Climate and Atmospheric Science",
       "status": "Accepted",
       "status_note": "Accepted",
-      "link": "",
+      "link": "https://www.nature.com/articles/s41612-026-01380-1",
       "volume": "",
       "issue": "",
       "pages": "",

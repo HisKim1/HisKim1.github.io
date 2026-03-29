@@ -1,0 +1,28 @@
+{
+  "headline": "What I'm working on right now",
+  "updated": "2026-03",
+  "items": [
+    {
+      "type": "research",
+      "title": "GraphLatentCast",
+      "status": "active",
+      "one_liner": "Why do graph-based weather models lose physical consistency as forecast lead time grows?",
+      "current_focus": "Tracing latent space trajectories in GenCast to find where physical structure breaks down across forecast lead times.",
+      "collaborators": [],
+      "link": ""
+    },
+    {
+      "type": "writing",
+      "title": "npj Climate and Atmospheric Science paper",
+      "status": "accepted",
+      "one_liner": "Spectral test of the butterfly effect and physical consistency in GenCast's diffusion-based ensembles.",
+      "current_focus": "Accepted — finalizing publication details.",
+      "link": ""
+    },
+    {
+      "type": "reading",
+      "title": "Paper I'm currently digesting",
+      "note": "Diffusion models as energy-based models — thinking about what the score function implies for how uncertainty is structured in latent representations."
+    }
+  ]
+}
