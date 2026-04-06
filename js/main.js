@@ -24,13 +24,12 @@ const appState = {
   scrollController: null,
   revealCleanup: null,
   revealRafId: 0,
-  resizeRafId: 0,
+  resizeTimerId: 0,
   dotNavCleanup: null,
   scrollBackgroundCleanup: null,
   spotlightBound: false,
   themeToggleBound: false,
   resizeBound: false,
-  mediaManifestPromise: null,
   educationAccordionCleanup: null
 };
 
@@ -450,12 +449,6 @@ function mixMediaByType(items) {
   return mixed;
 }
 
-async function fetchMediaManifest() {
-  if (!appState.mediaManifestPromise) {
-    appState.mediaManifestPromise = fetchJSON('data/media.json');
-  }
-  return appState.mediaManifestPromise;
-}
 
 function renderHome(data) {
   const container = document.getElementById('home-section');
@@ -824,54 +817,6 @@ function renderResearch(data) {
   }
 }
 
-async function populateMediaGallery({ containerId, key, allowVideos }) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  try {
-    const manifest = await fetchMediaManifest();
-    const entries = Array.isArray(manifest[key]) ? manifest[key] : [];
-
-    const filteredEntries = entries
-      .filter(Boolean)
-      .map(filename => ({ link: filename, filename }))
-      .filter(item => {
-        const extension = getExtension(item.filename);
-        if (IMAGE_EXTENSIONS.has(extension)) return true;
-        if (allowVideos && VIDEO_EXTENSIONS.has(extension)) return true;
-        return false;
-      });
-
-    const mixedEntries = mixMediaByType(filteredEntries);
-    container.innerHTML = mixedEntries.map(({ link, filename }) => {
-      const extension = getExtension(filename);
-      const safeLink = encodeURI(link);
-
-      if (VIDEO_EXTENSIONS.has(extension)) {
-        return `
-          <figure class="media-card media-video">
-            <div class="media-frame">
-              <video controls preload="metadata" playsinline>
-                <source src="images/${safeLink}" type="video/${extension}">
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </figure>
-        `;
-      }
-
-      return `
-        <figure class="media-card media-photo">
-          <div class="media-frame">
-            <img src="images/${safeLink}" alt="${toDisplayName(filename)}" loading="lazy">
-          </div>
-        </figure>
-      `;
-    }).join('');
-  } catch (error) {
-    console.warn('[populateMediaGallery] Unable to load media gallery', error);
-  }
-}
 
 async function populateBeyondGallery(containerId, mediaFiles, allowVideos) {
   const container = document.getElementById(containerId);
@@ -1464,10 +1409,8 @@ function bindResizeHandler() {
   if (appState.resizeBound) return;
 
   window.addEventListener('resize', () => {
-    cancelAnimationFrame(appState.resizeRafId);
-    appState.resizeRafId = requestAnimationFrame(() => {
-      refreshResponsiveEffects();
-    });
+    clearTimeout(appState.resizeTimerId);
+    appState.resizeTimerId = setTimeout(refreshResponsiveEffects, 150);
   }, { passive: true });
 
   appState.resizeBound = true;

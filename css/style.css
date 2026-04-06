@@ -433,8 +433,7 @@ body::before {
   background: radial-gradient(circle 500px at var(--cursor-x) var(--cursor-y), rgba(125, 181, 255, 0.16), transparent 60%);
   mix-blend-mode: screen;
   z-index: -1;
-  /* Optimize for performance - disable on mobile */
-  will-change: background;
+  will-change: transform;
   transform: translateZ(0);
   transition: background 1.2s ease, opacity 1.2s ease;
 }
@@ -471,59 +470,6 @@ body::after {
     linear-gradient(140deg, rgba(249, 250, 252, 0.98), rgba(224, 231, 242, 0.92));
 }
 
-header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(15, 23, 42, 0.5);
-  z-index: 100;
-  /* Optimize for scrolling */
-  will-change: transform;
-  transform: translateZ(0);
-}
-
-[data-theme="light"] header {
-  background-color: rgba(246, 247, 251, 0.75);
-}
-
-nav {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0.75rem 1.5rem 0.75rem 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  position: relative;
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-}
-
-nav a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-[data-theme="light"] nav a {
-  color: var(--text-secondary);
-}
-
 main a,
 footer a {
   color: var(--accent);
@@ -532,24 +478,6 @@ footer a {
 [data-theme="light"] main a,
 [data-theme="light"] footer a {
   color: #1d4ed8;
-}
-
-nav a:hover,
-nav a:focus {
-  color: var(--accent);
-}
-
-.toggle {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  cursor: pointer;
-}
-
-.toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--text-secondary);
 }
 
 .theme-toggle {
@@ -627,8 +555,8 @@ section {
   border-radius: 20px;
   padding: var(--panel-padding);
   background: linear-gradient(135deg, var(--surface), rgba(255, 255, 255, 0.015));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: inset 0 1px 0 var(--glass-highlight), var(--elevation-soft);
   /* Optimize for scrolling */
   transform: translate3d(0, calc(var(--reveal-y) + var(--interaction-y)), 0) scale(var(--interaction-scale));
@@ -639,8 +567,8 @@ section {
 [data-theme="light"] .section-glass-panel {
   border-color: rgba(37, 99, 235, 0.18);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28));
-  backdrop-filter: blur(28px) saturate(145%);
-  -webkit-backdrop-filter: blur(28px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
 }
 
 .section-glass-panel h2 {

@@ -26,12 +26,12 @@ Single-page academic portfolio with one HTML shell and data-driven content rende
 - Each `render*(data)` function builds and injects HTML into its placeholder `<div>`. Top-level entry point is `renderAppContent(data)` which calls all section renderers.
 - Theme (dark/light) is stored in `localStorage` as `'theme-preference'` and applied via `data-theme` attribute on `<html>`.
 - Spotlight and scroll-background effects update CSS custom properties (`--cursor-x`, `--cursor-y`, `--bg-shift`).
-- The "Fun Fact" page (`#fun-fact` section) is hidden by default; revealed by clicking "CrossFitter & Dancer" in the footer. `showFunFactPage()` / `showMainPage()` handle the transition.
+- The "Fun Fact" page (`#fun-fact` section) is hidden by default; revealed by clicking "His casual life" in the sidebar/footer. `showFunFactPage()` / `showMainPage()` handle the transition.
 
 **`data/*.json`** — all editable content:
 | File | Controls |
 |---|---|
-| `home.json` | Profile photo path, name, keywords, intro paragraph |
+| `home.json` | Profile photo path, name, keywords (`profile`); intro text blocks (`academic`, `research` — each has `title` + `paragraphs[]`) |
 | `education.json` | Degree cards (`main[]`) and collapsible extracurriculars |
 | `research.json` | Publications, conferences (APA-formatted), and experience cards |
 | `teaching.json` | Teaching role cards |
@@ -41,6 +41,8 @@ Single-page academic portfolio with one HTML shell and data-driven content rende
 **`css/style.css`** — all styles. Theme variants use `[data-theme="light"]` / `[data-theme="dark"]` selectors on `:root`.
 
 **`css/research.css`** — supplementary research section styles.
+
+**Social links** (email, GitHub, LinkedIn, Instagram) are hardcoded in `index.html`, not driven by JSON.
 
 ## Key Conventions
 
