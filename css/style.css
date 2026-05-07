@@ -2629,6 +2629,30 @@ footer {
   display: block;
 }
 
+#beyond-lab .media-card.media-rotate-cw .media-frame,
+#beyond-lab .media-card.media-rotate-ccw .media-frame {
+  aspect-ratio: var(--media-rotated-aspect-ratio);
+  position: relative;
+}
+
+#beyond-lab .media-card.media-rotate-cw .media-frame img,
+#beyond-lab .media-card.media-rotate-ccw .media-frame img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--media-rotation-width);
+  height: var(--media-rotation-height);
+  object-fit: cover;
+}
+
+#beyond-lab .media-card.media-rotate-cw .media-frame img {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+#beyond-lab .media-card.media-rotate-ccw .media-frame img {
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
 #beyond-lab .media-card.media-video .media-frame {
   aspect-ratio: auto;
   border-radius: 8px;

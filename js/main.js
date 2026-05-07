@@ -2,6 +2,32 @@ const THEME_STORAGE_KEY = 'theme-preference';
 const IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']);
 const VIDEO_EXTENSIONS = new Set(['mp4', 'webm', 'ogg']);
 const PRIMARY_NAME_PATTERN = /(Kim,\s*H\.|H\.?\s*Kim)/gi;
+const MEDIA_ROTATION_FIXES = {
+  'crossfit_budapest.jpg': {
+    direction: 'cw',
+    aspectRatio: '1080 / 1920',
+    width: '177.7778%',
+    height: '56.25%'
+  },
+  'crossfit_chunan.jpg': {
+    direction: 'cw',
+    aspectRatio: '1080 / 1920',
+    width: '177.7778%',
+    height: '56.25%'
+  },
+  'dance_buffering.jpg': {
+    direction: 'cw',
+    aspectRatio: '1080 / 1920',
+    width: '177.7778%',
+    height: '56.25%'
+  },
+  'dance_new world.jpg': {
+    direction: 'ccw',
+    aspectRatio: '1280 / 1920',
+    width: '150%',
+    height: '66.6667%'
+  }
+};
 
 const MONTH_ORDER = {
   january: 1,
@@ -768,13 +794,20 @@ function renderResearch(data) {
   if (featuredContainer) {
     const featuredPubs = (data.publications || []).filter(p => p.featured);
     if (featuredPubs.length) {
-      featuredContainer.innerHTML = featuredPubs.map(pub => `
-        <div class="research-featured-card">
-          ${pub.driving_question ? `<p class="research-question">${pub.driving_question}</p>` : ''}
-          ${pub.key_finding ? `<p class="research-finding">${pub.key_finding}</p>` : ''}
-          ${pub.title ? `<p class="research-featured-title">Check out ${pub.link ? `<a href="${pub.link}" target="_blank" rel="noopener noreferrer"><em>"${pub.title}"</em></a>` : `<em>"${pub.title}"</em>`}</p>` : ''}
-        </div>
-      `).join('');
+      featuredContainer.innerHTML = featuredPubs.map(pub => {
+        const featuredLinks = [
+          pub.link ? `<a href="${pub.link}" target="_blank" rel="noopener noreferrer">Check out full paper</a>` : '',
+          pub.blog_post ? `<a href="${pub.blog_post}" target="_blank" rel="noopener noreferrer">Springer Nature Blog post</a>` : ''
+        ].filter(Boolean).join(' | ');
+
+        return `
+          <div class="research-featured-card">
+            ${pub.driving_question ? `<p class="research-question">${pub.driving_question}</p>` : ''}
+            ${pub.key_finding ? `<p class="research-finding">${pub.key_finding}</p>` : ''}
+            ${featuredLinks ? `<p class="research-featured-title">${featuredLinks}</p>` : ''}
+          </div>
+        `;
+      }).join('');
       if (featuredPanel) featuredPanel.style.display = '';
     }
   }
@@ -836,6 +869,11 @@ async function populateBeyondGallery(containerId, mediaFiles, allowVideos) {
   container.innerHTML = mixedEntries.map(({ link, filename }) => {
     const extension = getExtension(filename);
     const safeLink = encodeURI(link);
+    const rotationFix = MEDIA_ROTATION_FIXES[filename];
+    const rotationClass = rotationFix ? ` media-rotate-${rotationFix.direction}` : '';
+    const rotationStyle = rotationFix
+      ? ` style="--media-rotated-aspect-ratio: ${rotationFix.aspectRatio}; --media-rotation-width: ${rotationFix.width}; --media-rotation-height: ${rotationFix.height};"`
+      : '';
 
     if (VIDEO_EXTENSIONS.has(extension)) {
       return `
@@ -851,7 +889,7 @@ async function populateBeyondGallery(containerId, mediaFiles, allowVideos) {
     }
 
     return `
-      <figure class="media-card media-photo">
+      <figure class="media-card media-photo${rotationClass}"${rotationStyle}>
         <div class="media-frame">
           <img src="images/${safeLink}" alt="${toDisplayName(filename)}" loading="lazy">
         </div>
