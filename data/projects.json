@@ -8,7 +8,6 @@
     "approach": "Leading team CAMExpedition to develop and evaluate deep learning models on the competition benchmark, focusing on skill in the 2–6 week range.",
     "why_it_matters": "S2S forecasts have high socioeconomic value for agriculture, disaster planning, and energy management — but remain underserved by current operational models.",
     "status": "active",
-    "stack": ["PyTorch", "ERA5", "S2S Dataset"],
-    "links": { "code": "", "poster": "", "paper": "" }
+    "stack": ["PyTorch", "ERA5", "S2S Dataset"]
   }
 ]

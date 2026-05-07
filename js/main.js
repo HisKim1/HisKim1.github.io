@@ -131,17 +131,16 @@ function getScrollHeight() {
 /* -------------------------------------------------------------------------- */
 
 async function fetchAppData() {
-  const [home, education, projects, teaching, research, now, beyond] = await Promise.all([
+  const [home, education, projects, teaching, research, beyond] = await Promise.all([
     fetchJSON('data/home.json'),
     fetchJSON('data/education.json'),
     fetchJSON('data/projects.json'),
     fetchJSON('data/teaching.json'),
     fetchJSON('data/research.json'),
-    fetchJSON('data/now.json'),
     fetchJSON('data/beyond.json')
   ]);
 
-  return { home, education, projects, teaching, research, now, beyond };
+  return { home, education, projects, teaching, research, beyond };
 }
 
 function emphasizePrimaryName(text = '') {
@@ -300,34 +299,6 @@ function buildEducationDetailsMarkup(item = {}) {
       `).join('')}
     </dl>
   `;
-}
-
-function parseProjectDescription(description = '') {
-  if (!description) return { source: '', details: [], plainText: '' };
-
-  const details = [];
-  let source = '';
-  let plainText = '';
-
-  for (const match of description.matchAll(/<li>(.*?)<\/li>/g)) {
-    details.push(match[1]);
-  }
-
-  const withoutList = description
-    .replace(/<ul>.*?<\/ul>/gs, '')
-    .replace(/<li>.*?<\/li>/g, '')
-    .trim();
-
-  if (details.length > 0) {
-    const sourceMatch = withoutList.match(/^(.+?)(?:\n|$)/);
-    if (sourceMatch) {
-      source = sourceMatch[1].trim();
-    }
-  } else {
-    plainText = withoutList;
-  }
-
-  return { source, details, plainText };
 }
 
 function parseTeachingDescription(description = '') {
@@ -504,47 +475,6 @@ function renderHome(data) {
       ${ctaHtml}
     </div>
   `;
-}
-
-function renderNow(data) {
-  const updatedEl = document.getElementById('now-updated');
-  const list = document.getElementById('now-list');
-  if (!list) return;
-
-  if (updatedEl && data.updated) {
-    updatedEl.textContent = `Updated: ${data.updated}`;
-  }
-
-  list.innerHTML = (data.items || []).map(item => {
-    if (item.type === 'reading') {
-      return `
-        <div class="card now-card now-reading">
-          <div class="now-card-header">
-            <span class="now-type-badge">Reading</span>
-            <h3>${item.title}</h3>
-          </div>
-          ${item.note ? `<p class="now-note">${item.note}</p>` : ''}
-        </div>
-      `;
-    }
-
-    const statusLabel = item.status
-      ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
-      : '';
-
-    return `
-      <div class="card now-card">
-        <div class="now-card-header">
-          <span class="now-type-badge now-type-${item.type}">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</span>
-          ${statusLabel ? `<span class="now-status now-status-${item.status}">${statusLabel}</span>` : ''}
-        </div>
-        <h3>${item.title}</h3>
-        ${item.one_liner ? `<p class="now-one-liner">${item.one_liner}</p>` : ''}
-        ${item.current_focus ? `<p class="now-focus">${item.current_focus}</p>` : ''}
-        ${item.link ? `<a href="${item.link}" class="now-link" target="_blank" rel="noopener noreferrer">Learn more →</a>` : ''}
-      </div>
-    `;
-  }).join('');
 }
 
 function renderEducation(data) {
@@ -1452,14 +1382,6 @@ function bindResizeHandler() {
   }, { passive: true });
 
   appState.resizeBound = true;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Page Transitions                                                           */
-/* -------------------------------------------------------------------------- */
-
-function schedulePostTransitionRefresh() {
-  waitForDomMount().then(refreshResponsiveEffects);
 }
 
 /* -------------------------------------------------------------------------- */

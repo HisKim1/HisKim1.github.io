@@ -1,55 +1,53 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file gives coding agents the current repository context.
 
 ## Development
 
-No build system. This is a pure static site (HTML/CSS/JS) served via GitHub Pages.
+This is a pure static site served by GitHub Pages. There is no build system, package manager, linter, or test runner.
 
-To preview locally, serve over HTTP (required because `fetch()` calls won't work with `file://`):
+Use an HTTP server for local preview because `fetch()` calls do not work from `file://`:
+
 ```bash
-python3 -m http.server 8080
-# or
-npx serve .
+python -m http.server 8080
 ```
-
-No tests, no linter, no package manager.
 
 ## Architecture
 
-Single-page academic portfolio with one HTML shell and data-driven content rendering.
+Entry point: `index.html`
 
-**Entry point:** `index.html` — static shell with empty `<div>` placeholders for each section.
+- Defines the sidebar, content section mount points, dot navigation, theme toggle, and script/style includes.
+- Loads `css/style.css`, which imports `css/research.css`.
+- Loads `js/main.js`.
 
-**`js/main.js`** — all JavaScript logic:
-- On `DOMContentLoaded`, fetches all JSON files in parallel and calls section generators.
-- Each `render*(data)` function builds and injects HTML into its placeholder `<div>`. Top-level entry point is `renderAppContent(data)` which calls all section renderers.
-- Theme (dark/light) is stored in `localStorage` as `'theme-preference'` and applied via `data-theme` attribute on `<html>`.
-- Spotlight and scroll-background effects update CSS custom properties (`--cursor-x`, `--cursor-y`, `--bg-shift`).
-- The "Fun Fact" page (`#fun-fact` section) is hidden by default; revealed by clicking "His casual life" in the sidebar/footer. `showFunFactPage()` / `showMainPage()` handle the transition.
+Runtime: `js/main.js`
 
-**`data/*.json`** — all editable content:
-| File | Controls |
-|---|---|
-| `home.json` | Profile photo path, name, keywords (`profile`); intro text blocks (`academic`, `research` — each has `title` + `paragraphs[]`) |
-| `education.json` | Degree cards (`main[]`) and collapsible extracurriculars |
-| `research.json` | Publications, conferences (APA-formatted), and experience cards |
-| `teaching.json` | Teaching role cards |
-| `projects.json` | Project cards with image, title, description |
-| `media.json` | Filenames for Fun Fact gallery (`crossfit[]`, `dance[]`); actual files live in `images/` |
+- On `DOMContentLoaded`, fetches JSON data in parallel.
+- Renders home, education, research, projects, teaching, and Beyond the Lab sections.
+- Manages the theme toggle, keyword overlay, education accordion, dot navigation, scroll reveal, scroll-linked background, and Lenis/fallback smooth scrolling.
 
-**`css/style.css`** — all styles. Theme variants use `[data-theme="light"]` / `[data-theme="dark"]` selectors on `:root`.
+Editable data:
 
-**`css/research.css`** — supplementary research section styles.
+| File | Purpose |
+| --- | --- |
+| `data/home.json` | Sidebar profile image, name, keywords, headline, and summary |
+| `data/education.json` | Education cards and extracurricular accordion |
+| `data/projects.json` | Project cards |
+| `data/teaching.json` | Teaching cards |
+| `data/research.json` | Publications, conferences, featured research, and experience |
+| `data/beyond.json` | Beyond the Lab intro and gallery media filenames |
 
-**Social links** (email, GitHub, LinkedIn, Instagram) are hardcoded in `index.html`, not driven by JSON.
+Assets:
 
-## Key Conventions
+- Runtime images and videos live in `images/`.
+- Gallery files must be listed in `data/beyond.json`.
+- Project/profile images are referenced directly from their JSON files.
 
-- To add or update content, edit the relevant `data/*.json` file. The JS renderers pick up changes automatically.
-- To add Fun Fact gallery media: add the filename to `data/media.json` under `crossfit` or `dance`, then place the file in `images/`.
-- Publications and conferences are auto-sorted by recency (`year` then `month` field).
-- Author highlighting uses `highlight_author_indices` (array of 0-based indices into `authors[]`). The primary name pattern `/(Kim,\s*H\.|H\.?\s*Kim)/gi` is also applied as a fallback.
-- The `period` field in education/experience cards supports a pipe separator: `"2020–2024 | B.S."` — the part before `|` becomes the date and the part after becomes a chip label.
-- `pages/` and `snippets/` directories are intentionally empty (legacy structure cleaned up).
-- `autotester.py` is an unrelated GPU monitoring script (SSH-based); ignore it when working on the site.
+## Conventions
+
+- Keep content changes in `data/*.json` when possible.
+- Keep visual/layout changes in `css/style.css` or `css/research.css`.
+- Keep render or interaction changes in `js/main.js`.
+- Publications and conferences are sorted by `year` and optional `month`.
+- Education and experience `period` fields may use `timeline | chip label`.
+- The primary author highlighting pattern is in `PRIMARY_NAME_PATTERN`.
