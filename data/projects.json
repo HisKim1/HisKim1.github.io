@@ -2,12 +2,11 @@
   {
     "images": "images/AIweatherquest.png",
     "title": "AI Weather Quest 2025",
-    "role": "Team Lead",
-    "one_liner": "Building a DL/ML model for Seasonal-to-Subseasonal weather forecasting in a competitive setting.",
-    "problem": "S2S forecasting sits in the 'predictability desert' — beyond weather but before climate. Traditional NWP models struggle here; the question is whether data-driven approaches can do better.",
-    "approach": "Leading team CAMExpedition to develop and evaluate deep learning models on the competition benchmark, focusing on skill in the 2–6 week range.",
-    "why_it_matters": "S2S forecasts have high socioeconomic value for agriculture, disaster planning, and energy management — but remain underserved by current operational models.",
-    "status": "active",
-    "stack": ["PyTorch", "ERA5", "S2S Dataset"]
+    "role": "Team Lead · CAMExpedition (GIST + Utah State)",
+    "one_liner": "ECMWF's global sub-seasonal forecasting competition (days 19–32, 1.5° resolution, probabilistic).",
+    "problem": "Sub-seasonal forecasting (days 19–32) is the 'predictability desert' between weather and climate. Can data-driven post-processing make ECMWF's ensemble skillful and calibrated?",
+    "approach": "Designed a geo-aware 3D U-Net and integrated the van Leeuwen et al. (2025) 4-source Bayesian uncertainty framework, turning deterministic post-processing into calibrated quintile-probability forecasts.",
+    "why_it_matters": "Led a 4-person team submitting weekly forecasts across the competition periods; accepted for presentation at S2S2D 2026 (Reading, UK).",
+    "status": "active"
   }
 ]

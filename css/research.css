@@ -39,10 +39,9 @@
 
 
 .apa-list a {
-  color: #bfe0ff;
+  color: var(--accent);
   font-weight: 600;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
+  text-decoration: none;
   text-underline-offset: 0.18em;
   transition: color 0.2s ease;
   word-break: break-all;
@@ -50,12 +49,13 @@
 }
 
 .apa-list a:visited {
-  color: #d4b8ff;
+  color: var(--accent);
 }
 
 .apa-list a:hover,
 .apa-list a:focus {
-  color: #ffffff;
+  color: var(--accent-strong);
+  text-decoration: underline;
 }
 
 .apa-journal {
@@ -84,7 +84,7 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.85rem;
-  color: var(--slate);
+  color: var(--text-tertiary);
   word-break: break-all;
   overflow-wrap: break-word;
 }
@@ -97,7 +97,7 @@
 .empty-placeholder {
   margin: 0;
   padding: 1rem 0;
-  color: var(--slate);
+  color: var(--text-tertiary);
   font-style: italic;
 }
 

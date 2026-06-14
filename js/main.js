@@ -52,8 +52,6 @@ const appState = {
   revealRafId: 0,
   resizeTimerId: 0,
   dotNavCleanup: null,
-  scrollBackgroundCleanup: null,
-  spotlightBound: false,
   themeToggleBound: false,
   resizeBound: false,
   educationAccordionCleanup: null
@@ -108,22 +106,6 @@ function getScrollEventTarget() {
 
 function getRevealRoot() {
   return usesNestedScrollContainer() ? getContentArea() : null;
-}
-
-function getScrollPosition() {
-  if (usesNestedScrollContainer()) {
-    const contentArea = getContentArea();
-    return contentArea ? contentArea.scrollTop : 0;
-  }
-  return window.scrollY || document.documentElement.scrollTop || 0;
-}
-
-function getScrollHeight() {
-  if (usesNestedScrollContainer()) {
-    const contentArea = getContentArea();
-    return contentArea ? contentArea.scrollHeight - contentArea.clientHeight : 0;
-  }
-  return document.documentElement.scrollHeight - window.innerHeight;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -454,9 +436,7 @@ function renderHome(data) {
   const keywords = Array.isArray(data.profile?.keywords) && data.profile.keywords.length
     ? `<div class="profile-keywords">${data.profile.keywords.map(kw => {
         const label = typeof kw === 'string' ? kw : kw.label;
-        const tooltip = typeof kw === 'object' && kw.tooltip ? kw.tooltip : '';
-        const tooltipAttr = tooltip ? ` data-tooltip="${tooltip.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}"` : '';
-        return `<span class="keyword-badge"${tooltipAttr}>${label}</span>`;
+        return `<span class="keyword-badge">${label}</span>`;
       }).join('')}</div>`
     : '';
 
@@ -593,10 +573,12 @@ function renderEducation(data) {
 }
 
 function bindEducationAccordion() {
-  const list = document.getElementById('education-list');
-  if (!list) return;
+  const roots = ['education-list', 'beyond-gallery']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  if (!roots.length) return;
 
-  const topics = Array.from(list.querySelectorAll('.education-topic'));
+  const topics = roots.flatMap(root => Array.from(root.querySelectorAll('.education-topic')));
   if (!topics.length) return;
 
   if (appState.educationAccordionCleanup) {
@@ -605,11 +587,18 @@ function bindEducationAccordion() {
   }
 
   const resizeHandlers = [];
+  const cleanups = [];
 
   topics.forEach(topic => {
     const toggle = topic.querySelector('.education-topic-toggle');
     const panel = topic.querySelector('.education-topic-body');
     if (!toggle || !panel) return;
+
+    const recompute = () => {
+      if (panel.dataset.state === 'open') {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      }
+    };
 
     const setOpen = isOpen => {
       panel.dataset.state = isOpen ? 'open' : 'collapsed';
@@ -624,16 +613,25 @@ function bindEducationAccordion() {
       setOpen(!isOpen);
     });
 
-    resizeHandlers.push(() => {
-      if (panel.dataset.state === 'open') {
-        panel.style.maxHeight = `${panel.scrollHeight}px`;
-      }
+    resizeHandlers.push(recompute);
+
+    // Lazy media (beyond galleries) changes height after the panel opens — re-clamp on load.
+    panel.querySelectorAll('img, video').forEach(el => {
+      el.addEventListener('load', recompute);
+      el.addEventListener('loadedmetadata', recompute);
+      cleanups.push(() => {
+        el.removeEventListener('load', recompute);
+        el.removeEventListener('loadedmetadata', recompute);
+      });
     });
   });
 
   const onResize = () => resizeHandlers.forEach(h => h());
   window.addEventListener('resize', onResize, { passive: true });
-  appState.educationAccordionCleanup = () => window.removeEventListener('resize', onResize);
+  appState.educationAccordionCleanup = () => {
+    window.removeEventListener('resize', onResize);
+    cleanups.forEach(fn => fn());
+  };
 }
 
 function renderProjects(data) {
@@ -838,9 +836,16 @@ async function renderBeyond(data) {
   }
 
   galleryEl.innerHTML = (data.sections || []).map(section => `
-    <div class="beyond-section">
-      <h3 class="beyond-section-label">${section.label}</h3>
-      <div id="beyond-gallery-${section.id}" class="media-grid media-masonry"></div>
+    <div class="beyond-section education-topic">
+      <button class="education-topic-toggle" type="button" aria-expanded="false">
+        <span class="education-topic-label">${section.label}</span>
+        <span class="education-topic-icon" aria-hidden="true">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </button>
+      <div class="education-topic-body beyond-topic-body" data-state="collapsed" data-default-open="false">
+        <div id="beyond-gallery-${section.id}" class="media-grid media-masonry"></div>
+      </div>
     </div>
   `).join('');
 
@@ -861,136 +866,6 @@ async function renderAppContent(data) {
   renderResearch(data.research);
   await renderBeyond(data.beyond);
   bindEducationAccordion();
-  setupKeywordTooltips();
-}
-
-function setupKeywordTooltips() {
-  const badges = Array.from(document.querySelectorAll('.keyword-badge[data-tooltip]'));
-  if (!badges.length) return;
-
-  let activeIndex = 0;
-
-  /* ── Build DOM ── */
-  const overlay = document.createElement('div');
-  overlay.className = 'keyword-overlay';
-
-  const backBtn = document.createElement('button');
-  backBtn.className = 'keyword-overlay-back back-button';
-  backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
-
-  const carousel = document.createElement('div');
-  carousel.className = 'keyword-carousel';
-
-  const track = document.createElement('div');
-  track.className = 'keyword-carousel-track';
-
-  const dotsEl = document.createElement('div');
-  dotsEl.className = 'keyword-dots';
-
-  badges.forEach((badge, i) => {
-    const card = document.createElement('div');
-    card.className = 'keyword-card';
-    card.innerHTML = `
-      <span class="keyword-card-label">${badge.textContent.trim()}</span>
-      <p class="keyword-card-desc">${badge.dataset.tooltip}</p>
-    `;
-    track.appendChild(card);
-
-    const dot = document.createElement('span');
-    dot.className = 'keyword-dot';
-    dotsEl.appendChild(dot);
-  });
-
-  carousel.appendChild(track);
-  overlay.appendChild(backBtn);
-  overlay.appendChild(carousel);
-  overlay.appendChild(dotsEl);
-  document.body.appendChild(overlay);
-
-  const cards  = Array.from(track.children);
-  const dotEls = Array.from(dotsEl.children);
-  const MAX_CARD_W = 480;
-
-  // Click on a peeking card to navigate to it
-  cards.forEach((card, i) => {
-    card.addEventListener('click', () => { if (i !== activeIndex) goTo(i); });
-  });
-
-  /* ── Position & slide ──
-   * Cards are position:absolute within the track.
-   * Active card: centered. Adjacent cards: peeking `peek` px at each edge.
-   * step = (cw + cardW) / 2 - peek
-   * card[i].left = (cw - cardW) / 2 + (i - activeIndex) * step
-   */
-  function goTo(index) {
-    activeIndex = Math.max(0, Math.min(index, badges.length - 1));
-    const cw = overlay.getBoundingClientRect().width;
-    if (cw <= 0) return;
-    const peek  = Math.min(60, cw * 0.12);
-    const cardW = Math.min(MAX_CARD_W, cw - 2 * peek - 20);
-    const gap   = (cw - cardW) / 2 - peek;
-
-    cards.forEach(c => { c.style.width = `${cardW}px`; });
-    track.style.gap = `${gap}px`;
-
-    const offset = cw / 2 - cardW / 2 - activeIndex * (cardW + gap);
-    track.style.transform = `translateX(${offset}px)`;
-    cards.forEach((c, i) => c.classList.toggle('active', i === activeIndex));
-    dotEls.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
-  }
-
-  function positionOverlay() {
-    overlay.style.left   = '0';
-    overlay.style.top    = '0';
-    overlay.style.width  = '100vw';
-    overlay.style.height = '100vh';
-  }
-
-  function showOverlay(index) {
-    const wasVisible = overlay.classList.contains('visible');
-    positionOverlay();
-    overlay.classList.add('visible');
-    if (dotNav) dotNav.classList.add('behind-overlay');
-    if (!wasVisible) {
-      track.style.transition = 'none';
-      requestAnimationFrame(() => {
-        goTo(index);
-        requestAnimationFrame(() => { track.style.transition = ''; });
-      });
-    } else {
-      goTo(index);
-    }
-  }
-
-  /* ── Events ── */
-  const dotNav = document.querySelector('.dot-nav');
-
-  function hideOverlay() {
-    overlay.classList.remove('visible');
-    if (dotNav) dotNav.classList.remove('behind-overlay');
-  }
-
-  backBtn.addEventListener('click', hideOverlay);
-
-  // Keyboard
-  document.addEventListener('keydown', e => {
-    if (!overlay.classList.contains('visible')) return;
-    if (e.key === 'ArrowRight') goTo(activeIndex + 1);
-    else if (e.key === 'ArrowLeft')  goTo(activeIndex - 1);
-    else if (e.key === 'Escape')     hideOverlay();
-  });
-
-  // Touch swipe
-  let touchStartX = 0;
-  carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  carousel.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) dx < 0 ? goTo(activeIndex + 1) : goTo(activeIndex - 1);
-  });
-
-  badges.forEach((badge, i) => {
-    badge.addEventListener('click', () => showOverlay(i));
-  });
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1033,36 +908,9 @@ function initThemeToggle() {
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
     applyTheme(nextTheme, button);
-    requestAnimationFrame(() => {
-      initScrollBackground();
-    });
   });
 
   appState.themeToggleBound = true;
-}
-
-function initSpotlight() {
-  if (appState.spotlightBound || window.matchMedia('(max-width: 600px)').matches) return;
-
-  let ticking = false;
-  let lastX = 0;
-  let lastY = 0;
-
-  document.addEventListener('mousemove', event => {
-    lastX = event.clientX;
-    lastY = event.clientY;
-
-    if (ticking) return;
-
-    ticking = true;
-    requestAnimationFrame(() => {
-      document.documentElement.style.setProperty('--cursor-x', `${lastX}px`);
-      document.documentElement.style.setProperty('--cursor-y', `${lastY}px`);
-      ticking = false;
-    });
-  }, { passive: true });
-
-  appState.spotlightBound = true;
 }
 
 function initDotNav() {
@@ -1267,7 +1115,6 @@ function evaluateRevealTargets() {
     ? root.getBoundingClientRect()
     : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
   const enterOffset = Math.max(rootRect.height * 0.14, 56);
-  let activatedCount = 0;
 
   document.querySelectorAll('.reveal-item:not(.is-visible)').forEach(target => {
     const rect = target.getBoundingClientRect();
@@ -1276,7 +1123,6 @@ function evaluateRevealTargets() {
     if (!isVisibleWithinRoot) return;
 
     target.classList.add('is-visible');
-    activatedCount += 1;
   });
 }
 
@@ -1305,45 +1151,6 @@ function bindRevealFallback() {
   };
 }
 
-function initScrollBackground() {
-  if (appState.scrollBackgroundCleanup) {
-    appState.scrollBackgroundCleanup();
-    appState.scrollBackgroundCleanup = null;
-  }
-
-  const scrollTarget = getScrollEventTarget();
-  const root = document.documentElement;
-  let ticking = false;
-
-  function update() {
-    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-    if (theme === 'dark') {
-      root.style.setProperty('--bg-shift', '0');
-      ticking = false;
-      return;
-    }
-
-    const scrollTop = getScrollPosition();
-    const scrollHeight = getScrollHeight();
-    const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
-    root.style.setProperty('--bg-shift', progress.toFixed(3));
-    ticking = false;
-  }
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  }
-
-  scrollTarget.addEventListener('scroll', onScroll, { passive: true });
-  update();
-
-  appState.scrollBackgroundCleanup = () => {
-    scrollTarget.removeEventListener('scroll', onScroll);
-  };
-}
-
 function collectRevealTargets() {
   return Array.from(document.querySelectorAll('section .section-glass-panel, section .card, section .media-card'));
 }
@@ -1368,7 +1175,6 @@ function initScrollReveal() {
 
 function refreshResponsiveEffects() {
   initLenis();
-  initScrollBackground();
   initDotNav();
   initScrollReveal();
 }
@@ -1390,7 +1196,6 @@ function bindResizeHandler() {
 
 async function init() {
   initThemeToggle();
-  initSpotlight();
   bindResizeHandler();
 
   const appData = await fetchAppData();

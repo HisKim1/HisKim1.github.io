@@ -34,22 +34,28 @@
       <div class="sidebar-profile">
         <div id="home-section"></div>
         <div class="sidebar-social">
-          <a href="mailto:tomm1203@gm.gist.ac.kr" aria-label="Email"><i class="fas fa-envelope"></i><span class="social-label">Email</span></a>
-          <a href="https://github.com/HisKim1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i><span class="social-label">GitHub</span></a>
-          <a href="https://www.linkedin.com/in/hisu-kim/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i><span class="social-label">LinkedIn</span></a>
+          <a href="mailto:tomm1203@gm.gist.ac.kr" aria-label="GIST email"><i class="fas fa-envelope"></i><span class="social-label">GIST</span></a>
+          <a href="mailto:hisu.kim.hisu@gmail.com" aria-label="Gmail"><i class="fas fa-envelope"></i><span class="social-label">Gmail</span></a>
           <a href="https://scholar.google.com/citations?user=4z2u1DIAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i><span class="social-label">Scholar</span></a>
-          <a href="https://www.overleaf.com/read/rsztdfqtbprb#a6f7d3" target="_blank" rel="noopener noreferrer" aria-label="CV"><i class="fas fa-file-lines"></i><span class="social-label">CV</span></a>
+          <a href="https://drive.google.com/file/d/1gZZHZX-BUWaKWSKbUFQfpNxUNG38G1Yr/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="CV"><i class="fas fa-file-lines"></i><span class="social-label">CV</span></a>
         </div>
       </div>
     </aside>
 
     <main class="content-area" id="content-area">
       <div class="content-scroll-body">
-        <section id="research" aria-label="Research">
+        <section id="education" aria-label="Education">
           <article class="research-panel section-glass-panel" id="research-featured-panel" style="display:none">
             <h2>Recently Updated</h2>
             <div id="research-featured"></div>
           </article>
+          <article class="research-panel section-glass-panel">
+            <h2>Education</h2>
+            <div id="education-list" class="vertical"></div>
+          </article>
+        </section>
+
+        <section id="research" aria-label="Research">
           <div class="research-columns">
             <article class="research-panel section-glass-panel">
               <h2>Publications</h2>
@@ -80,13 +86,6 @@
           </div>
         </section>
 
-        <section id="background" aria-label="Background">
-          <div class="section-glass-panel">
-            <h2>Background</h2>
-            <div id="education-list" class="vertical"></div>
-          </div>
-        </section>
-
         <section id="beyond-lab" aria-label="Beyond the Lab">
           <div class="section-glass-panel">
             <h2>Beyond the Lab</h2>
@@ -99,10 +98,11 @@
 
     <!-- Dot nav: flex column, always right of content-area -->
     <nav class="dot-nav" aria-label="Section navigation">
-<a class="dot-item" data-section="research"   href="#research"  ><span class="dot-label">Research</span><span class="dot-inner"></span></a>
+      <a class="dot-item" data-section="education"  href="#education" ><span class="dot-label">Education</span><span class="dot-inner"></span></a>
+      <a class="dot-item" data-section="research"   href="#research"  ><span class="dot-label">Research</span><span class="dot-inner"></span></a>
       <a class="dot-item" data-section="projects"   href="#projects"  ><span class="dot-label">Projects</span><span class="dot-inner"></span></a>
       <a class="dot-item" data-section="teaching"   href="#teaching"  ><span class="dot-label">Teaching</span><span class="dot-inner"></span></a>
-      <a class="dot-item" data-section="background" href="#background"><span class="dot-label">About</span><span class="dot-inner"></span></a>
+      <a class="dot-item" data-section="beyond-lab" href="#beyond-lab"><span class="dot-label">Beyond</span><span class="dot-inner"></span></a>
     </nav>
   </div>
 
