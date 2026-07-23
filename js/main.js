@@ -756,7 +756,7 @@ function renderResearch(data) {
       ].filter(Boolean).join(' | ');
       const metadata = renderResearchUpdateMetadata([
         { value: 'Publication' },
-        { value: pub.year },
+        { value: pub.date || pub.year },
         { value: pub.status_note || pub.status, className: 'research-update-status' }
       ]);
 
