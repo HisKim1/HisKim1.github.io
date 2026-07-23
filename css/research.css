@@ -3,14 +3,6 @@
   padding-top: 40px;
 }
 
-.research-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem;
-  align-items: stretch;
-  margin-bottom: 2.5rem;
-}
-
 .research-panel {
   margin-bottom: 2rem;
   display: flex;
@@ -120,8 +112,4 @@
     padding: 1rem;
   }
 
-  .research-columns {
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
 }

@@ -1491,13 +1491,6 @@ footer {
     max-height: 200px;
   }
 
-  /* research columns: tighter */
-  .research-columns {
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-
   .back-button {
     padding: 0.625rem 1rem;
     font-size: 0.9rem;

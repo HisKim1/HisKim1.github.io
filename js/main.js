@@ -228,7 +228,8 @@ function renderConferenceAPA(entry = {}) {
   if (authors) segments.push(authors);
 
   if (entry.year) {
-    const monthPart = entry.month ? `, ${entry.month}` : '';
+    const displayDate = entry.date_range || entry.month;
+    const monthPart = displayDate ? `, ${displayDate}` : '';
     segments.push(`(${entry.year}${monthPart}).`);
   }
 

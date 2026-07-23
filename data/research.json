@@ -51,6 +51,57 @@
     {
       "authors": [
         "Kim, H.",
+        "Yoon, J.",
+        "Ryu, J."
+      ],
+      "year": 2026,
+      "month": "December",
+      "date_range": "December 7-11",
+      "title": "What's Going on Inside GraphCast? Diagnosing GraphCast's Latent Graph Signals Behind Blurry Forecast",
+      "event": "AGU Annual Meeting 2026",
+      "presentation_type": "",
+      "location": "San Francisco, CA, USA",
+      "doi": "",
+      "highlight_author_indices": [0],
+      "status_note": "Submitted"
+    },
+    {
+      "authors": [
+        "Kim, H.",
+        "Ryu, J.",
+        "Yoon, J."
+      ],
+      "year": 2026,
+      "month": "October",
+      "date_range": "October 11-14",
+      "title": "Tracing Blurry Forecast Inside GraphCast: A Latent Space Diagnosis via Spectral Graph Theory",
+      "event": "Asian Conference on Meteorology 2026",
+      "presentation_type": "",
+      "location": "Gyeongju, South Korea",
+      "doi": "",
+      "highlight_author_indices": [0],
+      "status_note": "Submitted"
+    },
+    {
+      "authors": [
+        "Kim, H.",
+        "Ryu, J.",
+        "Yoon, J."
+      ],
+      "year": 2026,
+      "month": "October",
+      "date_range": "October 11-14",
+      "title": "Spectral Diagnosis of GenCast's Jet Stream Kinetic Energy: Noise Artifacts in Probabilistic AI Weather Models",
+      "event": "Asian Conference on Meteorology 2026",
+      "presentation_type": "",
+      "location": "Gyeongju, South Korea",
+      "doi": "",
+      "highlight_author_indices": [0],
+      "status_note": "Submitted"
+    },
+    {
+      "authors": [
+        "Kim, H.",
         "Yoon, J."
       ],
       "year": 2025,
@@ -75,7 +126,7 @@
       "month": "September",
       "title": "Uncertainty Assessment in Ensemble Forecast Post-processing Using U-Net and Diffusion",
       "event": "S2S2D 2026",
-      "presentation_type": "",
+      "presentation_type": "Poster presentation",
       "location": "Reading, UK",
       "doi": "",
       "highlight_author_indices": [0],
