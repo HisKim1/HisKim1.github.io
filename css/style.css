@@ -1821,7 +1821,9 @@ footer {
    ═══════════════════════════════════════════════════════════ */
 
 #research-featured-panel {
-  border-left: 3px solid var(--accent);
+  background:
+    linear-gradient(var(--accent-soft), var(--accent-soft)),
+    var(--surface);
   margin-bottom: 1rem;
 }
 
