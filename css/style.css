@@ -26,10 +26,10 @@
   --text-tertiary: #8a8a8a;
 
   /* structure (theme-independent) */
-  --section-padding: 52px;
-  --section-gap: 35px;
-  --panel-padding: 2rem;
-  --content-gap: 1.25rem;
+  --section-padding: clamp(2.5rem, 4vw, 3.75rem);
+  --section-gap: clamp(1.75rem, 3vw, 2.5rem);
+  --panel-padding: clamp(1.25rem, 2.5vw, 2rem);
+  --content-gap: clamp(0.875rem, 1.5vw, 1.25rem);
   --theme-transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   --micro-interaction-ease: cubic-bezier(0.25, 1, 0.5, 1);
   --reveal-distance: 30px;
@@ -77,6 +77,7 @@ body {
   line-height: 1.6;
   overflow: hidden;
   height: 100vh;
+  height: 100dvh;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
 }
@@ -153,6 +154,7 @@ body::-webkit-scrollbar-thumb:hover {
 .layout {
   display: flex;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -162,6 +164,7 @@ body::-webkit-scrollbar-thumb:hover {
   flex-basis: clamp(320px, 24vw + 36px, 420px);
   flex-shrink: 0;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -195,6 +198,7 @@ body::-webkit-scrollbar-thumb:hover {
 .content-area {
   flex: 1;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 4vw, 3.2rem);
   box-sizing: border-box;
@@ -210,6 +214,7 @@ body::-webkit-scrollbar-thumb:hover {
   flex-shrink: 0;
   width: 48px;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -280,8 +285,9 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .sidebar .profile-img {
-  width: 80px;
-  height: 80px;
+  width: clamp(4.75rem, 6vw, 5.5rem);
+  height: auto;
+  aspect-ratio: 1;
   border-radius: 50%;
   border: 2px solid var(--accent);
   margin: 0 0 0.5rem 0;
@@ -448,8 +454,8 @@ footer a:hover {
 [data-theme="light"] .theme-icon-moon { opacity: 0.4; color: #b8bdba; }
 
 section {
-  padding: var(--section-padding) 20px;
-  max-width: 900px;
+  padding: var(--section-padding) clamp(1rem, 2vw, 1.5rem);
+  max-width: 62rem;
   margin: 0 auto var(--section-gap) auto;
   contain: layout style paint;
 }
@@ -475,17 +481,18 @@ section {
 
 
 .hero {
-  min-height: 80vh;
+  min-height: 80svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  margin-top: 24px;
+  margin-top: 1.5rem;
 }
 
 .hero .profile-img {
-  width: 240px;
-  height: 240px;
+  width: clamp(10rem, 24vw, 15rem);
+  height: auto;
+  aspect-ratio: 1;
   border-radius: 50%;
   border: 2px solid var(--accent);
   object-fit: cover;
@@ -495,7 +502,7 @@ section {
 
 .hero h2 {
   font-size: clamp(2.7rem, 6vw, 5rem);
-  margin: 0 0 12px 0;
+  margin: 0 0 0.75rem;
 }
 
 .profile-keywords {
@@ -645,16 +652,18 @@ section {
 }
 
 .project-img {
-  flex-shrink: 0;
-  width: 300px;
-  height: 200px;
+  flex: 0 1 clamp(13rem, 36%, 20rem);
+  width: clamp(13rem, 36%, 20rem);
+  height: auto;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--border);
 }
 
 .project-text-content {
-  flex: 1;
+  flex: 1 1 18rem;
+  min-width: 0;
 }
 
 @container (max-width: 460px) {
@@ -817,7 +826,7 @@ section {
 .edu-details {
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
   gap: 0.3rem 0.5rem;
 }
 
@@ -1068,11 +1077,6 @@ section {
     font-size: clamp(1.1rem, 0.45vw + 0.95rem, 1.4rem);
   }
 
-  .sidebar .profile-img {
-    width: 64px;
-    height: 64px;
-  }
-
   .content-area {
     padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.25rem, 3vw, 2.25rem);
   }
@@ -1132,8 +1136,8 @@ section {
 
 @media (max-width: 600px) {
   section {
-    padding: 32px 12px;
-    margin: 0 auto 24px auto;
+    padding: clamp(1.75rem, 6vw, 2.25rem) clamp(0.75rem, 3vw, 1rem);
+    margin: 0 auto clamp(1.5rem, 5vw, 2rem);
   }
 
   h2 {
@@ -1436,8 +1440,8 @@ footer {
 /* ── 480px: very small phones ── */
 @media (max-width: 480px) {
   section {
-    padding: 24px 10px;
-    margin: 0 auto 20px auto;
+    padding: clamp(1.5rem, 6vw, 2rem) clamp(0.625rem, 3vw, 0.875rem);
+    margin: 0 auto clamp(1.25rem, 5vw, 1.5rem);
   }
 
   .section-glass-panel {
@@ -1467,11 +1471,6 @@ footer {
     padding-top: 2.5rem;
   }
 
-  .sidebar .profile-img {
-    width: 64px;
-    height: 64px;
-  }
-
   /* teaching terms: more compact on tiny screens */
   .teaching-card {
     gap: 0.75rem;
@@ -1484,11 +1483,6 @@ footer {
   /* edu-details: tighter rows */
   .edu-details {
     gap: 0.5rem 0;
-  }
-
-  /* project image */
-  .project-img {
-    max-height: 200px;
   }
 
   .back-button {
@@ -1759,12 +1753,12 @@ footer {
 /* beyond-lab: masonry, 3 columns, gap, rounded corners */
 #beyond-lab .media-grid.media-masonry {
   column-count: 3;
-  column-gap: 10px;
+  column-gap: clamp(0.5rem, 1.2vw, 0.75rem);
   margin: 0;
 }
 
 #beyond-lab .media-grid.media-masonry .media-card {
-  margin-bottom: 10px;
+  margin-bottom: clamp(0.5rem, 1.2vw, 0.75rem);
   border-radius: 8px;
 }
 
@@ -1827,10 +1821,55 @@ footer {
   margin-bottom: 1rem;
 }
 
+#research-featured {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2vw, 1.75rem);
+}
+
 .research-featured-card {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.research-featured-card + .research-featured-card {
+  padding-top: clamp(1.25rem, 2vw, 1.75rem);
+  border-top: 1px solid var(--border);
+}
+
+.research-update-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: clamp(0.68rem, 0.1vw + 0.65rem, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.research-update-meta span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.research-update-meta span + span::before {
+  content: '·';
+  margin-right: 0.35rem;
+  color: var(--text-tertiary);
+}
+
+.research-update-meta .research-update-status {
+  color: var(--accent-strong);
+}
+
+.research-update-organization {
+  margin: -0.15rem 0 0;
+  font-size: clamp(0.86rem, 0.12vw + 0.83rem, 0.94rem);
+  font-weight: 600;
+  color: var(--accent-strong);
 }
 
 .research-question {
@@ -1859,6 +1898,12 @@ footer {
 
 /* Responsive safeguards for component styles declared later in this file. */
 @media (max-width: 768px) {
+  .sidebar .profile-img {
+    width: clamp(8rem, 34vw, 11rem);
+    height: auto;
+    aspect-ratio: 1;
+  }
+
   .reveal-item {
     opacity: 1;
     --reveal-y: 0px;

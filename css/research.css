@@ -1,6 +1,6 @@
 /* Research page styles */
 #research {
-  padding-top: 40px;
+  padding-top: clamp(2rem, 4vw, 3rem);
 }
 
 .research-panel {

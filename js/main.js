@@ -717,26 +717,61 @@ function renderTeaching(data) {
   }).join('');
 }
 
+function renderResearchUpdateMetadata(items = []) {
+  const metadata = items
+    .filter(item => item?.value)
+    .map(item => `<span class="${item.className || ''}">${item.value}</span>`)
+    .join('');
+
+  return metadata ? `<div class="research-update-meta">${metadata}</div>` : '';
+}
+
 function renderResearch(data) {
   const featuredContainer = document.getElementById('research-featured');
   const featuredPanel = document.getElementById('research-featured-panel');
   if (featuredContainer) {
+    const recentUpdates = Array.isArray(data.recent_updates) ? data.recent_updates : [];
     const featuredPubs = (data.publications || []).filter(p => p.featured);
-    if (featuredPubs.length) {
-      featuredContainer.innerHTML = featuredPubs.map(pub => {
-        const featuredLinks = [
-          pub.link ? `<a href="${pub.link}" target="_blank" rel="noopener noreferrer">Check out full paper</a>` : '',
-          pub.blog_post ? `<a href="${pub.blog_post}" target="_blank" rel="noopener noreferrer">Springer Nature Blog post</a>` : ''
-        ].filter(Boolean).join(' | ');
+    const recentUpdateMarkup = recentUpdates.map(update => {
+      const metadata = renderResearchUpdateMetadata([
+        { value: update.type },
+        { value: update.date },
+        { value: update.status, className: 'research-update-status' }
+      ]);
 
-        return `
-          <div class="research-featured-card">
-            ${pub.driving_question ? `<p class="research-question">${pub.driving_question}</p>` : ''}
-            ${pub.key_finding ? `<p class="research-finding">${pub.key_finding}</p>` : ''}
-            ${featuredLinks ? `<p class="research-featured-title">${featuredLinks}</p>` : ''}
-          </div>
-        `;
-      }).join('');
+      return `
+        <div class="research-featured-card">
+          ${metadata}
+          ${update.title ? `<p class="research-question">${update.title}</p>` : ''}
+          ${update.organization ? `<p class="research-update-organization">${update.organization}</p>` : ''}
+          ${update.summary ? `<p class="research-finding">${update.summary}</p>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    const featuredPublicationMarkup = featuredPubs.map(pub => {
+      const featuredLinks = [
+        pub.link ? `<a href="${pub.link}" target="_blank" rel="noopener noreferrer">Check out full paper</a>` : '',
+        pub.blog_post ? `<a href="${pub.blog_post}" target="_blank" rel="noopener noreferrer">Springer Nature Blog post</a>` : ''
+      ].filter(Boolean).join(' | ');
+      const metadata = renderResearchUpdateMetadata([
+        { value: 'Publication' },
+        { value: pub.year },
+        { value: pub.status_note || pub.status, className: 'research-update-status' }
+      ]);
+
+      return `
+        <div class="research-featured-card">
+          ${metadata}
+          ${pub.driving_question ? `<p class="research-question">${pub.driving_question}</p>` : ''}
+          ${pub.key_finding ? `<p class="research-finding">${pub.key_finding}</p>` : ''}
+          ${featuredLinks ? `<p class="research-featured-title">${featuredLinks}</p>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    if (recentUpdateMarkup || featuredPublicationMarkup) {
+      featuredContainer.innerHTML = `${recentUpdateMarkup}${featuredPublicationMarkup}`;
       if (featuredPanel) featuredPanel.style.display = '';
     }
   }
