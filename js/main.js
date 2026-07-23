@@ -1153,12 +1153,30 @@ function bindRevealFallback() {
 }
 
 function collectRevealTargets() {
-  return Array.from(document.querySelectorAll('section .section-glass-panel, section .card, section .media-card'));
+  return Array.from(document.querySelectorAll('section .section-glass-panel, section .card, section .media-card'))
+    .filter(target => !target.closest('.education-topic-body[data-state="collapsed"]'));
 }
 
 function initScrollReveal() {
   const targets = collectRevealTargets();
   if (!targets.length) return;
+
+  const shouldShowImmediately = window.innerWidth <= 768
+    || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (shouldShowImmediately) {
+    if (appState.revealCleanup) {
+      appState.revealCleanup();
+      appState.revealCleanup = null;
+    }
+
+    targets.forEach(target => {
+      target.classList.add('reveal-item', 'is-visible');
+      target.style.removeProperty('--reveal-delay');
+    });
+    return;
+  }
+
   bindRevealFallback();
 
   const newTargets = targets.filter(target => !target.classList.contains('reveal-item'));

@@ -1856,3 +1856,53 @@ footer {
   font-style: italic;
   margin: 0.25rem 0 0;
 }
+
+/* Responsive safeguards for component styles declared later in this file. */
+@media (max-width: 768px) {
+  .reveal-item {
+    opacity: 1;
+    --reveal-y: 0px;
+    will-change: auto;
+    transition-delay: 0ms;
+  }
+}
+
+@media (max-width: 1024px) {
+  #beyond-lab .media-grid.media-masonry {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .project-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .project-img,
+  .project-text-content {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .project-img {
+    height: auto;
+    max-height: none;
+  }
+}
+
+@media (max-width: 360px) {
+  #beyond-lab .media-grid.media-masonry {
+    column-count: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-item {
+    opacity: 1;
+    --reveal-y: 0px;
+    will-change: auto;
+    transition: none;
+    transition-delay: 0ms;
+  }
+}
