@@ -1,17 +1,24 @@
 {
   "recent_updates": [
     {
+      "type": "Award",
+      "date": "August 2026",
+      "status": "Grand Prize",
+      "title": "2026 Weather Big Data Contest",
+      "organization": "Korea Meteorological Administration",
+      "summary": "Minister of Climate, Energy and Environment Award"
+    },
+    {
       "type": "Scholarship",
       "date": "July 2026",
       "status": "Accepted",
       "title": "Presidential Science Scholarship for Graduate Student",
       "organization": "Ministry of Science and ICT",
-      "summary": "Selected to receive scholarship support for the remaining year of my master's program."
+      "summary": "Excited and grateful to have support for the rest of my master's journey."
     }
   ],
   "publications": [
     {
-      "featured": true,
       "date": "March 2026",
       "driving_question": "Does GenCast's diffusion noise produce physically consistent ensemble spread?",
       "key_finding": "Good forecast skill ≠ physically coherent uncertainty. The noise diffusion uses to generate ensemble members contaminated the physical structure of the jet stream, revealing a gap between statistical accuracy and physical consistency.",
