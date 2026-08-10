@@ -656,7 +656,8 @@ section {
   width: clamp(13rem, 36%, 20rem);
   height: auto;
   aspect-ratio: 3 / 2;
-  object-fit: cover;
+  object-fit: contain;
+  background: #071827;
   border-radius: 8px;
   border: 1px solid var(--border);
 }
@@ -1635,7 +1636,8 @@ footer {
   flex-shrink: 0;
 }
 
-.project-status-active {
+.project-status-active,
+.project-status-winner {
   color: var(--accent);
   border: 1px solid var(--accent-border);
   background: var(--accent-soft);

@@ -6,7 +6,7 @@
       "status": "Grand Prize",
       "title": "I won the Grand Prize in the Disaster Safety track of the 2026 Weather Big Data Contest.",
       "organization": "Korea Meteorological Administration",
-      "summary": "Competing as Team ASIAN UNION, we built an interpretable model that combines weather, forest, and power-grid data to estimate fire risk for individual utility poles. The project topped the 80-team disaster-safety track and received the Minister of Climate, Energy and Environment Award."
+      "summary": "With Team ASIAN UNION, I modeled fire risk across 1.39 million utility poles using weather, forest, and power-grid data. The top-risk 20% captured 46% of held-out wildfires (AUC 0.728), earning the Minister of Climate, Energy and Environment Award."
     },
     {
       "type": "Scholarship",
@@ -14,7 +14,7 @@
       "status": "Selected",
       "title": "I was selected for the 2026 Presidential Science Scholarship for Graduate Students.",
       "organization": "Ministry of Science and ICT · Korea Student Aid Foundation",
-      "summary": "Only 120 graduate students were chosen nationwide from a 22:1 applicant pool. The scholarship supports the remaining year of my master's program, giving me more room to focus on the research I care about."
+      "summary": "The scholarship supports the remaining year of my master's program, giving me more room to focus on the research I care about."
     }
   ],
   "publications": [

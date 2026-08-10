@@ -1,5 +1,21 @@
 [
   {
+    "images": "images/kma-contest-2026.png",
+    "title": "K-Fire (K-火): Network-Aware Utility-Pole Fire Risk",
+    "role": "Presenter & Team Member · Team ASIAN UNION",
+    "one_liner": "Grand Prize · 2026 Weather Big Data Contest, Disaster Safety",
+    "problem": "How can 1.39 million utility poles in Gangwon be prioritized for inspection when true grid connections and labeled fire-risk data are unavailable?",
+    "approach": "Reconstructed an approximate power-grid graph from pole geometry and public transmission data, then combined network structure with wildfire, weather, forest, terrain, and accessibility features in an interpretable frequency-ratio and Random Forest ensemble.",
+    "why_it_matters": "The highest-risk 20% captured 46% of held-out wildfires—2.3× random—with an AUC of 0.728, supporting targeted inspections, vegetation management, and grid reinforcement.",
+    "stack": [
+      "Graph Modeling",
+      "Geospatial Analysis",
+      "Random Forest",
+      "Risk Modeling"
+    ],
+    "status": "winner"
+  },
+  {
     "images": "images/AIweatherquest.png",
     "title": "AI Weather Quest 2025",
     "role": "Team Lead · CAMExpedition (GIST + Utah State)",
