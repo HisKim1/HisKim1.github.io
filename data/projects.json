@@ -6,13 +6,7 @@
     "one_liner": "Grand Prize · 2026 Weather Big Data Contest, Disaster Safety",
     "problem": "How can 1.39 million utility poles in Gangwon be prioritized for inspection when true grid connections and labeled fire-risk data are unavailable?",
     "approach": "Reconstructed an approximate power-grid graph from pole geometry and public transmission data, then combined network structure with wildfire, weather, forest, terrain, and accessibility features in an interpretable frequency-ratio and Random Forest ensemble.",
-    "why_it_matters": "The highest-risk 20% captured 46% of held-out wildfires—2.3× random—with an AUC of 0.728, supporting targeted inspections, vegetation management, and grid reinforcement.",
-    "stack": [
-      "Graph Modeling",
-      "Geospatial Analysis",
-      "Random Forest",
-      "Risk Modeling"
-    ],
+    "why_it_matters": "The highest-risk 20% captured 46% of held-out wildfires with an AUC of 0.728. The resulting risk ranking can be used operationally to schedule inspections, prioritize maintenance, and allocate limited field resources.",
     "status": "winner"
   },
   {
