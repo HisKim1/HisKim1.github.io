@@ -5,7 +5,7 @@
       "date": "August 2026",
       "status": "Grand Prize",
       "title": "I won the Grand Prize in the Disaster Safety track of the 2026 Weather Big Data Contest.",
-      "organization": "Korea Meteorological Administration",
+      "organization": "Organized by the Korea Meteorological Administration",
       "summary": "With Team ASIAN UNION, I modeled fire risk across 1.39 million utility poles using weather, forest, and power-grid data. The top-risk 20% captured 46% of held-out wildfires (AUC 0.728), earning the Minister of Climate, Energy and Environment Award."
     },
     {
