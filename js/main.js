@@ -174,9 +174,9 @@ function splitPeriod(period = '') {
   };
 }
 
-function createApaList(items, renderItem) {
+function createApaList(items, renderItem, emptyMessage = 'Updates are on the way.') {
   if (!Array.isArray(items) || !items.length) {
-    return '<p class="empty-placeholder">Updates are on the way.</p>';
+    return `<p class="empty-placeholder">${emptyMessage}</p>`;
   }
   return `<ol class="apa-list">${items.map(renderItem).join('')}</ol>`;
 }
@@ -717,6 +717,38 @@ function renderTeaching(data) {
   }).join('');
 }
 
+function getPresentationCategory(entry = {}) {
+  const type = String(entry.presentation_type || '').toLowerCase();
+  if (type.includes('oral')) return 'oral';
+  if (type.includes('poster')) return 'poster';
+  return '';
+}
+
+function setupConferenceFilter(conferences, container) {
+  const filterGroup = document.getElementById('research-conference-filter');
+  if (!filterGroup || !container) return;
+
+  const buttons = Array.from(filterGroup.querySelectorAll('[data-filter]'));
+  if (!buttons.length) return;
+
+  const applyConferenceFilter = filter => {
+    const visible = filter === 'all'
+      ? conferences
+      : conferences.filter(entry => getPresentationCategory(entry) === filter);
+    container.innerHTML = createApaList(visible, renderConferenceAPA, `No ${filter} presentations yet.`);
+
+    buttons.forEach(button => {
+      const isActive = button.dataset.filter === filter;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+  };
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => applyConferenceFilter(button.dataset.filter || 'all'));
+  });
+}
+
 function renderResearchUpdateMetadata(items = []) {
   const metadata = items
     .filter(item => item?.value)
@@ -788,6 +820,7 @@ function renderResearch(data) {
   if (conferencesContainer) {
     const conferences = sortByRecency(data.conferences || []);
     conferencesContainer.innerHTML = createApaList(conferences, renderConferenceAPA);
+    setupConferenceFilter(conferences, conferencesContainer);
   }
 
   if (experienceContainer && Array.isArray(data.experience)) {
